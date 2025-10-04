@@ -1,0 +1,106 @@
+DATA_CONFIG:
+    DATA_INFOS:
+        -   DATASET: KittiDataset
+            DATA_SPLIT: {
+                TRAINING: ./data/KITTI12/kitti12_train194.txt,
+                EVALUATING: './data/KITTI12/kitti12_val14.txt',
+                TESTING: './data/KITTI12/kitti12_test.txt'
+            }
+            RETURN_RIGHT_DISP: true
+
+        # -   DATASET: KittiDataset
+        #     DATA_SPLIT: {
+        #         TRAINING: ./data/KITTI15/kitti15_train200.txt,
+        #         EVALUATING: ./data/KITTI15/kitti15_val20.txt,
+        #         TESTING: ./data/KITTI15/kitti15_test.txt
+        #     }
+        #     RETURN_RIGHT_DISP: true
+
+    DATA_TRANSFORM:
+        TRAINING:
+            - { NAME: StereoColorJitter, BRIGHTNESS: [ 0.7, 1.3 ], CONTRAST: [ 0.7, 1.3 ], SATURATION: [ 0.7, 1.3 ], HUE: 0.3, ASYMMETRIC_PROB: 0 }
+            - { NAME: RandomErase, PROB: 0.5, MAX_TIME: 2, BOUNDS: [ 50, 100 ] }
+            - { NAME: RandomSparseScale, SIZE: [ 256, 640 ], MIN_SCALE: 0.2, MAX_SCALE: 0.5, SCALE_PROB: 0.8 }
+            - { NAME: RandomCrop, SIZE: [ 256, 640 ] }
+            - { NAME: TransposeImage }
+            - { NAME: ToTensor }
+            - { NAME: NormalizeImage, MEAN: [ 0.485, 0.456, 0.406 ], STD: [ 0.229, 0.224, 0.225 ] }
+        EVALUATING:
+            - { NAME: RightTopPad, SIZE: [ 384, 1248 ] }
+            - { NAME: TransposeImage }
+            - { NAME: ToTensor }
+            - { NAME: NormalizeImage, MEAN: [ 0.485, 0.456, 0.406 ], STD: [ 0.229, 0.224, 0.225 ] }
+
+MODEL:
+    NAME: PrunedLightStereo
+    BACKCONE: EfficientNetv2
+    MAX_DISP: 192
+    EXPANSE_RATIO: 8
+    AGGREGATION_BLOCKS: [ 8, 16, 32 ]
+    LEFT_ATT: true
+    FIND_UNUSED_PARAMETERS: false
+    CKPT: -1
+    # IMPORTANT: Path to the trained (unpruned) LightStereo model checkpoint
+    PRETRAINED_MODEL: '/home/samkit/Desktop/HWAI/project/LightStereo-M-KITTI.ckpt'
+
+    # Pruning configuration
+    APPLY_PRUNING_ON_INIT: true  # Apply pruning when initializing the model
+    GLOBAL_SPARSITY: null  # Use layer-specific sparsity ratios defined in PRUNING_CONFIG
+
+    PRUNING_CONFIG:
+        # Unstructured pruning ratios (60% total unstructured pruning)
+        unstructured_ratios:
+            backbone: 0.4      # 40% sparsity in backbone
+            cost_agg: 0.3      # 30% sparsity in cost aggregation
+            refine_1: 0.5      # 50% sparsity in refinement layer 1
+
+        # Structured pruning ratios (40% total structured pruning)
+        structured_ratios:
+            backbone_channels: 0.25      # Remove 25% of backbone channels
+            cost_agg_channels: 0.15      # Remove 15% of cost agg channels
+            refine_2_channels: 0.3       # Remove 30% of refinement 2 channels
+            refine_3_channels: 0.4       # Remove 40% of refinement 3 channels
+
+        importance_metric: 'l1'  # Use L1 norm for importance
+        exclude_layers: ['stem_2']  # Keep input processing intact
+
+OPTIMIZATION:
+    FREEZE_BN: false
+    SYNC_BN: true
+    AMP: true  # Mixed precision to save memory
+    BATCH_SIZE_PER_GPU: 1  # Reduced for memory efficiency
+    NUM_EPOCHS: 300  # Fewer epochs for fine-tuning pruned model
+
+    OPTIMIZER:
+        NAME: AdamW
+        LR: &lr 0.0001  # Lower learning rate for fine-tuning pruned model
+        WEIGHT_DECAY: 1.0e-05
+        EPS: 1.0e-08
+
+    SCHEDULER:
+        NAME: OneCycleLR
+        MAX_LR: *lr
+        PCT_START: 0.01
+        ON_EPOCH: False
+
+    CLIP_GRAD:
+        TYPE: value
+        CLIP_VALUE: 0.1
+
+EVALUATOR:
+    BATCH_SIZE_PER_GPU: 1
+    MAX_DISP: 192
+    METRIC:
+        - d1_all
+        - epe
+        - thres_1
+        - thres_2
+        - thres_3
+
+TRAINER:
+    EVAL_INTERVAL: 50  # More frequent evaluation
+    CKPT_SAVE_INTERVAL: 1
+    MAX_CKPT_SAVE_NUM: 100
+    LOGGER_ITER_INTERVAL: 10
+    TRAIN_VISUALIZATION: True
+    EVAL_VISUALIZATION: True
