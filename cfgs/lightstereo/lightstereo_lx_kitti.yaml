@@ -3,18 +3,18 @@ DATA_CONFIG:
         -   DATASET: KittiDataset
             DATA_SPLIT: {
                 TRAINING: ./data/KITTI12/kitti12_train194.txt,
-                EVALUATING: '',
-                TESTING: ''
+                EVALUATING: './data/KITTI12/kitti12_val14.txt',
+                TESTING: './data/KITTI12/kitti12_test.txt'
             }
             RETURN_RIGHT_DISP: true
 
-        -   DATASET: KittiDataset
-            DATA_SPLIT: {
-                TRAINING: ./data/KITTI5/kitti15_train200.txt,
-                EVALUATING: ./data/KITTI15/kitti15_val20.txt,
-                TESTING: ./data/KITTI15/kitti15_test.txt
-            }
-            RETURN_RIGHT_DISP: true
+        # -   DATASET: KittiDataset
+        #     DATA_SPLIT: {
+        #         TRAINING: ./data/KITTI5/kitti15_train200.txt,
+        #         EVALUATING: ./data/KITTI15/kitti15_val20.txt,
+        #         TESTING: ./data/KITTI15/kitti15_test.txt
+        #     }
+        #     RETURN_RIGHT_DISP: true
 
     DATA_TRANSFORM:
         TRAINING:
@@ -40,13 +40,13 @@ MODEL:
     LEFT_ATT: true
     FIND_UNUSED_PARAMETERS: false
     CKPT: -1
-    PRETRAINED_MODEL: '' # The path of checkpoint trained with the Sceneflow dataset.
+    PRETRAINED_MODEL: '/home/samkit/Desktop/HWAI/project/OpenStereoSLAM/LightStereo-M-KITTI.ckpt' # The path of checkpoint trained with the Sceneflow dataset.
 
 OPTIMIZATION:
     FREEZE_BN: false
     SYNC_BN: true
-    AMP: false
-    BATCH_SIZE_PER_GPU: 2
+    AMP: true
+    BATCH_SIZE_PER_GPU: 1
     NUM_EPOCHS: 500
 
     OPTIMIZER:

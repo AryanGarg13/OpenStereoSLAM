@@ -8,7 +8,6 @@ from stereo.modeling.disp_refinement.disp_refinement import context_upsample
 from .backbone import Backbone, FPNLayer
 from .aggregation import Aggregation
 
-
 class LightStereo(nn.Module):
     def __init__(self, cfgs):
         super().__init__()

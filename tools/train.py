@@ -35,7 +35,7 @@ def parse_config():
     parser.add_argument('--cover_old_exp', action='store_true', default=False)
 
     # dataloader
-    parser.add_argument('--workers', type=int, default=8, help='number of workers for dataloader')
+    parser.add_argument('--workers', type=int, default=2, help='number of workers for dataloader')
     parser.add_argument('--pin_memory', action='store_true', default=False, help='data loader pin memory')
 
     args = parser.parse_args()
