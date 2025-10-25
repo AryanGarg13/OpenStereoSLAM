@@ -20,7 +20,7 @@ class DatasetTemplate(torch_data.Dataset):
         self.data_info = data_info
         self.data_cfg = data_cfg
         self.mode = mode
-        self.root = self.data_info.DATA_PATH
+        self.root = '/scratch/samkit_jain/kitti/data_stereo_flow'
 
         if self.mode.upper() in self.data_info.DATA_SPLIT:
             self.split_file = self.data_info.DATA_SPLIT[self.mode.upper()]

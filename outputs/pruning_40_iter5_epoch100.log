@@ -1,0 +1,1158 @@
+2025-10-25 21:01:22,706   INFO  ----------- DATA_CONFIG -----------
+2025-10-25 21:01:22,706   INFO  cfgs.DATA_CONFIG.DATA_INFOS: [{'DATASET': 'KittiDataset', 'DATA_SPLIT': {'TRAINING': './data/KITTI12/kitti12_train194.txt', 'EVALUATING': './data/KITTI12/kitti12_val14.txt', 'TESTING': './data/KITTI12/kitti12_test.txt'}, 'RETURN_RIGHT_DISP': True}]
+2025-10-25 21:01:22,707   INFO  ----------- DATA_TRANSFORM -----------
+2025-10-25 21:01:22,707   INFO  cfgs.DATA_CONFIG.DATA_TRANSFORM.TRAINING: [{'NAME': 'StereoColorJitter', 'BRIGHTNESS': [0.7, 1.3], 'CONTRAST': [0.7, 1.3], 'SATURATION': [0.7, 1.3], 'HUE': [-0.3, 0.3], 'ASYMMETRIC_PROB': 0}, {'NAME': 'RandomErase', 'PROB': 0.5, 'MAX_TIME': 2, 'BOUNDS': [50, 100]}, {'NAME': 'RandomSparseScale', 'SIZE': [320, 736], 'MIN_SCALE': 0.2, 'MAX_SCALE': 0.5, 'SCALE_PROB': 0.8}, {'NAME': 'RandomCrop', 'SIZE': [320, 736]}, {'NAME': 'TransposeImage'}, {'NAME': 'ToTensor'}, {'NAME': 'NormalizeImage', 'MEAN': [0.485, 0.456, 0.406], 'STD': [0.229, 0.224, 0.225]}]
+2025-10-25 21:01:22,707   INFO  cfgs.DATA_CONFIG.DATA_TRANSFORM.EVALUATING: [{'NAME': 'RightTopPad', 'SIZE': [384, 1248]}, {'NAME': 'TransposeImage'}, {'NAME': 'ToTensor'}, {'NAME': 'NormalizeImage', 'MEAN': [0.485, 0.456, 0.406], 'STD': [0.229, 0.224, 0.225]}]
+2025-10-25 21:01:22,708   INFO  ----------- MODEL -----------
+2025-10-25 21:01:22,709   INFO  cfgs.MODEL.NAME: LightStereo
+2025-10-25 21:01:22,709   INFO  cfgs.MODEL.MAX_DISP: 192
+2025-10-25 21:01:22,709   INFO  cfgs.MODEL.EXPANSE_RATIO: 4
+2025-10-25 21:01:22,710   INFO  cfgs.MODEL.AGGREGATION_BLOCKS: [4, 8, 16]
+2025-10-25 21:01:22,710   INFO  cfgs.MODEL.LEFT_ATT: True
+2025-10-25 21:01:22,710   INFO  cfgs.MODEL.FIND_UNUSED_PARAMETERS: False
+2025-10-25 21:01:22,711   INFO  cfgs.MODEL.CKPT: -1
+2025-10-25 21:01:22,711   INFO  cfgs.MODEL.PRETRAINED_MODEL: LightStereo-M-KITTI.ckpt
+2025-10-25 21:01:22,711   INFO  ----------- OPTIMIZATION -----------
+2025-10-25 21:01:22,712   INFO  cfgs.OPTIMIZATION.FREEZE_BN: False
+2025-10-25 21:01:22,712   INFO  cfgs.OPTIMIZATION.SYNC_BN: True
+2025-10-25 21:01:22,713   INFO  cfgs.OPTIMIZATION.AMP: False
+2025-10-25 21:01:22,713   INFO  cfgs.OPTIMIZATION.BATCH_SIZE_PER_GPU: 2
+2025-10-25 21:01:22,713   INFO  cfgs.OPTIMIZATION.NUM_EPOCHS: 100
+2025-10-25 21:01:22,713   INFO  ----------- OPTIMIZER -----------
+2025-10-25 21:01:22,714   INFO  cfgs.OPTIMIZATION.OPTIMIZER.NAME: AdamW
+2025-10-25 21:01:22,714   INFO  cfgs.OPTIMIZATION.OPTIMIZER.LR: 0.0002
+2025-10-25 21:01:22,715   INFO  cfgs.OPTIMIZATION.OPTIMIZER.WEIGHT_DECAY: 1e-05
+2025-10-25 21:01:22,715   INFO  cfgs.OPTIMIZATION.OPTIMIZER.EPS: 1e-08
+2025-10-25 21:01:22,715   INFO  ----------- SCHEDULER -----------
+2025-10-25 21:01:22,716   INFO  cfgs.OPTIMIZATION.SCHEDULER.NAME: OneCycleLR
+2025-10-25 21:01:22,716   INFO  cfgs.OPTIMIZATION.SCHEDULER.MAX_LR: 0.0002
+2025-10-25 21:01:22,716   INFO  cfgs.OPTIMIZATION.SCHEDULER.PCT_START: 0.01
+2025-10-25 21:01:22,717   INFO  cfgs.OPTIMIZATION.SCHEDULER.ON_EPOCH: False
+2025-10-25 21:01:22,717   INFO  ----------- CLIP_GRAD -----------
+2025-10-25 21:01:22,717   INFO  cfgs.OPTIMIZATION.CLIP_GRAD.TYPE: value
+2025-10-25 21:01:22,717   INFO  cfgs.OPTIMIZATION.CLIP_GRAD.CLIP_VALUE: 0.1
+2025-10-25 21:01:22,718   INFO  ----------- EVALUATOR -----------
+2025-10-25 21:01:22,718   INFO  cfgs.EVALUATOR.BATCH_SIZE_PER_GPU: 1
+2025-10-25 21:01:22,718   INFO  cfgs.EVALUATOR.MAX_DISP: 192
+2025-10-25 21:01:22,719   INFO  cfgs.EVALUATOR.METRIC: ['d1_all', 'epe', 'thres_1', 'thres_2', 'thres_3']
+2025-10-25 21:01:22,719   INFO  ----------- TRAINER -----------
+2025-10-25 21:01:22,719   INFO  cfgs.TRAINER.EVAL_INTERVAL: 10
+2025-10-25 21:01:22,720   INFO  cfgs.TRAINER.CKPT_SAVE_INTERVAL: 20
+2025-10-25 21:01:22,720   INFO  cfgs.TRAINER.MAX_CKPT_SAVE_NUM: 100
+2025-10-25 21:01:22,720   INFO  cfgs.TRAINER.LOGGER_ITER_INTERVAL: 50
+2025-10-25 21:01:22,721   INFO  cfgs.TRAINER.TRAIN_VISUALIZATION: True
+2025-10-25 21:01:22,721   INFO  cfgs.TRAINER.EVAL_VISUALIZATION: True
+2025-10-25 21:01:22,836   INFO  Loading parameters from checkpoint LightStereo-M-KITTI.ckpt
+2025-10-25 21:01:22,943   INFO  Unused weight: 
+2025-10-25 21:01:22,944   INFO  Not updated weight: 
+2025-10-25 21:01:22,946   INFO  Total samples for eval dataset: 14
+2025-10-25 21:01:22,946   INFO  Total samples for train dataset: 194
+2025-10-25 21:03:25,371   INFO  Training Epoch: 0/100 Iter:   0/97 Loss:0.956940(0.956940) LR:8.0000e-06 DataTime:0.22 InferTime:86475.04ms Time cost: 02:02/329:49:25
+2025-10-25 21:03:42,075   INFO  Training Epoch: 0/100 Iter:  50/97 Loss:0.275387(0.668727) LR:1.1028e-04 DataTime:0.20 InferTime:27.11ms Time cost: 02:19/7:18:41
+2025-10-25 21:04:02,846   INFO  Evaluating Epoch: 0 Iter:   0/14 InferTime: 4903.39ms
+2025-10-25 21:04:04,074   INFO  Epoch 0 metrics: {'d1_all': tensor(1.7703), 'epe': tensor(0.6349), 'thres_1': tensor(13.3755), 'thres_2': tensor(4.5463), 'thres_3': tensor(2.2161)}
+2025-10-25 21:04:05,435   INFO  Training Epoch: 1/100 Iter:   3/97 Loss:0.279826(0.716928) LR:2.0000e-04 DataTime:0.20 InferTime:26.92ms Time cost: 02:42/4:17:22
+2025-10-25 21:04:22,430   INFO  Training Epoch: 1/100 Iter:  53/97 Loss:0.505702(0.662312) LR:1.9998e-04 DataTime:0.21 InferTime:27.08ms Time cost: 02:59/3:09:10
+2025-10-25 21:04:39,377   INFO  Training Epoch: 2/100 Iter:   6/97 Loss:1.76914(0.701543) LR:1.9994e-04 DataTime:0.23 InferTime:27.10ms Time cost: 03:16/2:34:42
+2025-10-25 21:04:56,330   INFO  Training Epoch: 2/100 Iter:  56/97 Loss:0.502320(0.862616) LR:1.9987e-04 DataTime:0.21 InferTime:26.88ms Time cost: 03:33/2:13:52
+2025-10-25 21:05:13,336   INFO  Training Epoch: 3/100 Iter:   9/97 Loss:1.62257(0.710492) LR:1.9978e-04 DataTime:0.23 InferTime:26.72ms Time cost: 03:50/1:59:54
+2025-10-25 21:05:30,296   INFO  Training Epoch: 3/100 Iter:  59/97 Loss:6.31600(0.690993) LR:1.9965e-04 DataTime:0.22 InferTime:27.01ms Time cost: 04:07/1:49:48
+2025-10-25 21:05:47,272   INFO  Training Epoch: 4/100 Iter:  12/97 Loss:0.328962(0.880888) LR:1.9951e-04 DataTime:0.18 InferTime:27.36ms Time cost: 04:24/1:42:09
+2025-10-25 21:06:04,273   INFO  Training Epoch: 4/100 Iter:  62/97 Loss:0.364982(0.604971) LR:1.9933e-04 DataTime:0.22 InferTime:26.90ms Time cost: 04:41/1:36:09
+2025-10-25 21:06:21,264   INFO  Training Epoch: 5/100 Iter:  15/97 Loss:0.365778(0.398054) LR:1.9913e-04 DataTime:0.20 InferTime:27.02ms Time cost: 04:58/1:31:17
+2025-10-25 21:06:38,270   INFO  Training Epoch: 5/100 Iter:  65/97 Loss:0.918935(0.501608) LR:1.9890e-04 DataTime:0.21 InferTime:26.62ms Time cost: 05:15/1:27:15
+2025-10-25 21:06:55,086   INFO  Training Epoch: 6/100 Iter:  18/97 Loss:0.712627(0.475383) LR:1.9864e-04 DataTime:0.22 InferTime:27.11ms Time cost: 05:32/1:23:48
+2025-10-25 21:07:11,972   INFO  Training Epoch: 6/100 Iter:  68/97 Loss:0.530554(0.513413) LR:1.9836e-04 DataTime:0.21 InferTime:27.13ms Time cost: 05:49/1:20:51
+2025-10-25 21:07:28,981   INFO  Training Epoch: 7/100 Iter:  21/97 Loss:0.313443(0.716135) LR:1.9805e-04 DataTime:0.20 InferTime:26.80ms Time cost: 06:06/1:18:18
+2025-10-25 21:07:45,842   INFO  Training Epoch: 7/100 Iter:  71/97 Loss:0.236146(0.644842) LR:1.9772e-04 DataTime:0.23 InferTime:27.09ms Time cost: 06:22/1:16:02
+2025-10-25 21:08:02,693   INFO  Training Epoch: 8/100 Iter:  24/97 Loss:0.379804(0.495486) LR:1.9736e-04 DataTime:0.20 InferTime:26.55ms Time cost: 06:39/1:14:01
+2025-10-25 21:08:19,623   INFO  Training Epoch: 8/100 Iter:  74/97 Loss:0.679335(0.516738) LR:1.9697e-04 DataTime:0.22 InferTime:26.93ms Time cost: 06:56/1:12:12
+2025-10-25 21:08:36,773   INFO  Training Epoch: 9/100 Iter:  27/97 Loss:0.331154(0.469429) LR:1.9656e-04 DataTime:0.22 InferTime:26.53ms Time cost: 07:13/1:10:36
+2025-10-25 21:08:53,542   INFO  Training Epoch: 9/100 Iter:  77/97 Loss:0.445291(0.526713) LR:1.9612e-04 DataTime:0.21 InferTime:26.77ms Time cost: 07:30/1:09:05
+2025-10-25 21:09:10,467   INFO  Training Epoch:10/100 Iter:  30/97 Loss:0.650212(0.462185) LR:1.9566e-04 DataTime:0.21 InferTime:26.78ms Time cost: 07:47/1:07:42
+2025-10-25 21:09:27,404   INFO  Training Epoch:10/100 Iter:  80/97 Loss:0.316825(0.517258) LR:1.9517e-04 DataTime:0.23 InferTime:26.80ms Time cost: 08:04/1:06:26
+2025-10-25 21:09:32,947   INFO  Evaluating Epoch:10 Iter:   0/14 InferTime: 17.81ms
+2025-10-25 21:09:34,183   INFO  Epoch 10 metrics: {'d1_all': tensor(2.0634), 'epe': tensor(0.6608), 'thres_1': tensor(13.1533), 'thres_2': tensor(4.6612), 'thres_3': tensor(2.5128)}
+2025-10-25 21:09:45,530   INFO  Training Epoch:11/100 Iter:  33/97 Loss:0.392440(0.473544) LR:1.9465e-04 DataTime:0.19 InferTime:26.89ms Time cost: 08:22/1:05:25
+2025-10-25 21:10:02,556   INFO  Training Epoch:11/100 Iter:  83/97 Loss:0.603347(0.532602) LR:1.9411e-04 DataTime:0.21 InferTime:26.95ms Time cost: 08:39/1:04:19
+2025-10-25 21:10:19,415   INFO  Training Epoch:12/100 Iter:  36/97 Loss:0.764716(0.480342) LR:1.9355e-04 DataTime:0.23 InferTime:26.93ms Time cost: 08:56/1:03:16
+2025-10-25 21:10:36,321   INFO  Training Epoch:12/100 Iter:  86/97 Loss:0.337142(0.492266) LR:1.9296e-04 DataTime:0.23 InferTime:26.91ms Time cost: 09:13/1:02:17
+2025-10-25 21:10:53,338   INFO  Training Epoch:13/100 Iter:  39/97 Loss:0.427735(0.669639) LR:1.9234e-04 DataTime:0.20 InferTime:26.93ms Time cost: 09:30/1:01:22
+2025-10-25 21:11:10,338   INFO  Training Epoch:13/100 Iter:  89/97 Loss:1.10024(0.590033) LR:1.9170e-04 DataTime:0.21 InferTime:26.87ms Time cost: 09:47/1:00:29
+2025-10-25 21:11:27,272   INFO  Training Epoch:14/100 Iter:  42/97 Loss:0.359720(0.492262) LR:1.9104e-04 DataTime:0.21 InferTime:26.74ms Time cost: 10:04/59:39
+2025-10-25 21:11:44,123   INFO  Training Epoch:14/100 Iter:  92/97 Loss:0.818291(0.480909) LR:1.9035e-04 DataTime:0.22 InferTime:26.69ms Time cost: 10:21/58:51
+2025-10-25 21:12:01,263   INFO  Training Epoch:15/100 Iter:  45/97 Loss:0.511862(0.556685) LR:1.8964e-04 DataTime:0.20 InferTime:26.88ms Time cost: 10:38/58:06
+2025-10-25 21:12:18,204   INFO  Training Epoch:15/100 Iter:  95/97 Loss:0.499554(0.529902) LR:1.8890e-04 DataTime:0.21 InferTime:26.76ms Time cost: 10:55/57:22
+2025-10-25 21:12:35,083   INFO  Training Epoch:16/100 Iter:  48/97 Loss:0.468110(0.558832) LR:1.8814e-04 DataTime:0.20 InferTime:26.57ms Time cost: 11:12/56:40
+2025-10-25 21:12:52,105   INFO  Training Epoch:17/100 Iter:   1/97 Loss:0.290040(0.451818) LR:1.8735e-04 DataTime:0.21 InferTime:26.90ms Time cost: 11:29/55:59
+2025-10-25 21:13:09,028   INFO  Training Epoch:17/100 Iter:  51/97 Loss:0.342443(0.560986) LR:1.8655e-04 DataTime:0.22 InferTime:26.90ms Time cost: 11:46/55:20
+2025-10-25 21:13:25,941   INFO  Training Epoch:18/100 Iter:   4/97 Loss:0.869782(0.457583) LR:1.8571e-04 DataTime:0.21 InferTime:26.89ms Time cost: 12:02/54:42
+2025-10-25 21:13:43,060   INFO  Training Epoch:18/100 Iter:  54/97 Loss:0.452709(0.587393) LR:1.8486e-04 DataTime:0.23 InferTime:26.83ms Time cost: 12:20/54:06
+2025-10-25 21:14:00,049   INFO  Training Epoch:19/100 Iter:   7/97 Loss:0.389123(0.632079) LR:1.8398e-04 DataTime:0.19 InferTime:27.26ms Time cost: 12:37/53:30
+2025-10-25 21:14:17,126   INFO  Training Epoch:19/100 Iter:  57/97 Loss:0.480715(0.480499) LR:1.8308e-04 DataTime:0.22 InferTime:27.01ms Time cost: 12:54/52:56
+2025-10-25 21:14:33,959   INFO  Training Epoch:20/100 Iter:  10/97 Loss:0.892851(0.472816) LR:1.8216e-04 DataTime:0.20 InferTime:26.61ms Time cost: 13:11/52:21
+2025-10-25 21:14:50,941   INFO  Training Epoch:20/100 Iter:  60/97 Loss:0.356384(0.459802) LR:1.8122e-04 DataTime:0.21 InferTime:26.77ms Time cost: 13:27/51:48
+2025-10-25 21:15:03,560   INFO  Evaluating Epoch:20 Iter:   0/14 InferTime: 17.86ms
+2025-10-25 21:15:04,785   INFO  Epoch 20 metrics: {'d1_all': tensor(1.9106), 'epe': tensor(0.6384), 'thres_1': tensor(12.9113), 'thres_2': tensor(4.5660), 'thres_3': tensor(2.3918)}
+2025-10-25 21:15:09,528   INFO  Training Epoch:21/100 Iter:  13/97 Loss:0.788598(1.39042) LR:1.8025e-04 DataTime:0.21 InferTime:26.82ms Time cost: 13:46/51:22
+2025-10-25 21:15:26,589   INFO  Training Epoch:21/100 Iter:  63/97 Loss:0.352865(0.667857) LR:1.7927e-04 DataTime:0.22 InferTime:27.10ms Time cost: 14:03/50:51
+2025-10-25 21:15:43,486   INFO  Training Epoch:22/100 Iter:  16/97 Loss:0.285137(0.521407) LR:1.7826e-04 DataTime:0.18 InferTime:26.95ms Time cost: 14:20/50:20
+2025-10-25 21:16:00,362   INFO  Training Epoch:22/100 Iter:  66/97 Loss:0.700945(0.447520) LR:1.7723e-04 DataTime:0.21 InferTime:26.64ms Time cost: 14:37/49:49
+2025-10-25 21:16:17,153   INFO  Training Epoch:23/100 Iter:  19/97 Loss:0.198500(0.363496) LR:1.7618e-04 DataTime:0.23 InferTime:26.93ms Time cost: 14:54/49:19
+2025-10-25 21:16:34,065   INFO  Training Epoch:23/100 Iter:  69/97 Loss:1.36517(0.456131) LR:1.7511e-04 DataTime:0.21 InferTime:26.57ms Time cost: 15:11/48:49
+2025-10-25 21:16:51,192   INFO  Training Epoch:24/100 Iter:  22/97 Loss:0.570625(0.421808) LR:1.7402e-04 DataTime:0.22 InferTime:26.62ms Time cost: 15:28/48:21
+2025-10-25 21:17:08,261   INFO  Training Epoch:24/100 Iter:  72/97 Loss:0.296568(0.460550) LR:1.7291e-04 DataTime:0.22 InferTime:26.84ms Time cost: 15:45/47:53
+2025-10-25 21:17:25,216   INFO  Training Epoch:25/100 Iter:  25/97 Loss:0.524020(0.601327) LR:1.7178e-04 DataTime:0.21 InferTime:26.69ms Time cost: 16:02/47:25
+2025-10-25 21:17:42,149   INFO  Training Epoch:25/100 Iter:  75/97 Loss:0.340596(0.599356) LR:1.7064e-04 DataTime:0.22 InferTime:26.72ms Time cost: 16:19/46:58
+2025-10-25 21:17:59,116   INFO  Training Epoch:26/100 Iter:  28/97 Loss:0.482016(0.454627) LR:1.6947e-04 DataTime:0.21 InferTime:26.72ms Time cost: 16:36/46:31
+2025-10-25 21:18:16,148   INFO  Training Epoch:26/100 Iter:  78/97 Loss:0.312895(0.475450) LR:1.6828e-04 DataTime:0.21 InferTime:27.42ms Time cost: 16:53/46:05
+2025-10-25 21:18:33,156   INFO  Training Epoch:27/100 Iter:  31/97 Loss:0.944960(0.515141) LR:1.6708e-04 DataTime:0.19 InferTime:26.85ms Time cost: 17:10/45:39
+2025-10-25 21:18:50,268   INFO  Training Epoch:27/100 Iter:  81/97 Loss:0.393054(0.481624) LR:1.6586e-04 DataTime:0.22 InferTime:29.32ms Time cost: 17:27/45:13
+2025-10-25 21:19:07,129   INFO  Training Epoch:28/100 Iter:  34/97 Loss:0.318070(0.467931) LR:1.6462e-04 DataTime:0.22 InferTime:26.74ms Time cost: 17:44/44:48
+2025-10-25 21:19:24,136   INFO  Training Epoch:28/100 Iter:  84/97 Loss:0.591028(0.498772) LR:1.6336e-04 DataTime:0.17 InferTime:27.10ms Time cost: 18:01/44:23
+2025-10-25 21:19:41,219   INFO  Training Epoch:29/100 Iter:  37/97 Loss:0.566095(0.398105) LR:1.6209e-04 DataTime:0.21 InferTime:26.70ms Time cost: 18:18/43:58
+2025-10-25 21:19:58,185   INFO  Training Epoch:29/100 Iter:  87/97 Loss:0.479032(0.470960) LR:1.6080e-04 DataTime:0.22 InferTime:26.91ms Time cost: 18:35/43:33
+2025-10-25 21:20:15,197   INFO  Training Epoch:30/100 Iter:  40/97 Loss:0.717523(0.452259) LR:1.5949e-04 DataTime:0.18 InferTime:26.84ms Time cost: 18:52/43:09
+2025-10-25 21:20:32,304   INFO  Training Epoch:30/100 Iter:  90/97 Loss:0.387025(0.466641) LR:1.5817e-04 DataTime:0.22 InferTime:26.85ms Time cost: 19:09/42:45
+2025-10-25 21:20:34,500   INFO  Evaluating Epoch:30 Iter:   0/14 InferTime: 17.74ms
+2025-10-25 21:20:35,740   INFO  Epoch 30 metrics: {'d1_all': tensor(1.9790), 'epe': tensor(0.6285), 'thres_1': tensor(12.8467), 'thres_2': tensor(4.4997), 'thres_3': tensor(2.4169)}
+2025-10-25 21:20:50,610   INFO  Training Epoch:31/100 Iter:  43/97 Loss:0.249728(0.476392) LR:1.5683e-04 DataTime:0.19 InferTime:27.04ms Time cost: 19:27/42:24
+2025-10-25 21:21:07,477   INFO  Training Epoch:31/100 Iter:  93/97 Loss:0.367037(0.474419) LR:1.5547e-04 DataTime:0.21 InferTime:26.70ms Time cost: 19:44/42:00
+2025-10-25 21:21:24,498   INFO  Training Epoch:32/100 Iter:  46/97 Loss:0.356512(0.600243) LR:1.5411e-04 DataTime:0.22 InferTime:26.61ms Time cost: 20:01/41:37
+2025-10-25 21:21:41,562   INFO  Training Epoch:32/100 Iter:  96/97 Loss:0.400372(0.516912) LR:1.5272e-04 DataTime:0.22 InferTime:27.33ms Time cost: 20:18/41:14
+2025-10-25 21:21:58,560   INFO  Training Epoch:33/100 Iter:  49/97 Loss:0.311078(0.459101) LR:1.5133e-04 DataTime:0.20 InferTime:26.60ms Time cost: 20:35/40:51
+2025-10-25 21:22:15,659   INFO  Training Epoch:34/100 Iter:   2/97 Loss:0.612645(0.680192) LR:1.4992e-04 DataTime:0.21 InferTime:26.87ms Time cost: 20:52/40:28
+2025-10-25 21:22:32,737   INFO  Training Epoch:34/100 Iter:  52/97 Loss:0.572964(0.470159) LR:1.4849e-04 DataTime:0.21 InferTime:26.65ms Time cost: 21:09/40:05
+2025-10-25 21:22:49,832   INFO  Training Epoch:35/100 Iter:   5/97 Loss:0.266450(0.445579) LR:1.4705e-04 DataTime:0.21 InferTime:26.85ms Time cost: 21:26/39:43
+2025-10-25 21:23:06,802   INFO  Training Epoch:35/100 Iter:  55/97 Loss:0.370014(0.495560) LR:1.4560e-04 DataTime:0.21 InferTime:26.55ms Time cost: 21:43/39:20
+2025-10-25 21:23:23,772   INFO  Training Epoch:36/100 Iter:   8/97 Loss:0.288834(0.558989) LR:1.4414e-04 DataTime:0.22 InferTime:26.87ms Time cost: 22:00/38:58
+2025-10-25 21:23:40,894   INFO  Training Epoch:36/100 Iter:  58/97 Loss:0.260942(0.537058) LR:1.4267e-04 DataTime:0.20 InferTime:26.73ms Time cost: 22:17/38:36
+2025-10-25 21:23:57,933   INFO  Training Epoch:37/100 Iter:  11/97 Loss:0.266377(0.463438) LR:1.4118e-04 DataTime:0.20 InferTime:27.11ms Time cost: 22:34/38:14
+2025-10-25 21:24:15,149   INFO  Training Epoch:37/100 Iter:  61/97 Loss:0.206416(0.527911) LR:1.3969e-04 DataTime:0.19 InferTime:27.43ms Time cost: 22:52/37:53
+2025-10-25 21:24:32,243   INFO  Training Epoch:38/100 Iter:  14/97 Loss:0.249352(0.372355) LR:1.3818e-04 DataTime:0.18 InferTime:27.27ms Time cost: 23:09/37:31
+2025-10-25 21:24:49,403   INFO  Training Epoch:38/100 Iter:  64/97 Loss:0.257788(0.450440) LR:1.3666e-04 DataTime:0.20 InferTime:27.01ms Time cost: 23:26/37:10
+2025-10-25 21:25:06,564   INFO  Training Epoch:39/100 Iter:  17/97 Loss:0.461287(0.451379) LR:1.3514e-04 DataTime:0.20 InferTime:26.87ms Time cost: 23:43/36:49
+2025-10-25 21:25:23,675   INFO  Training Epoch:39/100 Iter:  67/97 Loss:0.266381(0.411979) LR:1.3360e-04 DataTime:0.21 InferTime:26.61ms Time cost: 24:00/36:28
+2025-10-25 21:25:40,636   INFO  Training Epoch:40/100 Iter:  20/97 Loss:0.463307(0.490868) LR:1.3206e-04 DataTime:0.21 InferTime:26.54ms Time cost: 24:17/36:06
+2025-10-25 21:25:57,712   INFO  Training Epoch:40/100 Iter:  70/97 Loss:0.309081(0.477583) LR:1.3050e-04 DataTime:0.22 InferTime:26.74ms Time cost: 24:34/35:45
+2025-10-25 21:26:07,048   INFO  Evaluating Epoch:40 Iter:   0/14 InferTime: 17.59ms
+2025-10-25 21:26:08,279   INFO  Epoch 40 metrics: {'d1_all': tensor(1.8605), 'epe': tensor(0.6268), 'thres_1': tensor(12.1692), 'thres_2': tensor(4.4999), 'thres_3': tensor(2.3652)}
+2025-10-25 21:26:16,313   INFO  Training Epoch:41/100 Iter:  23/97 Loss:0.310646(0.428635) LR:1.2894e-04 DataTime:0.22 InferTime:31.55ms Time cost: 24:53/35:27
+2025-10-25 21:26:33,366   INFO  Training Epoch:41/100 Iter:  73/97 Loss:0.389388(0.469804) LR:1.2737e-04 DataTime:0.19 InferTime:26.93ms Time cost: 25:10/35:06
+2025-10-25 21:26:50,505   INFO  Training Epoch:42/100 Iter:  26/97 Loss:0.621557(0.439567) LR:1.2580e-04 DataTime:0.21 InferTime:26.77ms Time cost: 25:27/34:45
+2025-10-25 21:27:07,614   INFO  Training Epoch:42/100 Iter:  76/97 Loss:0.269296(0.460117) LR:1.2421e-04 DataTime:0.23 InferTime:27.10ms Time cost: 25:44/34:24
+2025-10-25 21:27:24,543   INFO  Training Epoch:43/100 Iter:  29/97 Loss:0.351119(0.482108) LR:1.2262e-04 DataTime:0.20 InferTime:26.63ms Time cost: 26:01/34:04
+2025-10-25 21:27:41,593   INFO  Training Epoch:43/100 Iter:  79/97 Loss:0.333693(0.420170) LR:1.2103e-04 DataTime:0.21 InferTime:26.82ms Time cost: 26:18/33:43
+2025-10-25 21:27:58,597   INFO  Training Epoch:44/100 Iter:  32/97 Loss:0.420934(0.387274) LR:1.1942e-04 DataTime:0.20 InferTime:27.19ms Time cost: 26:35/33:22
+2025-10-25 21:28:15,773   INFO  Training Epoch:44/100 Iter:  82/97 Loss:0.632322(0.399866) LR:1.1782e-04 DataTime:0.21 InferTime:26.93ms Time cost: 26:52/33:02
+2025-10-25 21:28:32,999   INFO  Training Epoch:45/100 Iter:  35/97 Loss:0.546394(0.451689) LR:1.1620e-04 DataTime:0.21 InferTime:27.17ms Time cost: 27:10/32:42
+2025-10-25 21:28:50,069   INFO  Training Epoch:45/100 Iter:  85/97 Loss:0.723806(0.416685) LR:1.1459e-04 DataTime:0.23 InferTime:27.11ms Time cost: 27:27/32:22
+2025-10-25 21:29:07,148   INFO  Training Epoch:46/100 Iter:  38/97 Loss:0.305491(0.362258) LR:1.1297e-04 DataTime:0.23 InferTime:27.06ms Time cost: 27:44/32:02
+2025-10-25 21:29:24,137   INFO  Training Epoch:46/100 Iter:  88/97 Loss:0.316234(0.400022) LR:1.1134e-04 DataTime:0.18 InferTime:26.78ms Time cost: 28:01/31:42
+2025-10-25 21:29:41,117   INFO  Training Epoch:47/100 Iter:  41/97 Loss:0.549398(0.481144) LR:1.0972e-04 DataTime:0.21 InferTime:26.94ms Time cost: 28:18/31:21
+2025-10-25 21:29:58,133   INFO  Training Epoch:47/100 Iter:  91/97 Loss:0.452454(0.459055) LR:1.0809e-04 DataTime:0.23 InferTime:26.83ms Time cost: 28:35/31:01
+2025-10-25 21:30:15,218   INFO  Training Epoch:48/100 Iter:  44/97 Loss:0.197580(0.368651) LR:1.0646e-04 DataTime:0.21 InferTime:27.11ms Time cost: 28:52/30:42
+2025-10-25 21:30:32,308   INFO  Training Epoch:48/100 Iter:  94/97 Loss:0.188005(0.386679) LR:1.0482e-04 DataTime:0.22 InferTime:27.36ms Time cost: 29:09/30:22
+2025-10-25 21:30:49,364   INFO  Training Epoch:49/100 Iter:  47/97 Loss:0.359041(0.414129) LR:1.0319e-04 DataTime:0.21 InferTime:26.83ms Time cost: 29:26/30:02
+2025-10-25 21:31:06,465   INFO  Training Epoch:50/100 Iter:   0/97 Loss:0.293349(0.293349) LR:1.0155e-04 DataTime:0.20 InferTime:26.95ms Time cost: 29:43/29:42
+2025-10-25 21:31:23,496   INFO  Training Epoch:50/100 Iter:  50/97 Loss:0.295285(0.469014) LR:9.9919e-05 DataTime:0.23 InferTime:26.67ms Time cost: 30:00/29:23
+2025-10-25 21:31:39,128   INFO  Evaluating Epoch:50 Iter:   0/14 InferTime: 17.54ms
+2025-10-25 21:31:40,387   INFO  Epoch 50 metrics: {'d1_all': tensor(1.8248), 'epe': tensor(0.6148), 'thres_1': tensor(12.4296), 'thres_2': tensor(4.2203), 'thres_3': tensor(2.2248)}
+2025-10-25 21:31:41,723   INFO  Training Epoch:51/100 Iter:   3/97 Loss:0.796964(1.34842) LR:9.8283e-05 DataTime:0.21 InferTime:26.83ms Time cost: 30:18/29:04
+2025-10-25 21:31:58,903   INFO  Training Epoch:51/100 Iter:  53/97 Loss:0.187708(0.612918) LR:9.6648e-05 DataTime:0.20 InferTime:26.87ms Time cost: 30:35/28:45
+2025-10-25 21:32:15,823   INFO  Training Epoch:52/100 Iter:   6/97 Loss:0.438482(0.413211) LR:9.5013e-05 DataTime:0.21 InferTime:26.73ms Time cost: 30:52/28:25
+2025-10-25 21:32:32,782   INFO  Training Epoch:52/100 Iter:  56/97 Loss:0.328011(0.412926) LR:9.3381e-05 DataTime:0.22 InferTime:26.81ms Time cost: 31:09/28:05
+2025-10-25 21:32:49,699   INFO  Training Epoch:53/100 Iter:   9/97 Loss:0.868213(0.401787) LR:9.1749e-05 DataTime:0.21 InferTime:26.54ms Time cost: 31:26/27:46
+2025-10-25 21:33:06,969   INFO  Training Epoch:53/100 Iter:  59/97 Loss:0.967886(0.400414) LR:9.0120e-05 DataTime:0.23 InferTime:26.79ms Time cost: 31:44/27:27
+2025-10-25 21:33:24,111   INFO  Training Epoch:54/100 Iter:  12/97 Loss:0.296186(0.364971) LR:8.8494e-05 DataTime:0.24 InferTime:27.10ms Time cost: 32:01/27:07
+2025-10-25 21:33:41,274   INFO  Training Epoch:54/100 Iter:  62/97 Loss:0.233633(0.403808) LR:8.6871e-05 DataTime:0.20 InferTime:27.05ms Time cost: 32:18/26:48
+2025-10-25 21:33:58,602   INFO  Training Epoch:55/100 Iter:  15/97 Loss:0.338905(0.391175) LR:8.5251e-05 DataTime:0.22 InferTime:27.17ms Time cost: 32:35/26:29
+2025-10-25 21:34:15,733   INFO  Training Epoch:55/100 Iter:  65/97 Loss:0.225545(0.414772) LR:8.3635e-05 DataTime:0.22 InferTime:26.89ms Time cost: 32:52/26:10
+2025-10-25 21:34:33,036   INFO  Training Epoch:56/100 Iter:  18/97 Loss:0.182008(0.415306) LR:8.2024e-05 DataTime:0.22 InferTime:26.70ms Time cost: 33:10/25:51
+2025-10-25 21:34:50,234   INFO  Training Epoch:56/100 Iter:  68/97 Loss:0.299740(0.428086) LR:8.0417e-05 DataTime:0.21 InferTime:26.65ms Time cost: 33:27/25:32
+2025-10-25 21:35:07,495   INFO  Training Epoch:57/100 Iter:  21/97 Loss:0.575151(0.392993) LR:7.8816e-05 DataTime:0.23 InferTime:27.06ms Time cost: 33:44/25:13
+2025-10-25 21:35:24,570   INFO  Training Epoch:57/100 Iter:  71/97 Loss:0.272898(0.416834) LR:7.7220e-05 DataTime:0.22 InferTime:26.61ms Time cost: 34:01/24:54
+2025-10-25 21:35:41,782   INFO  Training Epoch:58/100 Iter:  24/97 Loss:0.272555(0.505065) LR:7.5631e-05 DataTime:0.23 InferTime:26.74ms Time cost: 34:18/24:35
+2025-10-25 21:35:59,017   INFO  Training Epoch:58/100 Iter:  74/97 Loss:0.245189(0.449715) LR:7.4048e-05 DataTime:0.21 InferTime:26.89ms Time cost: 34:36/24:16
+2025-10-25 21:36:16,159   INFO  Training Epoch:59/100 Iter:  27/97 Loss:0.243226(0.348674) LR:7.2471e-05 DataTime:0.20 InferTime:27.10ms Time cost: 34:53/23:57
+2025-10-25 21:36:33,124   INFO  Training Epoch:59/100 Iter:  77/97 Loss:0.439569(0.415140) LR:7.0903e-05 DataTime:0.19 InferTime:27.21ms Time cost: 35:10/23:38
+2025-10-25 21:36:50,357   INFO  Training Epoch:60/100 Iter:  30/97 Loss:0.416004(0.440357) LR:6.9342e-05 DataTime:0.21 InferTime:27.10ms Time cost: 35:27/23:19
+2025-10-25 21:37:07,439   INFO  Training Epoch:60/100 Iter:  80/97 Loss:0.521810(0.410250) LR:6.7789e-05 DataTime:0.20 InferTime:26.89ms Time cost: 35:44/23:00
+2025-10-25 21:37:13,488   INFO  Evaluating Epoch:60 Iter:   0/14 InferTime: 18.30ms
+2025-10-25 21:37:14,741   INFO  Epoch 60 metrics: {'d1_all': tensor(1.7626), 'epe': tensor(0.6047), 'thres_1': tensor(12.0832), 'thres_2': tensor(4.2040), 'thres_3': tensor(2.1823)}
+2025-10-25 21:37:26,324   INFO  Training Epoch:61/100 Iter:  33/97 Loss:0.715250(0.406343) LR:6.6245e-05 DataTime:0.21 InferTime:26.68ms Time cost: 36:03/22:42
+2025-10-25 21:37:43,501   INFO  Training Epoch:61/100 Iter:  83/97 Loss:0.673287(0.406266) LR:6.4710e-05 DataTime:0.22 InferTime:26.89ms Time cost: 36:20/22:24
+2025-10-25 21:38:00,698   INFO  Training Epoch:62/100 Iter:  36/97 Loss:0.205817(0.390882) LR:6.3184e-05 DataTime:0.23 InferTime:26.94ms Time cost: 36:37/22:05
+2025-10-25 21:38:17,847   INFO  Training Epoch:62/100 Iter:  86/97 Loss:0.743747(0.417335) LR:6.1668e-05 DataTime:0.22 InferTime:26.77ms Time cost: 36:54/21:46
+2025-10-25 21:38:34,969   INFO  Training Epoch:63/100 Iter:  39/97 Loss:0.200909(0.563859) LR:6.0162e-05 DataTime:0.19 InferTime:26.56ms Time cost: 37:12/21:27
+2025-10-25 21:38:52,205   INFO  Training Epoch:63/100 Iter:  89/97 Loss:0.202045(0.454871) LR:5.8667e-05 DataTime:0.22 InferTime:26.69ms Time cost: 37:29/21:09
+2025-10-25 21:39:09,410   INFO  Training Epoch:64/100 Iter:  42/97 Loss:0.251931(0.361148) LR:5.7184e-05 DataTime:0.22 InferTime:26.57ms Time cost: 37:46/20:50
+2025-10-25 21:39:26,497   INFO  Training Epoch:64/100 Iter:  92/97 Loss:0.286021(0.407559) LR:5.5711e-05 DataTime:0.18 InferTime:26.99ms Time cost: 38:03/20:31
+2025-10-25 21:39:43,801   INFO  Training Epoch:65/100 Iter:  45/97 Loss:0.317116(0.409341) LR:5.4251e-05 DataTime:0.20 InferTime:27.22ms Time cost: 38:20/20:13
+2025-10-25 21:40:00,852   INFO  Training Epoch:65/100 Iter:  95/97 Loss:0.187590(0.393714) LR:5.2802e-05 DataTime:0.22 InferTime:26.83ms Time cost: 38:37/19:54
+2025-10-25 21:40:17,890   INFO  Training Epoch:66/100 Iter:  48/97 Loss:0.303825(0.403901) LR:5.1367e-05 DataTime:0.23 InferTime:26.82ms Time cost: 38:54/19:35
+2025-10-25 21:40:34,932   INFO  Training Epoch:67/100 Iter:   1/97 Loss:0.408538(0.479803) LR:4.9944e-05 DataTime:0.20 InferTime:26.71ms Time cost: 39:11/19:17
+2025-10-25 21:40:52,246   INFO  Training Epoch:67/100 Iter:  51/97 Loss:0.300076(0.396265) LR:4.8535e-05 DataTime:0.22 InferTime:27.08ms Time cost: 39:29/18:58
+2025-10-25 21:41:09,460   INFO  Training Epoch:68/100 Iter:   4/97 Loss:0.488509(0.643222) LR:4.7139e-05 DataTime:0.21 InferTime:26.97ms Time cost: 39:46/18:40
+2025-10-25 21:41:26,635   INFO  Training Epoch:68/100 Iter:  54/97 Loss:0.201869(0.428597) LR:4.5758e-05 DataTime:0.22 InferTime:26.72ms Time cost: 40:03/18:21
+2025-10-25 21:41:43,868   INFO  Training Epoch:69/100 Iter:   7/97 Loss:0.252858(0.295321) LR:4.4391e-05 DataTime:0.21 InferTime:26.88ms Time cost: 40:20/18:03
+2025-10-25 21:42:01,043   INFO  Training Epoch:69/100 Iter:  57/97 Loss:0.569949(0.363582) LR:4.3039e-05 DataTime:0.20 InferTime:26.87ms Time cost: 40:38/17:45
+2025-10-25 21:42:18,283   INFO  Training Epoch:70/100 Iter:  10/97 Loss:1.87133(0.516468) LR:4.1702e-05 DataTime:0.21 InferTime:26.65ms Time cost: 40:55/17:26
+2025-10-25 21:42:35,462   INFO  Training Epoch:70/100 Iter:  60/97 Loss:0.421083(0.471927) LR:4.0381e-05 DataTime:0.22 InferTime:26.58ms Time cost: 41:12/17:08
+2025-10-25 21:42:47,954   INFO  Evaluating Epoch:70 Iter:   0/14 InferTime: 17.50ms
+2025-10-25 21:42:49,210   INFO  Epoch 70 metrics: {'d1_all': tensor(1.7321), 'epe': tensor(0.6012), 'thres_1': tensor(11.9330), 'thres_2': tensor(4.2213), 'thres_3': tensor(2.1315)}
+2025-10-25 21:42:53,929   INFO  Training Epoch:71/100 Iter:  13/97 Loss:0.175636(0.319694) LR:3.9076e-05 DataTime:0.20 InferTime:26.58ms Time cost: 41:30/16:50
+2025-10-25 21:43:10,943   INFO  Training Epoch:71/100 Iter:  63/97 Loss:0.362092(0.351470) LR:3.7787e-05 DataTime:0.22 InferTime:26.54ms Time cost: 41:47/16:31
+2025-10-25 21:43:28,143   INFO  Training Epoch:72/100 Iter:  16/97 Loss:0.181071(0.332746) LR:3.6515e-05 DataTime:0.22 InferTime:26.64ms Time cost: 42:05/16:13
+2025-10-25 21:43:45,227   INFO  Training Epoch:72/100 Iter:  66/97 Loss:0.567601(0.420545) LR:3.5259e-05 DataTime:0.20 InferTime:27.13ms Time cost: 42:22/15:55
+2025-10-25 21:44:02,352   INFO  Training Epoch:73/100 Iter:  19/97 Loss:0.330770(0.374731) LR:3.4022e-05 DataTime:0.21 InferTime:26.70ms Time cost: 42:39/15:36
+2025-10-25 21:44:19,590   INFO  Training Epoch:73/100 Iter:  69/97 Loss:0.188579(0.392626) LR:3.2801e-05 DataTime:0.20 InferTime:26.76ms Time cost: 42:56/15:18
+2025-10-25 21:44:36,868   INFO  Training Epoch:74/100 Iter:  22/97 Loss:0.212968(0.338948) LR:3.1599e-05 DataTime:0.20 InferTime:27.02ms Time cost: 43:13/15:00
+2025-10-25 21:44:53,890   INFO  Training Epoch:74/100 Iter:  72/97 Loss:0.298727(0.363028) LR:3.0415e-05 DataTime:0.20 InferTime:26.66ms Time cost: 43:30/14:41
+2025-10-25 21:45:11,109   INFO  Training Epoch:75/100 Iter:  25/97 Loss:0.316702(0.477859) LR:2.9250e-05 DataTime:0.21 InferTime:26.68ms Time cost: 43:48/14:23
+2025-10-25 21:45:28,182   INFO  Training Epoch:75/100 Iter:  75/97 Loss:0.288653(0.409906) LR:2.8103e-05 DataTime:0.21 InferTime:26.94ms Time cost: 44:05/14:05
+2025-10-25 21:45:45,496   INFO  Training Epoch:76/100 Iter:  28/97 Loss:0.429584(0.453180) LR:2.6976e-05 DataTime:0.24 InferTime:27.06ms Time cost: 44:22/13:47
+2025-10-25 21:46:02,775   INFO  Training Epoch:76/100 Iter:  78/97 Loss:0.234263(0.398441) LR:2.5868e-05 DataTime:0.23 InferTime:26.92ms Time cost: 44:39/13:28
+2025-10-25 21:46:20,268   INFO  Training Epoch:77/100 Iter:  31/97 Loss:0.122618(0.377853) LR:2.4780e-05 DataTime:0.20 InferTime:26.84ms Time cost: 44:57/13:10
+2025-10-25 21:46:37,406   INFO  Training Epoch:77/100 Iter:  81/97 Loss:1.16546(0.405132) LR:2.3713e-05 DataTime:0.22 InferTime:27.29ms Time cost: 45:14/12:52
+2025-10-25 21:46:54,547   INFO  Training Epoch:78/100 Iter:  34/97 Loss:0.370501(0.381635) LR:2.2665e-05 DataTime:0.20 InferTime:27.14ms Time cost: 45:31/12:34
+2025-10-25 21:47:11,722   INFO  Training Epoch:78/100 Iter:  84/97 Loss:0.347050(0.375854) LR:2.1639e-05 DataTime:0.20 InferTime:27.14ms Time cost: 45:48/12:16
+2025-10-25 21:47:28,950   INFO  Training Epoch:79/100 Iter:  37/97 Loss:0.187932(0.401412) LR:2.0633e-05 DataTime:0.20 InferTime:26.81ms Time cost: 46:06/11:57
+2025-10-25 21:47:45,989   INFO  Training Epoch:79/100 Iter:  87/97 Loss:0.409407(0.392783) LR:1.9649e-05 DataTime:0.19 InferTime:27.05ms Time cost: 46:23/11:39
+2025-10-25 21:48:03,269   INFO  Training Epoch:80/100 Iter:  40/97 Loss:0.157512(0.473139) LR:1.8686e-05 DataTime:0.21 InferTime:26.58ms Time cost: 46:40/11:21
+2025-10-25 21:48:20,349   INFO  Training Epoch:80/100 Iter:  90/97 Loss:0.379651(0.423994) LR:1.7745e-05 DataTime:0.22 InferTime:26.93ms Time cost: 46:57/11:03
+2025-10-25 21:48:22,893   INFO  Evaluating Epoch:80 Iter:   0/14 InferTime: 17.58ms
+2025-10-25 21:48:24,145   INFO  Epoch 80 metrics: {'d1_all': tensor(1.7090), 'epe': tensor(0.5866), 'thres_1': tensor(11.3777), 'thres_2': tensor(3.8559), 'thres_3': tensor(2.0527)}
+2025-10-25 21:48:39,084   INFO  Training Epoch:81/100 Iter:  43/97 Loss:0.222011(0.407311) LR:1.6825e-05 DataTime:0.22 InferTime:26.68ms Time cost: 47:16/10:45
+2025-10-25 21:48:56,281   INFO  Training Epoch:81/100 Iter:  93/97 Loss:0.557025(0.379357) LR:1.5928e-05 DataTime:0.20 InferTime:27.09ms Time cost: 47:33/10:27
+2025-10-25 21:49:13,613   INFO  Training Epoch:82/100 Iter:  46/97 Loss:0.277508(0.374059) LR:1.5054e-05 DataTime:0.23 InferTime:26.95ms Time cost: 47:50/10:09
+2025-10-25 21:49:30,582   INFO  Training Epoch:82/100 Iter:  96/97 Loss:0.394229(0.349971) LR:1.4202e-05 DataTime:0.21 InferTime:26.64ms Time cost: 48:07/09:51
+2025-10-25 21:49:47,824   INFO  Training Epoch:83/100 Iter:  49/97 Loss:0.755549(0.446738) LR:1.3374e-05 DataTime:0.21 InferTime:26.83ms Time cost: 48:24/09:33
+2025-10-25 21:50:05,015   INFO  Training Epoch:84/100 Iter:   2/97 Loss:0.450272(0.376396) LR:1.2568e-05 DataTime:0.20 InferTime:26.68ms Time cost: 48:42/09:15
+2025-10-25 21:50:22,163   INFO  Training Epoch:84/100 Iter:  52/97 Loss:0.228939(0.379688) LR:1.1786e-05 DataTime:0.22 InferTime:26.66ms Time cost: 48:59/08:57
+2025-10-25 21:50:39,356   INFO  Training Epoch:85/100 Iter:   5/97 Loss:0.363697(0.455876) LR:1.1027e-05 DataTime:0.19 InferTime:26.89ms Time cost: 49:16/08:39
+2025-10-25 21:50:56,467   INFO  Training Epoch:85/100 Iter:  55/97 Loss:0.230532(0.440658) LR:1.0293e-05 DataTime:0.21 InferTime:26.70ms Time cost: 49:33/08:21
+2025-10-25 21:51:13,687   INFO  Training Epoch:86/100 Iter:   8/97 Loss:0.412316(0.277189) LR:9.5820e-06 DataTime:0.22 InferTime:27.11ms Time cost: 49:50/08:03
+2025-10-25 21:51:30,922   INFO  Training Epoch:86/100 Iter:  58/97 Loss:0.586032(0.364602) LR:8.8954e-06 DataTime:0.22 InferTime:26.88ms Time cost: 50:07/07:45
+2025-10-25 21:51:47,993   INFO  Training Epoch:87/100 Iter:  11/97 Loss:0.459301(0.443870) LR:8.2332e-06 DataTime:0.21 InferTime:26.65ms Time cost: 50:25/07:27
+2025-10-25 21:52:05,166   INFO  Training Epoch:87/100 Iter:  61/97 Loss:0.367253(0.397491) LR:7.5956e-06 DataTime:0.22 InferTime:26.69ms Time cost: 50:42/07:09
+2025-10-25 21:52:22,219   INFO  Training Epoch:88/100 Iter:  14/97 Loss:0.275893(0.358324) LR:6.9827e-06 DataTime:0.21 InferTime:26.74ms Time cost: 50:59/06:51
+2025-10-25 21:52:39,318   INFO  Training Epoch:88/100 Iter:  64/97 Loss:0.221875(0.343670) LR:6.3947e-06 DataTime:0.22 InferTime:26.85ms Time cost: 51:16/06:33
+2025-10-25 21:52:56,444   INFO  Training Epoch:89/100 Iter:  17/97 Loss:0.388247(0.381438) LR:5.8317e-06 DataTime:0.21 InferTime:26.68ms Time cost: 51:33/06:15
+2025-10-25 21:53:13,673   INFO  Training Epoch:89/100 Iter:  67/97 Loss:0.873172(0.406196) LR:5.2940e-06 DataTime:0.23 InferTime:26.68ms Time cost: 51:50/05:57
+2025-10-25 21:53:30,977   INFO  Training Epoch:90/100 Iter:  20/97 Loss:0.507265(0.391759) LR:4.7815e-06 DataTime:0.23 InferTime:26.74ms Time cost: 52:08/05:39
+2025-10-25 21:53:48,210   INFO  Training Epoch:90/100 Iter:  70/97 Loss:0.363751(0.361114) LR:4.2946e-06 DataTime:0.20 InferTime:26.87ms Time cost: 52:25/05:21
+2025-10-25 21:53:57,326   INFO  Evaluating Epoch:90 Iter:   0/14 InferTime: 18.08ms
+2025-10-25 21:53:58,587   INFO  Epoch 90 metrics: {'d1_all': tensor(1.7138), 'epe': tensor(0.5910), 'thres_1': tensor(11.5825), 'thres_2': tensor(3.8909), 'thres_3': tensor(2.0516)}
+2025-10-25 21:54:06,708   INFO  Training Epoch:91/100 Iter:  23/97 Loss:0.668257(0.396046) LR:3.8332e-06 DataTime:0.20 InferTime:27.19ms Time cost: 52:43/05:03
+2025-10-25 21:54:23,876   INFO  Training Epoch:91/100 Iter:  73/97 Loss:0.365688(0.363752) LR:3.3976e-06 DataTime:0.22 InferTime:27.08ms Time cost: 53:00/04:45
+2025-10-25 21:54:41,031   INFO  Training Epoch:92/100 Iter:  26/97 Loss:0.191691(0.362192) LR:2.9879e-06 DataTime:0.19 InferTime:27.15ms Time cost: 53:18/04:27
+2025-10-25 21:54:58,222   INFO  Training Epoch:92/100 Iter:  76/97 Loss:0.226471(0.351634) LR:2.6040e-06 DataTime:0.20 InferTime:26.67ms Time cost: 53:35/04:09
+2025-10-25 21:55:15,310   INFO  Training Epoch:93/100 Iter:  29/97 Loss:1.58330(0.416518) LR:2.2463e-06 DataTime:0.21 InferTime:26.67ms Time cost: 53:52/03:51
+2025-10-25 21:55:32,559   INFO  Training Epoch:93/100 Iter:  79/97 Loss:0.258932(0.353748) LR:1.9147e-06 DataTime:0.22 InferTime:27.01ms Time cost: 54:09/03:33
+2025-10-25 21:55:49,844   INFO  Training Epoch:94/100 Iter:  32/97 Loss:0.324750(0.351648) LR:1.6093e-06 DataTime:0.22 InferTime:27.12ms Time cost: 54:26/03:15
+2025-10-25 21:56:06,921   INFO  Training Epoch:94/100 Iter:  82/97 Loss:0.427751(0.365084) LR:1.3303e-06 DataTime:0.23 InferTime:26.70ms Time cost: 54:43/02:58
+2025-10-25 21:56:24,239   INFO  Training Epoch:95/100 Iter:  35/97 Loss:0.452292(0.447327) LR:1.0777e-06 DataTime:0.23 InferTime:26.98ms Time cost: 55:01/02:40
+2025-10-25 21:56:41,558   INFO  Training Epoch:95/100 Iter:  85/97 Loss:0.180556(0.419563) LR:8.5151e-07 DataTime:0.23 InferTime:26.88ms Time cost: 55:18/02:22
+2025-10-25 21:56:58,802   INFO  Training Epoch:96/100 Iter:  38/97 Loss:0.268271(0.381220) LR:6.5188e-07 DataTime:0.23 InferTime:26.70ms Time cost: 55:35/02:04
+2025-10-25 21:57:15,941   INFO  Training Epoch:96/100 Iter:  88/97 Loss:0.226239(0.351528) LR:4.7882e-07 DataTime:0.21 InferTime:26.95ms Time cost: 55:52/01:46
+2025-10-25 21:57:33,270   INFO  Training Epoch:97/100 Iter:  41/97 Loss:0.328392(0.345350) LR:3.3240e-07 DataTime:0.21 InferTime:29.17ms Time cost: 56:10/01:28
+2025-10-25 21:57:50,565   INFO  Training Epoch:97/100 Iter:  91/97 Loss:0.212253(0.369480) LR:2.1264e-07 DataTime:0.22 InferTime:26.82ms Time cost: 56:27/01:10
+2025-10-25 21:58:07,739   INFO  Training Epoch:98/100 Iter:  44/97 Loss:0.447407(0.391363) LR:1.1958e-07 DataTime:0.22 InferTime:26.72ms Time cost: 56:44/00:53
+2025-10-25 21:58:24,948   INFO  Training Epoch:98/100 Iter:  94/97 Loss:0.616846(0.376195) LR:5.3243e-08 DataTime:0.21 InferTime:26.49ms Time cost: 57:01/00:35
+2025-10-25 21:58:42,208   INFO  Training Epoch:99/100 Iter:  47/97 Loss:0.259420(0.412976) LR:1.3648e-08 DataTime:0.22 InferTime:26.57ms Time cost: 57:19/00:17
+2025-10-25 21:58:59,419   INFO  Evaluating Epoch:99 Iter:   0/14 InferTime: 19.59ms
+2025-10-25 21:59:00,687   INFO  Epoch 99 metrics: {'d1_all': tensor(1.7051), 'epe': tensor(0.5823), 'thres_1': tensor(11.5334), 'thres_2': tensor(3.8139), 'thres_3': tensor(2.0291)}
+2025-10-25 21:59:02,503   INFO  Training Epoch: 0/100 Iter:   0/97 Loss:0.179270(0.179270) LR:8.0000e-06 DataTime:0.23 InferTime:27.31ms Time cost: 57:39/9320:36:41
+2025-10-25 21:59:19,559   INFO  Training Epoch: 0/100 Iter:  50/97 Loss:0.292775(0.376761) LR:1.1028e-04 DataTime:0.22 InferTime:27.09ms Time cost: 57:56/182:42:40
+2025-10-25 21:59:35,506   INFO  Evaluating Epoch: 0 Iter:   0/14 InferTime: 17.54ms
+2025-10-25 21:59:36,729   INFO  Epoch 0 metrics: {'d1_all': tensor(1.7140), 'epe': tensor(0.5947), 'thres_1': tensor(11.6733), 'thres_2': tensor(3.8444), 'thres_3': tensor(2.0426)}
+2025-10-25 21:59:38,061   INFO  Training Epoch: 1/100 Iter:   3/97 Loss:0.221434(0.439929) LR:2.0000e-04 DataTime:0.23 InferTime:26.91ms Time cost: 58:15/92:16:13
+2025-10-25 21:59:54,937   INFO  Training Epoch: 1/100 Iter:  53/97 Loss:0.341473(0.377269) LR:1.9998e-04 DataTime:0.20 InferTime:26.93ms Time cost: 58:31/61:41:32
+2025-10-25 22:00:11,821   INFO  Training Epoch: 2/100 Iter:   6/97 Loss:0.821764(0.424112) LR:1.9994e-04 DataTime:0.22 InferTime:26.80ms Time cost: 58:48/46:19:29
+2025-10-25 22:00:28,722   INFO  Training Epoch: 2/100 Iter:  56/97 Loss:0.365920(0.414214) LR:1.9987e-04 DataTime:0.21 InferTime:26.66ms Time cost: 59:05/37:04:42
+2025-10-25 22:00:45,691   INFO  Training Epoch: 3/100 Iter:   9/97 Loss:0.711109(0.558668) LR:1.9978e-04 DataTime:0.22 InferTime:26.71ms Time cost: 59:22/30:54:09
+2025-10-25 22:01:02,721   INFO  Training Epoch: 3/100 Iter:  59/97 Loss:0.571599(0.480774) LR:1.9965e-04 DataTime:0.21 InferTime:26.69ms Time cost: 59:39/26:29:08
+2025-10-25 22:01:19,816   INFO  Training Epoch: 4/100 Iter:  12/97 Loss:0.405987(0.519704) LR:1.9951e-04 DataTime:0.22 InferTime:27.06ms Time cost: 59:56/23:10:09
+2025-10-25 22:01:36,841   INFO  Training Epoch: 4/100 Iter:  62/97 Loss:0.238604(0.467045) LR:1.9933e-04 DataTime:0.20 InferTime:26.70ms Time cost: 1:00:13/20:35:12
+2025-10-25 22:01:53,860   INFO  Training Epoch: 5/100 Iter:  15/97 Loss:0.231334(0.484901) LR:1.9913e-04 DataTime:0.23 InferTime:26.78ms Time cost: 1:00:30/18:31:08
+2025-10-25 22:02:10,806   INFO  Training Epoch: 5/100 Iter:  65/97 Loss:0.720700(0.513640) LR:1.9890e-04 DataTime:0.21 InferTime:27.14ms Time cost: 1:00:47/16:49:30
+2025-10-25 22:02:27,853   INFO  Training Epoch: 6/100 Iter:  18/97 Loss:0.498129(0.498827) LR:1.9864e-04 DataTime:0.22 InferTime:27.03ms Time cost: 1:01:04/15:24:45
+2025-10-25 22:02:44,852   INFO  Training Epoch: 6/100 Iter:  68/97 Loss:0.290502(0.516328) LR:1.9836e-04 DataTime:0.21 InferTime:27.42ms Time cost: 1:01:21/14:12:59
+2025-10-25 22:03:01,887   INFO  Training Epoch: 7/100 Iter:  21/97 Loss:0.413628(0.520584) LR:1.9805e-04 DataTime:0.22 InferTime:26.84ms Time cost: 1:01:38/13:11:24
+2025-10-25 22:03:18,889   INFO  Training Epoch: 7/100 Iter:  71/97 Loss:0.747317(0.494600) LR:1.9772e-04 DataTime:0.19 InferTime:27.03ms Time cost: 1:01:55/12:17:59
+2025-10-25 22:03:35,930   INFO  Training Epoch: 8/100 Iter:  24/97 Loss:0.260264(0.427659) LR:1.9736e-04 DataTime:0.23 InferTime:27.13ms Time cost: 1:02:12/11:31:12
+2025-10-25 22:03:52,935   INFO  Training Epoch: 8/100 Iter:  74/97 Loss:0.297478(0.439388) LR:1.9697e-04 DataTime:0.22 InferTime:26.72ms Time cost: 1:02:29/10:49:53
+2025-10-25 22:04:09,831   INFO  Training Epoch: 9/100 Iter:  27/97 Loss:0.278968(0.435495) LR:1.9656e-04 DataTime:0.20 InferTime:26.89ms Time cost: 1:02:46/10:13:06
+2025-10-25 22:04:26,766   INFO  Training Epoch: 9/100 Iter:  77/97 Loss:0.310265(0.473384) LR:1.9612e-04 DataTime:0.21 InferTime:26.73ms Time cost: 1:03:03/9:40:10
+2025-10-25 22:04:43,671   INFO  Training Epoch:10/100 Iter:  30/97 Loss:0.434979(0.447658) LR:1.9566e-04 DataTime:0.21 InferTime:26.74ms Time cost: 1:03:20/9:10:29
+2025-10-25 22:05:00,604   INFO  Training Epoch:10/100 Iter:  80/97 Loss:0.304296(0.419555) LR:1.9517e-04 DataTime:0.20 InferTime:27.00ms Time cost: 1:03:37/8:43:36
+2025-10-25 22:05:06,107   INFO  Evaluating Epoch:10 Iter:   0/14 InferTime: 17.65ms
+2025-10-25 22:05:07,353   INFO  Epoch 10 metrics: {'d1_all': tensor(1.9146), 'epe': tensor(0.6313), 'thres_1': tensor(12.8735), 'thres_2': tensor(4.3596), 'thres_3': tensor(2.2970)}
+2025-10-25 22:05:18,929   INFO  Training Epoch:11/100 Iter:  33/97 Loss:0.359838(0.492795) LR:1.9465e-04 DataTime:0.19 InferTime:27.00ms Time cost: 1:03:55/8:19:19
+2025-10-25 22:05:35,778   INFO  Training Epoch:11/100 Iter:  83/97 Loss:0.784211(0.567160) LR:1.9411e-04 DataTime:0.22 InferTime:26.79ms Time cost: 1:04:12/7:56:56
+2025-10-25 22:05:52,770   INFO  Training Epoch:12/100 Iter:  36/97 Loss:0.680928(0.843270) LR:1.9355e-04 DataTime:0.22 InferTime:27.05ms Time cost: 1:04:29/7:36:25
+2025-10-25 22:06:09,638   INFO  Training Epoch:12/100 Iter:  86/97 Loss:1.05030(0.655269) LR:1.9296e-04 DataTime:0.21 InferTime:27.23ms Time cost: 1:04:46/7:17:29
+2025-10-25 22:06:26,922   INFO  Training Epoch:13/100 Iter:  39/97 Loss:0.303641(0.541634) LR:1.9234e-04 DataTime:0.21 InferTime:27.17ms Time cost: 1:05:03/7:00:03
+2025-10-25 22:06:44,145   INFO  Training Epoch:13/100 Iter:  89/97 Loss:0.571850(0.489741) LR:1.9170e-04 DataTime:0.21 InferTime:26.95ms Time cost: 1:05:21/6:43:52
+2025-10-25 22:07:01,260   INFO  Training Epoch:14/100 Iter:  42/97 Loss:0.276951(0.476808) LR:1.9104e-04 DataTime:0.21 InferTime:27.27ms Time cost: 1:05:38/6:28:49
+2025-10-25 22:07:18,306   INFO  Training Epoch:14/100 Iter:  92/97 Loss:0.416566(0.446822) LR:1.9035e-04 DataTime:0.22 InferTime:27.14ms Time cost: 1:05:55/6:14:46
+2025-10-25 22:07:35,493   INFO  Training Epoch:15/100 Iter:  45/97 Loss:0.348538(0.388727) LR:1.8964e-04 DataTime:0.22 InferTime:28.84ms Time cost: 1:06:12/6:01:39
+2025-10-25 22:07:52,569   INFO  Training Epoch:15/100 Iter:  95/97 Loss:0.296930(0.440744) LR:1.8890e-04 DataTime:0.21 InferTime:26.98ms Time cost: 1:06:29/5:49:21
+2025-10-25 22:08:09,502   INFO  Training Epoch:16/100 Iter:  48/97 Loss:0.462414(0.419743) LR:1.8814e-04 DataTime:0.22 InferTime:28.17ms Time cost: 1:06:46/5:37:47
+2025-10-25 22:08:26,685   INFO  Training Epoch:17/100 Iter:   1/97 Loss:0.525416(0.491884) LR:1.8735e-04 DataTime:0.21 InferTime:27.41ms Time cost: 1:07:03/5:26:56
+2025-10-25 22:08:43,931   INFO  Training Epoch:17/100 Iter:  51/97 Loss:0.522381(0.448038) LR:1.8655e-04 DataTime:0.20 InferTime:26.94ms Time cost: 1:07:20/5:16:42
+2025-10-25 22:09:01,045   INFO  Training Epoch:18/100 Iter:   4/97 Loss:0.472052(0.299441) LR:1.8571e-04 DataTime:0.23 InferTime:27.12ms Time cost: 1:07:38/5:07:02
+2025-10-25 22:09:18,154   INFO  Training Epoch:18/100 Iter:  54/97 Loss:0.314023(0.439123) LR:1.8486e-04 DataTime:0.23 InferTime:26.74ms Time cost: 1:07:55/4:57:53
+2025-10-25 22:09:35,101   INFO  Training Epoch:19/100 Iter:   7/97 Loss:0.232371(0.327536) LR:1.8398e-04 DataTime:0.20 InferTime:26.90ms Time cost: 1:08:12/4:49:12
+2025-10-25 22:09:52,379   INFO  Training Epoch:19/100 Iter:  57/97 Loss:0.302225(0.416505) LR:1.8308e-04 DataTime:0.23 InferTime:27.29ms Time cost: 1:08:29/4:40:59
+2025-10-25 22:10:09,380   INFO  Training Epoch:20/100 Iter:  10/97 Loss:0.252962(0.336514) LR:1.8216e-04 DataTime:0.21 InferTime:27.30ms Time cost: 1:08:46/4:33:09
+2025-10-25 22:10:26,658   INFO  Training Epoch:20/100 Iter:  60/97 Loss:0.520617(0.402664) LR:1.8122e-04 DataTime:0.22 InferTime:29.45ms Time cost: 1:09:03/4:25:43
+2025-10-25 22:10:39,338   INFO  Evaluating Epoch:20 Iter:   0/14 InferTime: 17.81ms
+2025-10-25 22:10:40,584   INFO  Epoch 20 metrics: {'d1_all': tensor(1.9377), 'epe': tensor(0.6201), 'thres_1': tensor(12.3894), 'thres_2': tensor(4.4715), 'thres_3': tensor(2.4280)}
+2025-10-25 22:10:45,289   INFO  Training Epoch:21/100 Iter:  13/97 Loss:0.579278(0.436047) LR:1.8025e-04 DataTime:0.19 InferTime:26.84ms Time cost: 1:09:22/4:18:43
+2025-10-25 22:11:02,444   INFO  Training Epoch:21/100 Iter:  63/97 Loss:0.992801(0.405127) LR:1.7927e-04 DataTime:0.19 InferTime:26.84ms Time cost: 1:09:39/4:11:56
+2025-10-25 22:11:19,608   INFO  Training Epoch:22/100 Iter:  16/97 Loss:0.565751(0.353176) LR:1.7826e-04 DataTime:0.21 InferTime:27.08ms Time cost: 1:09:56/4:05:28
+2025-10-25 22:11:36,788   INFO  Training Epoch:22/100 Iter:  66/97 Loss:0.376433(0.395691) LR:1.7723e-04 DataTime:0.20 InferTime:27.20ms Time cost: 1:10:13/3:59:16
+2025-10-25 22:11:53,804   INFO  Training Epoch:23/100 Iter:  19/97 Loss:0.358629(0.349617) LR:1.7618e-04 DataTime:0.21 InferTime:26.93ms Time cost: 1:10:30/3:53:20
+2025-10-25 22:12:10,918   INFO  Training Epoch:23/100 Iter:  69/97 Loss:0.324607(0.402824) LR:1.7511e-04 DataTime:0.22 InferTime:26.69ms Time cost: 1:10:47/3:47:39
+2025-10-25 22:12:28,043   INFO  Training Epoch:24/100 Iter:  22/97 Loss:0.466253(0.558832) LR:1.7402e-04 DataTime:0.21 InferTime:26.73ms Time cost: 1:11:05/3:42:12
+2025-10-25 22:12:45,319   INFO  Training Epoch:24/100 Iter:  72/97 Loss:0.388561(0.459074) LR:1.7291e-04 DataTime:0.23 InferTime:27.00ms Time cost: 1:11:22/3:36:58
+2025-10-25 22:13:02,410   INFO  Training Epoch:25/100 Iter:  25/97 Loss:0.619628(0.389107) LR:1.7178e-04 DataTime:0.23 InferTime:27.12ms Time cost: 1:11:39/3:31:55
+2025-10-25 22:13:19,516   INFO  Training Epoch:25/100 Iter:  75/97 Loss:0.195770(0.402614) LR:1.7064e-04 DataTime:0.22 InferTime:27.00ms Time cost: 1:11:56/3:27:05
+2025-10-25 22:13:36,705   INFO  Training Epoch:26/100 Iter:  28/97 Loss:0.532136(0.352676) LR:1.6947e-04 DataTime:0.22 InferTime:27.14ms Time cost: 1:12:13/3:22:25
+2025-10-25 22:13:53,857   INFO  Training Epoch:26/100 Iter:  78/97 Loss:0.392987(0.399585) LR:1.6828e-04 DataTime:0.21 InferTime:26.97ms Time cost: 1:12:30/3:17:55
+2025-10-25 22:14:10,958   INFO  Training Epoch:27/100 Iter:  31/97 Loss:0.335121(0.447019) LR:1.6708e-04 DataTime:0.23 InferTime:26.78ms Time cost: 1:12:48/3:13:34
+2025-10-25 22:14:28,164   INFO  Training Epoch:27/100 Iter:  81/97 Loss:0.230721(0.424606) LR:1.6586e-04 DataTime:0.21 InferTime:27.05ms Time cost: 1:13:05/3:09:23
+2025-10-25 22:14:45,182   INFO  Training Epoch:28/100 Iter:  34/97 Loss:0.512338(0.433206) LR:1.6462e-04 DataTime:0.22 InferTime:28.51ms Time cost: 1:13:22/3:05:19
+2025-10-25 22:15:02,312   INFO  Training Epoch:28/100 Iter:  84/97 Loss:0.549576(0.403758) LR:1.6336e-04 DataTime:0.21 InferTime:26.86ms Time cost: 1:13:39/3:01:25
+2025-10-25 22:15:19,545   INFO  Training Epoch:29/100 Iter:  37/97 Loss:0.191403(0.482904) LR:1.6209e-04 DataTime:0.20 InferTime:27.10ms Time cost: 1:13:56/2:57:38
+2025-10-25 22:15:36,643   INFO  Training Epoch:29/100 Iter:  87/97 Loss:0.382873(0.456896) LR:1.6080e-04 DataTime:0.21 InferTime:27.10ms Time cost: 1:14:13/2:53:58
+2025-10-25 22:15:53,804   INFO  Training Epoch:30/100 Iter:  40/97 Loss:0.289044(0.450062) LR:1.5949e-04 DataTime:0.20 InferTime:27.03ms Time cost: 1:14:30/2:50:24
+2025-10-25 22:16:11,060   INFO  Training Epoch:30/100 Iter:  90/97 Loss:0.308760(0.458229) LR:1.5817e-04 DataTime:0.20 InferTime:27.10ms Time cost: 1:14:48/2:46:58
+2025-10-25 22:16:13,369   INFO  Evaluating Epoch:30 Iter:   0/14 InferTime: 18.16ms
+2025-10-25 22:16:14,620   INFO  Epoch 30 metrics: {'d1_all': tensor(1.7194), 'epe': tensor(0.6049), 'thres_1': tensor(12.2734), 'thres_2': tensor(3.9787), 'thres_3': tensor(2.1057)}
+2025-10-25 22:16:29,679   INFO  Training Epoch:31/100 Iter:  43/97 Loss:0.268588(0.382958) LR:1.5683e-04 DataTime:0.21 InferTime:27.24ms Time cost: 1:15:06/2:43:41
+2025-10-25 22:16:46,861   INFO  Training Epoch:31/100 Iter:  93/97 Loss:1.17943(0.433073) LR:1.5547e-04 DataTime:0.22 InferTime:27.06ms Time cost: 1:15:23/2:40:26
+2025-10-25 22:17:04,057   INFO  Training Epoch:32/100 Iter:  46/97 Loss:0.479456(0.384961) LR:1.5411e-04 DataTime:0.21 InferTime:26.69ms Time cost: 1:15:41/2:37:18
+2025-10-25 22:17:21,169   INFO  Training Epoch:32/100 Iter:  96/97 Loss:0.416461(0.389325) LR:1.5272e-04 DataTime:0.21 InferTime:26.76ms Time cost: 1:15:58/2:34:14
+2025-10-25 22:17:38,318   INFO  Training Epoch:33/100 Iter:  49/97 Loss:0.414107(0.381030) LR:1.5133e-04 DataTime:0.22 InferTime:27.04ms Time cost: 1:16:15/2:31:16
+2025-10-25 22:17:55,556   INFO  Training Epoch:34/100 Iter:   2/97 Loss:0.466685(0.677585) LR:1.4992e-04 DataTime:0.21 InferTime:28.63ms Time cost: 1:16:32/2:28:22
+2025-10-25 22:18:12,518   INFO  Training Epoch:34/100 Iter:  52/97 Loss:0.257229(0.430680) LR:1.4849e-04 DataTime:0.21 InferTime:26.78ms Time cost: 1:16:49/2:25:33
+2025-10-25 22:18:29,923   INFO  Training Epoch:35/100 Iter:   5/97 Loss:0.311969(0.340990) LR:1.4705e-04 DataTime:0.21 InferTime:26.84ms Time cost: 1:17:06/2:22:49
+2025-10-25 22:18:47,003   INFO  Training Epoch:35/100 Iter:  55/97 Loss:0.380236(0.391359) LR:1.4560e-04 DataTime:0.21 InferTime:26.85ms Time cost: 1:17:24/2:20:09
+2025-10-25 22:19:04,072   INFO  Training Epoch:36/100 Iter:   8/97 Loss:0.209632(0.358982) LR:1.4414e-04 DataTime:0.19 InferTime:26.95ms Time cost: 1:17:41/2:17:33
+2025-10-25 22:19:21,303   INFO  Training Epoch:36/100 Iter:  58/97 Loss:0.664092(0.403886) LR:1.4267e-04 DataTime:0.20 InferTime:27.16ms Time cost: 1:17:58/2:15:01
+2025-10-25 22:19:38,502   INFO  Training Epoch:37/100 Iter:  11/97 Loss:0.236040(0.357353) LR:1.4118e-04 DataTime:0.22 InferTime:26.93ms Time cost: 1:18:15/2:12:32
+2025-10-25 22:19:55,659   INFO  Training Epoch:37/100 Iter:  61/97 Loss:0.272433(0.379461) LR:1.3969e-04 DataTime:0.20 InferTime:26.95ms Time cost: 1:18:32/2:10:08
+2025-10-25 22:20:12,751   INFO  Training Epoch:38/100 Iter:  14/97 Loss:0.181231(0.287773) LR:1.3818e-04 DataTime:0.22 InferTime:26.76ms Time cost: 1:18:49/2:07:46
+2025-10-25 22:20:29,917   INFO  Training Epoch:38/100 Iter:  64/97 Loss:0.251438(0.457264) LR:1.3666e-04 DataTime:0.22 InferTime:27.18ms Time cost: 1:19:06/2:05:28
+2025-10-25 22:20:47,025   INFO  Training Epoch:39/100 Iter:  17/97 Loss:0.268492(0.364886) LR:1.3514e-04 DataTime:0.22 InferTime:26.99ms Time cost: 1:19:24/2:03:13
+2025-10-25 22:21:03,920   INFO  Training Epoch:39/100 Iter:  67/97 Loss:0.284410(0.408038) LR:1.3360e-04 DataTime:0.22 InferTime:26.77ms Time cost: 1:19:40/2:01:01
+2025-10-25 22:21:21,091   INFO  Training Epoch:40/100 Iter:  20/97 Loss:0.255670(0.362224) LR:1.3206e-04 DataTime:0.22 InferTime:26.93ms Time cost: 1:19:58/1:58:52
+2025-10-25 22:21:38,162   INFO  Training Epoch:40/100 Iter:  70/97 Loss:0.225337(0.369831) LR:1.3050e-04 DataTime:0.22 InferTime:27.10ms Time cost: 1:20:15/1:56:46
+2025-10-25 22:21:47,326   INFO  Evaluating Epoch:40 Iter:   0/14 InferTime: 17.51ms
+2025-10-25 22:21:48,583   INFO  Epoch 40 metrics: {'d1_all': tensor(1.7404), 'epe': tensor(0.5918), 'thres_1': tensor(11.8476), 'thres_2': tensor(4.0436), 'thres_3': tensor(2.0938)}
+2025-10-25 22:21:56,698   INFO  Training Epoch:41/100 Iter:  23/97 Loss:0.439938(0.349875) LR:1.2894e-04 DataTime:0.22 InferTime:27.03ms Time cost: 1:20:33/1:54:45
+2025-10-25 22:22:13,818   INFO  Training Epoch:41/100 Iter:  73/97 Loss:0.267641(0.379169) LR:1.2737e-04 DataTime:0.22 InferTime:27.08ms Time cost: 1:20:50/1:52:44
+2025-10-25 22:22:30,800   INFO  Training Epoch:42/100 Iter:  26/97 Loss:0.612456(0.353639) LR:1.2580e-04 DataTime:0.22 InferTime:26.77ms Time cost: 1:21:07/1:50:45
+2025-10-25 22:22:47,863   INFO  Training Epoch:42/100 Iter:  76/97 Loss:0.165899(0.405060) LR:1.2421e-04 DataTime:0.20 InferTime:27.13ms Time cost: 1:21:24/1:48:50
+2025-10-25 22:23:04,785   INFO  Training Epoch:43/100 Iter:  29/97 Loss:0.389357(0.381425) LR:1.2262e-04 DataTime:0.18 InferTime:27.25ms Time cost: 1:21:41/1:46:56
+2025-10-25 22:23:21,754   INFO  Training Epoch:43/100 Iter:  79/97 Loss:0.408303(0.402863) LR:1.2103e-04 DataTime:0.22 InferTime:28.85ms Time cost: 1:21:58/1:45:05
+2025-10-25 22:23:38,673   INFO  Training Epoch:44/100 Iter:  32/97 Loss:0.593432(0.414084) LR:1.1942e-04 DataTime:0.19 InferTime:27.22ms Time cost: 1:22:15/1:43:15
+2025-10-25 22:23:55,682   INFO  Training Epoch:44/100 Iter:  82/97 Loss:0.191420(0.421220) LR:1.1782e-04 DataTime:0.19 InferTime:26.72ms Time cost: 1:22:32/1:41:28
+2025-10-25 22:24:12,708   INFO  Training Epoch:45/100 Iter:  35/97 Loss:0.188633(0.376436) LR:1.1620e-04 DataTime:0.20 InferTime:26.81ms Time cost: 1:22:49/1:39:43
+2025-10-25 22:24:29,803   INFO  Training Epoch:45/100 Iter:  85/97 Loss:0.406167(0.386329) LR:1.1459e-04 DataTime:0.22 InferTime:26.81ms Time cost: 1:23:06/1:38:00
+2025-10-25 22:24:46,960   INFO  Training Epoch:46/100 Iter:  38/97 Loss:0.460023(0.377119) LR:1.1297e-04 DataTime:0.23 InferTime:27.16ms Time cost: 1:23:24/1:36:20
+2025-10-25 22:25:04,084   INFO  Training Epoch:46/100 Iter:  88/97 Loss:0.370053(0.374032) LR:1.1134e-04 DataTime:0.23 InferTime:27.07ms Time cost: 1:23:41/1:34:40
+2025-10-25 22:25:21,137   INFO  Training Epoch:47/100 Iter:  41/97 Loss:0.322686(0.414683) LR:1.0972e-04 DataTime:0.20 InferTime:26.97ms Time cost: 1:23:58/1:33:03
+2025-10-25 22:25:38,131   INFO  Training Epoch:47/100 Iter:  91/97 Loss:0.331635(0.396440) LR:1.0809e-04 DataTime:0.23 InferTime:26.95ms Time cost: 1:24:15/1:31:27
+2025-10-25 22:25:55,209   INFO  Training Epoch:48/100 Iter:  44/97 Loss:0.700779(0.370665) LR:1.0646e-04 DataTime:0.22 InferTime:27.17ms Time cost: 1:24:32/1:29:53
+2025-10-25 22:26:12,149   INFO  Training Epoch:48/100 Iter:  94/97 Loss:0.836482(0.379337) LR:1.0482e-04 DataTime:0.21 InferTime:27.11ms Time cost: 1:24:49/1:28:21
+2025-10-25 22:26:29,283   INFO  Training Epoch:49/100 Iter:  47/97 Loss:0.358472(0.502152) LR:1.0319e-04 DataTime:0.23 InferTime:27.03ms Time cost: 1:25:06/1:26:50
+2025-10-25 22:26:46,364   INFO  Training Epoch:50/100 Iter:   0/97 Loss:0.359387(0.359387) LR:1.0155e-04 DataTime:0.23 InferTime:27.47ms Time cost: 1:25:23/1:25:21
+2025-10-25 22:27:03,365   INFO  Training Epoch:50/100 Iter:  50/97 Loss:0.347755(0.353014) LR:9.9919e-05 DataTime:0.22 InferTime:27.08ms Time cost: 1:25:40/1:23:53
+2025-10-25 22:27:19,273   INFO  Evaluating Epoch:50 Iter:   0/14 InferTime: 17.64ms
+2025-10-25 22:27:20,514   INFO  Epoch 50 metrics: {'d1_all': tensor(1.6217), 'epe': tensor(0.5909), 'thres_1': tensor(11.8201), 'thres_2': tensor(4.0320), 'thres_3': tensor(2.0256)}
+2025-10-25 22:27:21,862   INFO  Training Epoch:51/100 Iter:   3/97 Loss:0.140508(0.446916) LR:9.8283e-05 DataTime:0.21 InferTime:26.75ms Time cost: 1:25:58/1:22:28
+2025-10-25 22:27:38,748   INFO  Training Epoch:51/100 Iter:  53/97 Loss:0.993939(0.369230) LR:9.6648e-05 DataTime:0.22 InferTime:27.07ms Time cost: 1:26:15/1:21:03
+2025-10-25 22:27:55,829   INFO  Training Epoch:52/100 Iter:   6/97 Loss:0.180698(0.382654) LR:9.5013e-05 DataTime:0.23 InferTime:27.10ms Time cost: 1:26:32/1:19:39
+2025-10-25 22:28:12,783   INFO  Training Epoch:52/100 Iter:  56/97 Loss:0.394661(0.372308) LR:9.3381e-05 DataTime:0.20 InferTime:27.35ms Time cost: 1:26:49/1:18:17
+2025-10-25 22:28:29,831   INFO  Training Epoch:53/100 Iter:   9/97 Loss:0.433542(0.435163) LR:9.1749e-05 DataTime:0.23 InferTime:26.65ms Time cost: 1:27:06/1:16:56
+2025-10-25 22:28:46,887   INFO  Training Epoch:53/100 Iter:  59/97 Loss:0.250291(0.382452) LR:9.0120e-05 DataTime:0.20 InferTime:26.99ms Time cost: 1:27:23/1:15:36
+2025-10-25 22:29:03,861   INFO  Training Epoch:54/100 Iter:  12/97 Loss:0.169035(0.269776) LR:8.8494e-05 DataTime:0.23 InferTime:27.03ms Time cost: 1:27:40/1:14:17
+2025-10-25 22:29:20,878   INFO  Training Epoch:54/100 Iter:  62/97 Loss:0.284003(0.323022) LR:8.6871e-05 DataTime:0.20 InferTime:27.27ms Time cost: 1:27:57/1:12:59
+2025-10-25 22:29:37,975   INFO  Training Epoch:55/100 Iter:  15/97 Loss:0.320494(0.370973) LR:8.5251e-05 DataTime:0.22 InferTime:26.89ms Time cost: 1:28:15/1:11:43
+2025-10-25 22:29:55,079   INFO  Training Epoch:55/100 Iter:  65/97 Loss:0.235180(0.367707) LR:8.3635e-05 DataTime:0.22 InferTime:26.91ms Time cost: 1:28:32/1:10:28
+2025-10-25 22:30:12,043   INFO  Training Epoch:56/100 Iter:  18/97 Loss:0.279778(0.384579) LR:8.2024e-05 DataTime:0.20 InferTime:26.96ms Time cost: 1:28:49/1:09:13
+2025-10-25 22:30:29,119   INFO  Training Epoch:56/100 Iter:  68/97 Loss:0.238700(0.381909) LR:8.0417e-05 DataTime:0.21 InferTime:26.82ms Time cost: 1:29:06/1:08:00
+2025-10-25 22:30:45,994   INFO  Training Epoch:57/100 Iter:  21/97 Loss:0.201965(0.381887) LR:7.8816e-05 DataTime:0.19 InferTime:26.86ms Time cost: 1:29:23/1:06:48
+2025-10-25 22:31:03,100   INFO  Training Epoch:57/100 Iter:  71/97 Loss:0.302151(0.392633) LR:7.7220e-05 DataTime:0.20 InferTime:27.39ms Time cost: 1:29:40/1:05:37
+2025-10-25 22:31:19,991   INFO  Training Epoch:58/100 Iter:  24/97 Loss:0.349397(0.345095) LR:7.5631e-05 DataTime:0.20 InferTime:27.53ms Time cost: 1:29:57/1:04:27
+2025-10-25 22:31:37,109   INFO  Training Epoch:58/100 Iter:  74/97 Loss:0.471895(0.349175) LR:7.4048e-05 DataTime:0.22 InferTime:26.97ms Time cost: 1:30:14/1:03:17
+2025-10-25 22:31:54,123   INFO  Training Epoch:59/100 Iter:  27/97 Loss:0.952375(0.362656) LR:7.2471e-05 DataTime:0.22 InferTime:27.01ms Time cost: 1:30:31/1:02:09
+2025-10-25 22:32:11,179   INFO  Training Epoch:59/100 Iter:  77/97 Loss:0.443282(0.345367) LR:7.0903e-05 DataTime:0.19 InferTime:26.89ms Time cost: 1:30:48/1:01:01
+2025-10-25 22:32:28,120   INFO  Training Epoch:60/100 Iter:  30/97 Loss:0.242861(0.384673) LR:6.9342e-05 DataTime:0.22 InferTime:27.06ms Time cost: 1:31:05/59:55
+2025-10-25 22:32:45,226   INFO  Training Epoch:60/100 Iter:  80/97 Loss:0.662083(0.379797) LR:6.7789e-05 DataTime:0.22 InferTime:27.17ms Time cost: 1:31:22/58:49
+2025-10-25 22:32:51,133   INFO  Evaluating Epoch:60 Iter:   0/14 InferTime: 17.91ms
+2025-10-25 22:32:52,367   INFO  Epoch 60 metrics: {'d1_all': tensor(1.5549), 'epe': tensor(0.5659), 'thres_1': tensor(11.3883), 'thres_2': tensor(3.8484), 'thres_3': tensor(1.9867)}
+2025-10-25 22:33:03,654   INFO  Training Epoch:61/100 Iter:  33/97 Loss:0.561492(0.351409) LR:6.6245e-05 DataTime:0.20 InferTime:26.94ms Time cost: 1:31:40/57:45
+2025-10-25 22:33:20,895   INFO  Training Epoch:61/100 Iter:  83/97 Loss:0.147887(0.344529) LR:6.4710e-05 DataTime:0.21 InferTime:27.20ms Time cost: 1:31:57/56:41
+2025-10-25 22:33:37,721   INFO  Training Epoch:62/100 Iter:  36/97 Loss:0.660907(0.330452) LR:6.3184e-05 DataTime:0.22 InferTime:27.25ms Time cost: 1:32:14/55:37
+2025-10-25 22:33:54,738   INFO  Training Epoch:62/100 Iter:  86/97 Loss:0.192906(0.339665) LR:6.1668e-05 DataTime:0.21 InferTime:27.32ms Time cost: 1:32:31/54:35
+2025-10-25 22:34:11,720   INFO  Training Epoch:63/100 Iter:  39/97 Loss:0.202209(0.393980) LR:6.0162e-05 DataTime:0.20 InferTime:27.39ms Time cost: 1:32:48/53:33
+2025-10-25 22:34:28,685   INFO  Training Epoch:63/100 Iter:  89/97 Loss:0.387786(0.372218) LR:5.8667e-05 DataTime:0.22 InferTime:27.15ms Time cost: 1:33:05/52:31
+2025-10-25 22:34:45,636   INFO  Training Epoch:64/100 Iter:  42/97 Loss:0.232086(0.383425) LR:5.7184e-05 DataTime:0.22 InferTime:27.26ms Time cost: 1:33:22/51:31
+2025-10-25 22:35:02,599   INFO  Training Epoch:64/100 Iter:  92/97 Loss:0.467596(0.379348) LR:5.5711e-05 DataTime:0.22 InferTime:26.79ms Time cost: 1:33:39/50:31
+2025-10-25 22:35:19,582   INFO  Training Epoch:65/100 Iter:  45/97 Loss:0.554551(0.352828) LR:5.4251e-05 DataTime:0.21 InferTime:27.33ms Time cost: 1:33:56/49:32
+2025-10-25 22:35:36,704   INFO  Training Epoch:65/100 Iter:  95/97 Loss:0.410098(0.346341) LR:5.2802e-05 DataTime:0.23 InferTime:29.04ms Time cost: 1:34:13/48:33
+2025-10-25 22:35:53,629   INFO  Training Epoch:66/100 Iter:  48/97 Loss:0.272484(0.363093) LR:5.1367e-05 DataTime:0.22 InferTime:27.32ms Time cost: 1:34:30/47:35
+2025-10-25 22:36:10,746   INFO  Training Epoch:67/100 Iter:   1/97 Loss:0.460272(0.373968) LR:4.9944e-05 DataTime:0.22 InferTime:26.94ms Time cost: 1:34:47/46:38
+2025-10-25 22:36:27,697   INFO  Training Epoch:67/100 Iter:  51/97 Loss:0.542275(0.348602) LR:4.8535e-05 DataTime:0.21 InferTime:27.16ms Time cost: 1:35:04/45:42
+2025-10-25 22:36:44,659   INFO  Training Epoch:68/100 Iter:   4/97 Loss:0.323486(0.441665) LR:4.7139e-05 DataTime:0.22 InferTime:27.03ms Time cost: 1:35:21/44:46
+2025-10-25 22:37:01,634   INFO  Training Epoch:68/100 Iter:  54/97 Loss:0.178599(0.343986) LR:4.5758e-05 DataTime:0.20 InferTime:27.16ms Time cost: 1:35:38/43:50
+2025-10-25 22:37:18,661   INFO  Training Epoch:69/100 Iter:   7/97 Loss:0.196250(0.424278) LR:4.4391e-05 DataTime:0.22 InferTime:27.10ms Time cost: 1:35:55/42:55
+2025-10-25 22:37:35,725   INFO  Training Epoch:69/100 Iter:  57/97 Loss:0.265627(0.325877) LR:4.3039e-05 DataTime:0.22 InferTime:26.84ms Time cost: 1:36:12/42:01
+2025-10-25 22:37:52,719   INFO  Training Epoch:70/100 Iter:  10/97 Loss:0.808464(0.329755) LR:4.1702e-05 DataTime:0.21 InferTime:26.91ms Time cost: 1:36:29/41:07
+2025-10-25 22:38:09,731   INFO  Training Epoch:70/100 Iter:  60/97 Loss:0.333979(0.357800) LR:4.0381e-05 DataTime:0.21 InferTime:26.96ms Time cost: 1:36:46/40:14
+2025-10-25 22:38:22,119   INFO  Evaluating Epoch:70 Iter:   0/14 InferTime: 17.73ms
+2025-10-25 22:38:23,365   INFO  Epoch 70 metrics: {'d1_all': tensor(1.5964), 'epe': tensor(0.5553), 'thres_1': tensor(11.2100), 'thres_2': tensor(3.7322), 'thres_3': tensor(1.9716)}
+2025-10-25 22:38:28,159   INFO  Training Epoch:71/100 Iter:  13/97 Loss:0.245203(0.367249) LR:3.9076e-05 DataTime:0.21 InferTime:26.72ms Time cost: 1:37:05/39:22
+2025-10-25 22:38:45,193   INFO  Training Epoch:71/100 Iter:  63/97 Loss:0.232912(0.315119) LR:3.7787e-05 DataTime:0.18 InferTime:26.79ms Time cost: 1:37:22/38:30
+2025-10-25 22:39:02,253   INFO  Training Epoch:72/100 Iter:  16/97 Loss:0.444193(0.364129) LR:3.6515e-05 DataTime:0.21 InferTime:27.17ms Time cost: 1:37:39/37:38
+2025-10-25 22:39:19,248   INFO  Training Epoch:72/100 Iter:  66/97 Loss:0.0977105(0.327427) LR:3.5259e-05 DataTime:0.22 InferTime:27.01ms Time cost: 1:37:56/36:47
+2025-10-25 22:39:36,206   INFO  Training Epoch:73/100 Iter:  19/97 Loss:0.511269(0.357518) LR:3.4022e-05 DataTime:0.21 InferTime:26.98ms Time cost: 1:38:13/35:56
+2025-10-25 22:39:53,108   INFO  Training Epoch:73/100 Iter:  69/97 Loss:0.210450(0.341625) LR:3.2801e-05 DataTime:0.17 InferTime:27.06ms Time cost: 1:38:30/35:06
+2025-10-25 22:40:10,088   INFO  Training Epoch:74/100 Iter:  22/97 Loss:0.443543(0.323317) LR:3.1599e-05 DataTime:0.20 InferTime:27.08ms Time cost: 1:38:47/34:16
+2025-10-25 22:40:27,156   INFO  Training Epoch:74/100 Iter:  72/97 Loss:0.583812(0.362134) LR:3.0415e-05 DataTime:0.22 InferTime:26.98ms Time cost: 1:39:04/33:27
+2025-10-25 22:40:44,177   INFO  Training Epoch:75/100 Iter:  25/97 Loss:0.355357(0.300014) LR:2.9250e-05 DataTime:0.23 InferTime:26.80ms Time cost: 1:39:21/32:38
+2025-10-25 22:41:01,009   INFO  Training Epoch:75/100 Iter:  75/97 Loss:0.200279(0.329848) LR:2.8103e-05 DataTime:0.20 InferTime:27.09ms Time cost: 1:39:38/31:50
+2025-10-25 22:41:18,075   INFO  Training Epoch:76/100 Iter:  28/97 Loss:0.312185(0.353602) LR:2.6976e-05 DataTime:0.21 InferTime:26.96ms Time cost: 1:39:55/31:02
+2025-10-25 22:41:35,185   INFO  Training Epoch:76/100 Iter:  78/97 Loss:0.261684(0.351834) LR:2.5868e-05 DataTime:0.22 InferTime:26.98ms Time cost: 1:40:12/30:14
+2025-10-25 22:41:52,196   INFO  Training Epoch:77/100 Iter:  31/97 Loss:0.226216(0.342163) LR:2.4780e-05 DataTime:0.24 InferTime:26.95ms Time cost: 1:40:29/29:27
+2025-10-25 22:42:09,327   INFO  Training Epoch:77/100 Iter:  81/97 Loss:0.218753(0.329028) LR:2.3713e-05 DataTime:0.22 InferTime:27.22ms Time cost: 1:40:46/28:40
+2025-10-25 22:42:26,320   INFO  Training Epoch:78/100 Iter:  34/97 Loss:0.175253(0.324399) LR:2.2665e-05 DataTime:0.19 InferTime:26.74ms Time cost: 1:41:03/27:54
+2025-10-25 22:42:43,485   INFO  Training Epoch:78/100 Iter:  84/97 Loss:0.617814(0.330333) LR:2.1639e-05 DataTime:0.22 InferTime:27.10ms Time cost: 1:41:20/27:08
+2025-10-25 22:43:00,378   INFO  Training Epoch:79/100 Iter:  37/97 Loss:0.209322(0.329621) LR:2.0633e-05 DataTime:0.18 InferTime:27.31ms Time cost: 1:41:37/26:22
+2025-10-25 22:43:17,482   INFO  Training Epoch:79/100 Iter:  87/97 Loss:0.279547(0.333732) LR:1.9649e-05 DataTime:0.21 InferTime:27.11ms Time cost: 1:41:54/25:37
+2025-10-25 22:43:34,443   INFO  Training Epoch:80/100 Iter:  40/97 Loss:0.213049(0.308090) LR:1.8686e-05 DataTime:0.23 InferTime:27.06ms Time cost: 1:42:11/24:52
+2025-10-25 22:43:51,548   INFO  Training Epoch:80/100 Iter:  90/97 Loss:0.219500(0.338967) LR:1.7745e-05 DataTime:0.21 InferTime:27.15ms Time cost: 1:42:28/24:08
+2025-10-25 22:43:53,985   INFO  Evaluating Epoch:80 Iter:   0/14 InferTime: 20.45ms
+2025-10-25 22:43:55,226   INFO  Epoch 80 metrics: {'d1_all': tensor(1.6288), 'epe': tensor(0.5596), 'thres_1': tensor(10.8428), 'thres_2': tensor(3.7107), 'thres_3': tensor(1.9683)}
+2025-10-25 22:44:10,053   INFO  Training Epoch:81/100 Iter:  43/97 Loss:0.412179(0.358574) LR:1.6825e-05 DataTime:0.20 InferTime:26.84ms Time cost: 1:42:47/23:24
+2025-10-25 22:44:27,051   INFO  Training Epoch:81/100 Iter:  93/97 Loss:0.193466(0.327132) LR:1.5928e-05 DataTime:0.21 InferTime:27.38ms Time cost: 1:43:04/22:40
+2025-10-25 22:44:44,185   INFO  Training Epoch:82/100 Iter:  46/97 Loss:0.253518(0.309104) LR:1.5054e-05 DataTime:0.20 InferTime:27.11ms Time cost: 1:43:21/21:56
+2025-10-25 22:45:01,167   INFO  Training Epoch:82/100 Iter:  96/97 Loss:0.292221(0.313415) LR:1.4202e-05 DataTime:0.21 InferTime:26.66ms Time cost: 1:43:38/21:13
+2025-10-25 22:45:18,218   INFO  Training Epoch:83/100 Iter:  49/97 Loss:0.510309(0.335028) LR:1.3374e-05 DataTime:0.22 InferTime:26.89ms Time cost: 1:43:55/20:30
+2025-10-25 22:45:35,186   INFO  Training Epoch:84/100 Iter:   2/97 Loss:0.295690(0.269817) LR:1.2568e-05 DataTime:0.23 InferTime:26.78ms Time cost: 1:44:12/19:48
+2025-10-25 22:45:52,098   INFO  Training Epoch:84/100 Iter:  52/97 Loss:0.238492(0.322676) LR:1.1786e-05 DataTime:0.20 InferTime:26.90ms Time cost: 1:44:29/19:05
+2025-10-25 22:46:09,086   INFO  Training Epoch:85/100 Iter:   5/97 Loss:0.150472(0.333811) LR:1.1027e-05 DataTime:0.19 InferTime:27.02ms Time cost: 1:44:46/18:23
+2025-10-25 22:46:26,161   INFO  Training Epoch:85/100 Iter:  55/97 Loss:0.202356(0.333571) LR:1.0293e-05 DataTime:0.20 InferTime:27.31ms Time cost: 1:45:03/17:42
+2025-10-25 22:46:43,247   INFO  Training Epoch:86/100 Iter:   8/97 Loss:0.162054(0.394742) LR:9.5820e-06 DataTime:0.20 InferTime:27.32ms Time cost: 1:45:20/17:00
+2025-10-25 22:47:00,169   INFO  Training Epoch:86/100 Iter:  58/97 Loss:0.472858(0.342254) LR:8.8954e-06 DataTime:0.20 InferTime:27.27ms Time cost: 1:45:37/16:19
+2025-10-25 22:47:17,202   INFO  Training Epoch:87/100 Iter:  11/97 Loss:0.253951(0.272767) LR:8.2332e-06 DataTime:0.20 InferTime:27.40ms Time cost: 1:45:54/15:39
+2025-10-25 22:47:34,267   INFO  Training Epoch:87/100 Iter:  61/97 Loss:0.603686(0.340858) LR:7.5956e-06 DataTime:0.21 InferTime:26.78ms Time cost: 1:46:11/14:58
+2025-10-25 22:47:51,345   INFO  Training Epoch:88/100 Iter:  14/97 Loss:0.425738(0.383414) LR:6.9827e-06 DataTime:0.19 InferTime:27.35ms Time cost: 1:46:28/14:18
+2025-10-25 22:48:08,560   INFO  Training Epoch:88/100 Iter:  64/97 Loss:0.326977(0.363403) LR:6.3947e-06 DataTime:0.22 InferTime:27.27ms Time cost: 1:46:45/13:38
+2025-10-25 22:48:25,671   INFO  Training Epoch:89/100 Iter:  17/97 Loss:0.421987(0.269772) LR:5.8317e-06 DataTime:0.20 InferTime:26.80ms Time cost: 1:47:02/12:58
+2025-10-25 22:48:42,754   INFO  Training Epoch:89/100 Iter:  67/97 Loss:0.553836(0.318261) LR:5.2940e-06 DataTime:0.20 InferTime:26.81ms Time cost: 1:47:19/12:19
+2025-10-25 22:48:59,775   INFO  Training Epoch:90/100 Iter:  20/97 Loss:0.288219(0.282692) LR:4.7815e-06 DataTime:0.19 InferTime:27.49ms Time cost: 1:47:36/11:40
+2025-10-25 22:49:16,687   INFO  Training Epoch:90/100 Iter:  70/97 Loss:0.550673(0.336585) LR:4.2946e-06 DataTime:0.22 InferTime:27.47ms Time cost: 1:47:53/11:01
+2025-10-25 22:49:25,617   INFO  Evaluating Epoch:90 Iter:   0/14 InferTime: 17.55ms
+2025-10-25 22:49:26,864   INFO  Epoch 90 metrics: {'d1_all': tensor(1.6150), 'epe': tensor(0.5575), 'thres_1': tensor(10.9890), 'thres_2': tensor(3.6710), 'thres_3': tensor(1.9334)}
+2025-10-25 22:49:34,918   INFO  Training Epoch:91/100 Iter:  23/97 Loss:0.173123(0.336454) LR:3.8332e-06 DataTime:0.21 InferTime:27.04ms Time cost: 1:48:11/10:22
+2025-10-25 22:49:51,955   INFO  Training Epoch:91/100 Iter:  73/97 Loss:0.136685(0.343193) LR:3.3976e-06 DataTime:0.21 InferTime:27.38ms Time cost: 1:48:29/09:44
+2025-10-25 22:50:09,119   INFO  Training Epoch:92/100 Iter:  26/97 Loss:0.281054(0.293564) LR:2.9879e-06 DataTime:0.22 InferTime:27.03ms Time cost: 1:48:46/09:06
+2025-10-25 22:50:26,298   INFO  Training Epoch:92/100 Iter:  76/97 Loss:0.151295(0.323596) LR:2.6040e-06 DataTime:0.20 InferTime:26.94ms Time cost: 1:49:03/08:28
+2025-10-25 22:50:43,234   INFO  Training Epoch:93/100 Iter:  29/97 Loss:0.514126(0.325035) LR:2.2463e-06 DataTime:0.19 InferTime:27.11ms Time cost: 1:49:20/07:50
+2025-10-25 22:51:00,139   INFO  Training Epoch:93/100 Iter:  79/97 Loss:0.468158(0.355541) LR:1.9147e-06 DataTime:0.23 InferTime:26.89ms Time cost: 1:49:37/07:12
+2025-10-25 22:51:17,077   INFO  Training Epoch:94/100 Iter:  32/97 Loss:0.335717(0.359817) LR:1.6093e-06 DataTime:0.22 InferTime:27.30ms Time cost: 1:49:54/06:35
+2025-10-25 22:51:34,087   INFO  Training Epoch:94/100 Iter:  82/97 Loss:0.310246(0.327591) LR:1.3303e-06 DataTime:0.21 InferTime:27.16ms Time cost: 1:50:11/05:58
+2025-10-25 22:51:51,172   INFO  Training Epoch:95/100 Iter:  35/97 Loss:0.582054(0.378018) LR:1.0777e-06 DataTime:0.21 InferTime:26.84ms Time cost: 1:50:28/05:21
+2025-10-25 22:52:08,110   INFO  Training Epoch:95/100 Iter:  85/97 Loss:0.485434(0.353357) LR:8.5151e-07 DataTime:0.21 InferTime:26.94ms Time cost: 1:50:45/04:45
+2025-10-25 22:52:25,081   INFO  Training Epoch:96/100 Iter:  38/97 Loss:0.247450(0.347884) LR:6.5188e-07 DataTime:0.21 InferTime:26.66ms Time cost: 1:51:02/04:08
+2025-10-25 22:52:42,058   INFO  Training Epoch:96/100 Iter:  88/97 Loss:0.873535(0.353015) LR:4.7882e-07 DataTime:0.22 InferTime:26.99ms Time cost: 1:51:19/03:32
+2025-10-25 22:52:59,080   INFO  Training Epoch:97/100 Iter:  41/97 Loss:0.314964(0.322086) LR:3.3240e-07 DataTime:0.21 InferTime:26.67ms Time cost: 1:51:36/02:56
+2025-10-25 22:53:16,094   INFO  Training Epoch:97/100 Iter:  91/97 Loss:0.376124(0.353346) LR:2.1264e-07 DataTime:0.18 InferTime:26.95ms Time cost: 1:51:53/02:20
+2025-10-25 22:53:33,148   INFO  Training Epoch:98/100 Iter:  44/97 Loss:0.406183(0.340458) LR:1.1958e-07 DataTime:0.20 InferTime:26.94ms Time cost: 1:52:10/01:44
+2025-10-25 22:53:50,235   INFO  Training Epoch:98/100 Iter:  94/97 Loss:0.569249(0.335438) LR:5.3243e-08 DataTime:0.23 InferTime:27.08ms Time cost: 1:52:27/01:09
+2025-10-25 22:54:07,366   INFO  Training Epoch:99/100 Iter:  47/97 Loss:0.421437(0.323201) LR:1.3648e-08 DataTime:0.21 InferTime:27.07ms Time cost: 1:52:44/00:34
+2025-10-25 22:54:24,326   INFO  Evaluating Epoch:99 Iter:   0/14 InferTime: 21.41ms
+2025-10-25 22:54:25,561   INFO  Epoch 99 metrics: {'d1_all': tensor(1.6075), 'epe': tensor(0.5531), 'thres_1': tensor(10.8595), 'thres_2': tensor(3.6437), 'thres_3': tensor(1.9446)}
+2025-10-25 22:54:27,105   INFO  Training Epoch: 0/100 Iter:   0/97 Loss:0.295572(0.295572) LR:8.0000e-06 DataTime:0.21 InferTime:27.48ms Time cost: 1:53:04/18277:38:43
+2025-10-25 22:54:44,226   INFO  Training Epoch: 0/100 Iter:  50/97 Loss:0.138727(0.335633) LR:1.1028e-04 DataTime:0.19 InferTime:27.24ms Time cost: 1:53:21/357:26:14
+2025-10-25 22:55:00,242   INFO  Evaluating Epoch: 0 Iter:   0/14 InferTime: 17.70ms
+2025-10-25 22:55:01,503   INFO  Epoch 0 metrics: {'d1_all': tensor(1.7885), 'epe': tensor(0.5776), 'thres_1': tensor(11.3537), 'thres_2': tensor(4.0000), 'thres_3': tensor(2.1810)}
+2025-10-25 22:55:02,851   INFO  Training Epoch: 1/100 Iter:   3/97 Loss:0.598657(0.413242) LR:2.0000e-04 DataTime:0.23 InferTime:27.10ms Time cost: 1:53:39/180:02:40
+2025-10-25 22:55:19,892   INFO  Training Epoch: 1/100 Iter:  53/97 Loss:0.482291(0.376316) LR:1.9998e-04 DataTime:0.22 InferTime:27.20ms Time cost: 1:53:56/120:05:57
+2025-10-25 22:55:36,860   INFO  Training Epoch: 2/100 Iter:   6/97 Loss:0.287926(0.240822) LR:1.9994e-04 DataTime:0.24 InferTime:27.18ms Time cost: 1:54:13/89:58:26
+2025-10-25 22:55:53,928   INFO  Training Epoch: 2/100 Iter:  56/97 Loss:0.343982(0.384104) LR:1.9987e-04 DataTime:0.22 InferTime:27.12ms Time cost: 1:54:30/71:51:00
+2025-10-25 22:56:10,794   INFO  Training Epoch: 3/100 Iter:   9/97 Loss:0.517309(0.358357) LR:1.9978e-04 DataTime:0.19 InferTime:27.32ms Time cost: 1:54:47/59:44:39
+2025-10-25 22:56:27,777   INFO  Training Epoch: 3/100 Iter:  59/97 Loss:0.329615(0.374501) LR:1.9965e-04 DataTime:0.23 InferTime:27.23ms Time cost: 1:55:04/51:05:12
+2025-10-25 22:56:45,096   INFO  Training Epoch: 4/100 Iter:  12/97 Loss:0.421724(0.350529) LR:1.9951e-04 DataTime:0.22 InferTime:30.45ms Time cost: 1:55:22/44:35:21
+2025-10-25 22:57:02,247   INFO  Training Epoch: 4/100 Iter:  62/97 Loss:0.384305(0.387585) LR:1.9933e-04 DataTime:0.19 InferTime:27.23ms Time cost: 1:55:39/39:31:49
+2025-10-25 22:57:19,140   INFO  Training Epoch: 5/100 Iter:  15/97 Loss:0.278516(0.399392) LR:1.9913e-04 DataTime:0.22 InferTime:27.19ms Time cost: 1:55:56/35:28:44
+2025-10-25 22:57:36,237   INFO  Training Epoch: 5/100 Iter:  65/97 Loss:0.360785(0.398385) LR:1.9890e-04 DataTime:0.22 InferTime:27.25ms Time cost: 1:56:13/32:09:46
+2025-10-25 22:57:53,204   INFO  Training Epoch: 6/100 Iter:  18/97 Loss:0.948731(0.448343) LR:1.9864e-04 DataTime:0.21 InferTime:27.40ms Time cost: 1:56:30/29:23:50
+2025-10-25 22:58:10,284   INFO  Training Epoch: 6/100 Iter:  68/97 Loss:0.303010(0.427036) LR:1.9836e-04 DataTime:0.21 InferTime:27.43ms Time cost: 1:56:47/27:03:23
+2025-10-25 22:58:27,312   INFO  Training Epoch: 7/100 Iter:  21/97 Loss:0.263645(0.382387) LR:1.9805e-04 DataTime:0.23 InferTime:27.22ms Time cost: 1:57:04/25:02:54
+2025-10-25 22:58:44,519   INFO  Training Epoch: 7/100 Iter:  71/97 Loss:0.598125(0.366173) LR:1.9772e-04 DataTime:0.23 InferTime:27.34ms Time cost: 1:57:21/23:18:28
+2025-10-25 22:59:01,531   INFO  Training Epoch: 8/100 Iter:  24/97 Loss:0.521315(0.402105) LR:1.9736e-04 DataTime:0.23 InferTime:27.30ms Time cost: 1:57:38/21:46:59
+2025-10-25 22:59:18,535   INFO  Training Epoch: 8/100 Iter:  74/97 Loss:0.245528(0.397610) LR:1.9697e-04 DataTime:0.22 InferTime:27.06ms Time cost: 1:57:55/20:26:14
+2025-10-25 22:59:35,704   INFO  Training Epoch: 9/100 Iter:  27/97 Loss:0.443828(0.360558) LR:1.9656e-04 DataTime:0.23 InferTime:27.29ms Time cost: 1:58:12/19:14:26
+2025-10-25 22:59:52,634   INFO  Training Epoch: 9/100 Iter:  77/97 Loss:0.695773(0.353354) LR:1.9612e-04 DataTime:0.20 InferTime:27.21ms Time cost: 1:58:29/18:10:07
+2025-10-25 23:00:09,571   INFO  Training Epoch:10/100 Iter:  30/97 Loss:0.301041(0.348713) LR:1.9566e-04 DataTime:0.21 InferTime:27.27ms Time cost: 1:58:46/17:12:12
+2025-10-25 23:00:26,768   INFO  Training Epoch:10/100 Iter:  80/97 Loss:0.391146(0.383894) LR:1.9517e-04 DataTime:0.22 InferTime:27.56ms Time cost: 1:59:03/16:19:48
+2025-10-25 23:00:32,372   INFO  Evaluating Epoch:10 Iter:   0/14 InferTime: 17.45ms
+2025-10-25 23:00:33,609   INFO  Epoch 10 metrics: {'d1_all': tensor(1.7298), 'epe': tensor(0.5876), 'thres_1': tensor(11.9664), 'thres_2': tensor(4.0379), 'thres_3': tensor(2.0677)}
+2025-10-25 23:00:45,114   INFO  Training Epoch:11/100 Iter:  33/97 Loss:0.878780(0.454621) LR:1.9465e-04 DataTime:0.23 InferTime:27.02ms Time cost: 1:59:22/15:32:17
+2025-10-25 23:01:02,235   INFO  Training Epoch:11/100 Iter:  83/97 Loss:0.330207(0.390745) LR:1.9411e-04 DataTime:0.21 InferTime:27.15ms Time cost: 1:59:39/14:48:43
+2025-10-25 23:01:19,213   INFO  Training Epoch:12/100 Iter:  36/97 Loss:0.547806(0.438574) LR:1.9355e-04 DataTime:0.22 InferTime:27.52ms Time cost: 1:59:56/14:08:45
+2025-10-25 23:01:36,331   INFO  Training Epoch:12/100 Iter:  86/97 Loss:0.263203(0.417107) LR:1.9296e-04 DataTime:0.22 InferTime:27.21ms Time cost: 2:00:13/13:31:57
+2025-10-25 23:01:53,344   INFO  Training Epoch:13/100 Iter:  39/97 Loss:0.223690(0.409150) LR:1.9234e-04 DataTime:0.18 InferTime:27.53ms Time cost: 2:00:30/12:57:58
+2025-10-25 23:02:10,514   INFO  Training Epoch:13/100 Iter:  89/97 Loss:0.306623(0.455460) LR:1.9170e-04 DataTime:0.21 InferTime:27.40ms Time cost: 2:00:47/12:26:28
+2025-10-25 23:02:27,688   INFO  Training Epoch:14/100 Iter:  42/97 Loss:0.224517(0.404160) LR:1.9104e-04 DataTime:0.23 InferTime:27.86ms Time cost: 2:01:04/11:57:13
+2025-10-25 23:02:44,835   INFO  Training Epoch:14/100 Iter:  92/97 Loss:0.442838(0.395992) LR:1.9035e-04 DataTime:0.21 InferTime:26.99ms Time cost: 2:01:21/11:29:57
+2025-10-25 23:03:02,031   INFO  Training Epoch:15/100 Iter:  45/97 Loss:0.309069(0.394075) LR:1.8964e-04 DataTime:0.22 InferTime:27.18ms Time cost: 2:01:39/11:04:30
+2025-10-25 23:03:19,156   INFO  Training Epoch:15/100 Iter:  95/97 Loss:0.315113(0.411344) LR:1.8890e-04 DataTime:0.22 InferTime:26.99ms Time cost: 2:01:56/10:40:39
+2025-10-25 23:03:36,348   INFO  Training Epoch:16/100 Iter:  48/97 Loss:0.567484(0.386667) LR:1.8814e-04 DataTime:0.22 InferTime:27.27ms Time cost: 2:02:13/10:18:17
+2025-10-25 23:03:53,437   INFO  Training Epoch:17/100 Iter:   1/97 Loss:0.309178(0.329333) LR:1.8735e-04 DataTime:0.22 InferTime:26.92ms Time cost: 2:02:30/9:57:15
+2025-10-25 23:04:10,461   INFO  Training Epoch:17/100 Iter:  51/97 Loss:0.242857(0.398473) LR:1.8655e-04 DataTime:0.21 InferTime:27.18ms Time cost: 2:02:47/9:37:25
+2025-10-25 23:04:27,498   INFO  Training Epoch:18/100 Iter:   4/97 Loss:0.192369(0.246696) LR:1.8571e-04 DataTime:0.20 InferTime:27.11ms Time cost: 2:03:04/9:18:43
+2025-10-25 23:04:44,721   INFO  Training Epoch:18/100 Iter:  54/97 Loss:0.505008(0.370372) LR:1.8486e-04 DataTime:0.18 InferTime:27.58ms Time cost: 2:03:21/9:01:03
+2025-10-25 23:05:01,806   INFO  Training Epoch:19/100 Iter:   7/97 Loss:0.367994(0.580425) LR:1.8398e-04 DataTime:0.20 InferTime:26.99ms Time cost: 2:03:38/8:44:18
+2025-10-25 23:05:18,819   INFO  Training Epoch:19/100 Iter:  57/97 Loss:0.497677(0.369591) LR:1.8308e-04 DataTime:0.22 InferTime:26.90ms Time cost: 2:03:55/8:28:26
+2025-10-25 23:05:35,907   INFO  Training Epoch:20/100 Iter:  10/97 Loss:0.426829(0.364653) LR:1.8216e-04 DataTime:0.21 InferTime:27.11ms Time cost: 2:04:12/8:13:21
+2025-10-25 23:05:53,120   INFO  Training Epoch:20/100 Iter:  60/97 Loss:0.255863(0.379867) LR:1.8122e-04 DataTime:0.22 InferTime:27.00ms Time cost: 2:04:30/7:59:02
+2025-10-25 23:06:05,863   INFO  Evaluating Epoch:20 Iter:   0/14 InferTime: 17.91ms
+2025-10-25 23:06:07,107   INFO  Epoch 20 metrics: {'d1_all': tensor(1.8027), 'epe': tensor(0.6003), 'thres_1': tensor(12.4817), 'thres_2': tensor(4.3399), 'thres_3': tensor(2.2663)}
+2025-10-25 23:06:11,885   INFO  Training Epoch:21/100 Iter:  13/97 Loss:0.713218(0.426978) LR:1.8025e-04 DataTime:0.22 InferTime:27.25ms Time cost: 2:04:48/7:45:29
+2025-10-25 23:06:29,102   INFO  Training Epoch:21/100 Iter:  63/97 Loss:0.236757(0.384167) LR:1.7927e-04 DataTime:0.22 InferTime:27.27ms Time cost: 2:05:06/7:32:28
+2025-10-25 23:06:46,315   INFO  Training Epoch:22/100 Iter:  16/97 Loss:0.214076(0.413643) LR:1.7826e-04 DataTime:0.19 InferTime:28.65ms Time cost: 2:05:23/7:20:03
+2025-10-25 23:07:03,547   INFO  Training Epoch:22/100 Iter:  66/97 Loss:0.548566(0.390543) LR:1.7723e-04 DataTime:0.22 InferTime:26.98ms Time cost: 2:05:40/7:08:11
+2025-10-25 23:07:20,586   INFO  Training Epoch:23/100 Iter:  19/97 Loss:0.801026(0.381352) LR:1.7618e-04 DataTime:0.21 InferTime:27.04ms Time cost: 2:05:57/6:56:49
+2025-10-25 23:07:37,601   INFO  Training Epoch:23/100 Iter:  69/97 Loss:0.507183(0.368567) LR:1.7511e-04 DataTime:0.21 InferTime:27.31ms Time cost: 2:06:14/6:45:56
+2025-10-25 23:07:54,866   INFO  Training Epoch:24/100 Iter:  22/97 Loss:0.140007(0.276591) LR:1.7402e-04 DataTime:0.20 InferTime:39.50ms Time cost: 2:06:31/6:35:31
+2025-10-25 23:08:11,970   INFO  Training Epoch:24/100 Iter:  72/97 Loss:0.338991(0.388310) LR:1.7291e-04 DataTime:0.23 InferTime:27.21ms Time cost: 2:06:49/6:25:31
+2025-10-25 23:08:29,038   INFO  Training Epoch:25/100 Iter:  25/97 Loss:0.466384(0.376127) LR:1.7178e-04 DataTime:0.22 InferTime:27.04ms Time cost: 2:07:06/6:15:54
+2025-10-25 23:08:46,112   INFO  Training Epoch:25/100 Iter:  75/97 Loss:0.290996(0.380064) LR:1.7064e-04 DataTime:0.22 InferTime:27.12ms Time cost: 2:07:23/6:06:40
+2025-10-25 23:09:03,289   INFO  Training Epoch:26/100 Iter:  28/97 Loss:0.850111(0.461097) LR:1.6947e-04 DataTime:0.22 InferTime:27.24ms Time cost: 2:07:40/5:57:47
+2025-10-25 23:09:20,656   INFO  Training Epoch:26/100 Iter:  78/97 Loss:0.240920(0.417323) LR:1.6828e-04 DataTime:0.23 InferTime:27.32ms Time cost: 2:07:57/5:49:15
+2025-10-25 23:09:37,943   INFO  Training Epoch:27/100 Iter:  31/97 Loss:0.450068(0.404474) LR:1.6708e-04 DataTime:0.23 InferTime:27.47ms Time cost: 2:08:14/5:41:00
+2025-10-25 23:09:54,967   INFO  Training Epoch:27/100 Iter:  81/97 Loss:0.281013(0.382614) LR:1.6586e-04 DataTime:0.19 InferTime:27.06ms Time cost: 2:08:32/5:33:03
+2025-10-25 23:10:12,108   INFO  Training Epoch:28/100 Iter:  34/97 Loss:0.373005(0.416857) LR:1.6462e-04 DataTime:0.23 InferTime:27.13ms Time cost: 2:08:49/5:25:23
+2025-10-25 23:10:29,328   INFO  Training Epoch:28/100 Iter:  84/97 Loss:0.479981(0.441419) LR:1.6336e-04 DataTime:0.22 InferTime:27.46ms Time cost: 2:09:06/5:17:59
+2025-10-25 23:10:46,573   INFO  Training Epoch:29/100 Iter:  37/97 Loss:0.738856(0.409036) LR:1.6209e-04 DataTime:0.20 InferTime:27.16ms Time cost: 2:09:23/5:10:50
+2025-10-25 23:11:03,681   INFO  Training Epoch:29/100 Iter:  87/97 Loss:0.142899(0.379665) LR:1.6080e-04 DataTime:0.20 InferTime:27.49ms Time cost: 2:09:40/5:03:55
+2025-10-25 23:11:21,001   INFO  Training Epoch:30/100 Iter:  40/97 Loss:0.323076(0.376580) LR:1.5949e-04 DataTime:0.22 InferTime:27.46ms Time cost: 2:09:58/4:57:14
+2025-10-25 23:11:38,266   INFO  Training Epoch:30/100 Iter:  90/97 Loss:0.341826(0.377530) LR:1.5817e-04 DataTime:0.23 InferTime:27.13ms Time cost: 2:10:15/4:50:45
+2025-10-25 23:11:40,534   INFO  Evaluating Epoch:30 Iter:   0/14 InferTime: 17.84ms
+2025-10-25 23:11:41,774   INFO  Epoch 30 metrics: {'d1_all': tensor(1.6406), 'epe': tensor(0.5944), 'thres_1': tensor(12.6153), 'thres_2': tensor(4.4414), 'thres_3': tensor(2.1739)}
+2025-10-25 23:11:56,831   INFO  Training Epoch:31/100 Iter:  43/97 Loss:0.568494(0.435279) LR:1.5683e-04 DataTime:0.23 InferTime:27.56ms Time cost: 2:10:33/4:44:32
+2025-10-25 23:12:14,004   INFO  Training Epoch:31/100 Iter:  93/97 Loss:0.187293(0.390809) LR:1.5547e-04 DataTime:0.21 InferTime:27.29ms Time cost: 2:10:51/4:38:27
+2025-10-25 23:12:31,244   INFO  Training Epoch:32/100 Iter:  46/97 Loss:0.249529(0.356735) LR:1.5411e-04 DataTime:0.23 InferTime:29.30ms Time cost: 2:11:08/4:32:33
+2025-10-25 23:12:48,390   INFO  Training Epoch:32/100 Iter:  96/97 Loss:0.740853(0.369700) LR:1.5272e-04 DataTime:0.22 InferTime:27.10ms Time cost: 2:11:25/4:26:49
+2025-10-25 23:13:05,511   INFO  Training Epoch:33/100 Iter:  49/97 Loss:0.256386(0.334038) LR:1.5133e-04 DataTime:0.20 InferTime:27.16ms Time cost: 2:11:42/4:21:16
+2025-10-25 23:13:22,811   INFO  Training Epoch:34/100 Iter:   2/97 Loss:0.199062(0.260901) LR:1.4992e-04 DataTime:0.21 InferTime:27.22ms Time cost: 2:11:59/4:15:52
+2025-10-25 23:13:39,872   INFO  Training Epoch:34/100 Iter:  52/97 Loss:0.237085(0.351296) LR:1.4849e-04 DataTime:0.19 InferTime:27.50ms Time cost: 2:12:16/4:10:37
+2025-10-25 23:13:57,019   INFO  Training Epoch:35/100 Iter:   5/97 Loss:0.236171(0.355306) LR:1.4705e-04 DataTime:0.22 InferTime:27.29ms Time cost: 2:12:34/4:05:31
+2025-10-25 23:14:14,264   INFO  Training Epoch:35/100 Iter:  55/97 Loss:0.315971(0.349696) LR:1.4560e-04 DataTime:0.20 InferTime:27.03ms Time cost: 2:12:51/4:00:34
+2025-10-25 23:14:31,482   INFO  Training Epoch:36/100 Iter:   8/97 Loss:0.164210(0.321962) LR:1.4414e-04 DataTime:0.22 InferTime:27.36ms Time cost: 2:13:08/3:55:44
+2025-10-25 23:14:48,591   INFO  Training Epoch:36/100 Iter:  58/97 Loss:0.477423(0.369199) LR:1.4267e-04 DataTime:0.22 InferTime:26.98ms Time cost: 2:13:25/3:51:02
+2025-10-25 23:15:05,754   INFO  Training Epoch:37/100 Iter:  11/97 Loss:0.236900(0.368197) LR:1.4118e-04 DataTime:0.20 InferTime:27.53ms Time cost: 2:13:42/3:46:28
+2025-10-25 23:15:23,035   INFO  Training Epoch:37/100 Iter:  61/97 Loss:0.320271(0.340345) LR:1.3969e-04 DataTime:0.22 InferTime:27.48ms Time cost: 2:14:00/3:42:00
+2025-10-25 23:15:40,065   INFO  Training Epoch:38/100 Iter:  14/97 Loss:0.145660(0.240671) LR:1.3818e-04 DataTime:0.21 InferTime:26.96ms Time cost: 2:14:17/3:37:39
+2025-10-25 23:15:57,371   INFO  Training Epoch:38/100 Iter:  64/97 Loss:0.290839(0.353636) LR:1.3666e-04 DataTime:0.21 InferTime:27.28ms Time cost: 2:14:34/3:33:25
+2025-10-25 23:16:14,564   INFO  Training Epoch:39/100 Iter:  17/97 Loss:0.170987(0.327233) LR:1.3514e-04 DataTime:0.20 InferTime:27.40ms Time cost: 2:14:51/3:29:17
+2025-10-25 23:16:31,692   INFO  Training Epoch:39/100 Iter:  67/97 Loss:0.394292(0.368537) LR:1.3360e-04 DataTime:0.22 InferTime:27.36ms Time cost: 2:15:08/3:25:15
+2025-10-25 23:16:48,768   INFO  Training Epoch:40/100 Iter:  20/97 Loss:0.216865(0.315671) LR:1.3206e-04 DataTime:0.22 InferTime:27.00ms Time cost: 2:15:25/3:21:19
+2025-10-25 23:17:05,629   INFO  Training Epoch:40/100 Iter:  70/97 Loss:0.336894(0.350752) LR:1.3050e-04 DataTime:0.20 InferTime:26.98ms Time cost: 2:15:42/3:17:28
+2025-10-25 23:17:14,874   INFO  Evaluating Epoch:40 Iter:   0/14 InferTime: 17.65ms
+2025-10-25 23:17:16,113   INFO  Epoch 40 metrics: {'d1_all': tensor(1.6510), 'epe': tensor(0.5560), 'thres_1': tensor(11.4932), 'thres_2': tensor(3.8461), 'thres_3': tensor(1.9578)}
+2025-10-25 23:17:24,315   INFO  Training Epoch:41/100 Iter:  23/97 Loss:0.360477(0.301266) LR:1.2894e-04 DataTime:0.20 InferTime:27.43ms Time cost: 2:16:01/3:13:44
+2025-10-25 23:17:41,519   INFO  Training Epoch:41/100 Iter:  73/97 Loss:0.359897(0.327174) LR:1.2737e-04 DataTime:0.23 InferTime:27.43ms Time cost: 2:16:18/3:10:04
+2025-10-25 23:17:58,833   INFO  Training Epoch:42/100 Iter:  26/97 Loss:0.247751(0.369995) LR:1.2580e-04 DataTime:0.21 InferTime:27.66ms Time cost: 2:16:35/3:06:29
+2025-10-25 23:18:15,907   INFO  Training Epoch:42/100 Iter:  76/97 Loss:0.151776(0.359431) LR:1.2421e-04 DataTime:0.21 InferTime:27.23ms Time cost: 2:16:52/3:02:58
+2025-10-25 23:18:33,139   INFO  Training Epoch:43/100 Iter:  29/97 Loss:0.322785(0.374145) LR:1.2262e-04 DataTime:0.19 InferTime:27.08ms Time cost: 2:17:10/2:59:33
+2025-10-25 23:18:50,061   INFO  Training Epoch:43/100 Iter:  79/97 Loss:0.266296(0.328071) LR:1.2103e-04 DataTime:0.20 InferTime:27.36ms Time cost: 2:17:27/2:56:11
+2025-10-25 23:19:07,301   INFO  Training Epoch:44/100 Iter:  32/97 Loss:0.471093(0.371651) LR:1.1942e-04 DataTime:0.22 InferTime:27.05ms Time cost: 2:17:44/2:52:54
+2025-10-25 23:19:24,470   INFO  Training Epoch:44/100 Iter:  82/97 Loss:0.231356(0.414948) LR:1.1782e-04 DataTime:0.21 InferTime:29.46ms Time cost: 2:18:01/2:49:41
+2025-10-25 23:19:41,667   INFO  Training Epoch:45/100 Iter:  35/97 Loss:0.703058(0.382242) LR:1.1620e-04 DataTime:0.22 InferTime:26.97ms Time cost: 2:18:18/2:46:32
+2025-10-25 23:19:58,851   INFO  Training Epoch:45/100 Iter:  85/97 Loss:0.178646(0.366499) LR:1.1459e-04 DataTime:0.21 InferTime:27.05ms Time cost: 2:18:35/2:43:26
+2025-10-25 23:20:16,069   INFO  Training Epoch:46/100 Iter:  38/97 Loss:0.212020(0.321892) LR:1.1297e-04 DataTime:0.20 InferTime:27.12ms Time cost: 2:18:53/2:40:25
+2025-10-25 23:20:33,145   INFO  Training Epoch:46/100 Iter:  88/97 Loss:0.248386(0.333839) LR:1.1134e-04 DataTime:0.19 InferTime:27.32ms Time cost: 2:19:10/2:37:27
+2025-10-25 23:20:50,184   INFO  Training Epoch:47/100 Iter:  41/97 Loss:0.437519(0.358913) LR:1.0972e-04 DataTime:0.20 InferTime:27.24ms Time cost: 2:19:27/2:34:32
+2025-10-25 23:21:07,390   INFO  Training Epoch:47/100 Iter:  91/97 Loss:0.403721(0.361281) LR:1.0809e-04 DataTime:0.21 InferTime:26.82ms Time cost: 2:19:44/2:31:41
+2025-10-25 23:21:24,547   INFO  Training Epoch:48/100 Iter:  44/97 Loss:0.342966(0.369112) LR:1.0646e-04 DataTime:0.19 InferTime:27.04ms Time cost: 2:20:01/2:28:54
+2025-10-25 23:21:41,554   INFO  Training Epoch:48/100 Iter:  94/97 Loss:0.306052(0.363308) LR:1.0482e-04 DataTime:0.22 InferTime:27.44ms Time cost: 2:20:18/2:26:09
+2025-10-25 23:21:58,883   INFO  Training Epoch:49/100 Iter:  47/97 Loss:0.247895(0.362176) LR:1.0319e-04 DataTime:0.23 InferTime:27.35ms Time cost: 2:20:35/2:23:28
+2025-10-25 23:22:15,905   INFO  Training Epoch:50/100 Iter:   0/97 Loss:0.223732(0.223732) LR:1.0155e-04 DataTime:0.22 InferTime:27.11ms Time cost: 2:20:52/2:20:49
+2025-10-25 23:22:33,022   INFO  Training Epoch:50/100 Iter:  50/97 Loss:0.523490(0.362376) LR:9.9919e-05 DataTime:0.20 InferTime:27.50ms Time cost: 2:21:10/2:18:13
+2025-10-25 23:22:48,949   INFO  Evaluating Epoch:50 Iter:   0/14 InferTime: 17.76ms
+2025-10-25 23:22:50,200   INFO  Epoch 50 metrics: {'d1_all': tensor(1.5913), 'epe': tensor(0.5517), 'thres_1': tensor(11.5075), 'thres_2': tensor(3.7919), 'thres_3': tensor(1.9210)}
+2025-10-25 23:22:51,525   INFO  Training Epoch:51/100 Iter:   3/97 Loss:0.565360(0.401431) LR:9.8283e-05 DataTime:0.19 InferTime:27.48ms Time cost: 2:21:28/2:15:42
+2025-10-25 23:23:08,728   INFO  Training Epoch:51/100 Iter:  53/97 Loss:0.211376(0.329895) LR:9.6648e-05 DataTime:0.23 InferTime:27.25ms Time cost: 2:21:45/2:13:12
+2025-10-25 23:23:25,664   INFO  Training Epoch:52/100 Iter:   6/97 Loss:0.357147(0.236128) LR:9.5013e-05 DataTime:0.22 InferTime:27.17ms Time cost: 2:22:02/2:10:44
+2025-10-25 23:23:42,695   INFO  Training Epoch:52/100 Iter:  56/97 Loss:0.205756(0.360901) LR:9.3381e-05 DataTime:0.21 InferTime:27.45ms Time cost: 2:22:19/2:08:19
+2025-10-25 23:23:59,936   INFO  Training Epoch:53/100 Iter:   9/97 Loss:0.408985(0.250972) LR:9.1749e-05 DataTime:0.22 InferTime:26.89ms Time cost: 2:22:36/2:05:56
+2025-10-25 23:24:17,187   INFO  Training Epoch:53/100 Iter:  59/97 Loss:0.324947(0.338866) LR:9.0120e-05 DataTime:0.19 InferTime:27.12ms Time cost: 2:22:54/2:03:36
+2025-10-25 23:24:34,477   INFO  Training Epoch:54/100 Iter:  12/97 Loss:0.208221(0.346144) LR:8.8494e-05 DataTime:0.23 InferTime:27.05ms Time cost: 2:23:11/2:01:19
+2025-10-25 23:24:51,576   INFO  Training Epoch:54/100 Iter:  62/97 Loss:0.377642(0.382086) LR:8.6871e-05 DataTime:0.22 InferTime:27.54ms Time cost: 2:23:28/1:59:03
+2025-10-25 23:25:08,854   INFO  Training Epoch:55/100 Iter:  15/97 Loss:0.385043(0.303587) LR:8.5251e-05 DataTime:0.21 InferTime:27.21ms Time cost: 2:23:45/1:56:50
+2025-10-25 23:25:26,057   INFO  Training Epoch:55/100 Iter:  65/97 Loss:0.262132(0.339517) LR:8.3635e-05 DataTime:0.21 InferTime:26.99ms Time cost: 2:24:03/1:54:39
+2025-10-25 23:25:43,279   INFO  Training Epoch:56/100 Iter:  18/97 Loss:0.337618(0.358605) LR:8.2024e-05 DataTime:0.21 InferTime:27.52ms Time cost: 2:24:20/1:52:30
+2025-10-25 23:26:00,539   INFO  Training Epoch:56/100 Iter:  68/97 Loss:0.199650(0.316658) LR:8.0417e-05 DataTime:0.21 InferTime:27.18ms Time cost: 2:24:37/1:50:23
+2025-10-25 23:26:17,778   INFO  Training Epoch:57/100 Iter:  21/97 Loss:0.170369(0.367656) LR:7.8816e-05 DataTime:0.22 InferTime:27.04ms Time cost: 2:24:54/1:48:18
+2025-10-25 23:26:34,895   INFO  Training Epoch:57/100 Iter:  71/97 Loss:0.309460(0.337949) LR:7.7220e-05 DataTime:0.22 InferTime:27.07ms Time cost: 2:25:11/1:46:15
+2025-10-25 23:26:52,190   INFO  Training Epoch:58/100 Iter:  24/97 Loss:0.305849(0.337718) LR:7.5631e-05 DataTime:0.21 InferTime:27.03ms Time cost: 2:25:29/1:44:14
+2025-10-25 23:27:09,342   INFO  Training Epoch:58/100 Iter:  74/97 Loss:0.363811(0.318117) LR:7.4048e-05 DataTime:0.22 InferTime:27.09ms Time cost: 2:25:46/1:42:15
+2025-10-25 23:27:26,460   INFO  Training Epoch:59/100 Iter:  27/97 Loss:0.603882(0.314510) LR:7.2471e-05 DataTime:0.21 InferTime:27.08ms Time cost: 2:26:03/1:40:17
+2025-10-25 23:27:43,547   INFO  Training Epoch:59/100 Iter:  77/97 Loss:0.715265(0.299203) LR:7.0903e-05 DataTime:0.20 InferTime:27.47ms Time cost: 2:26:20/1:38:21
+2025-10-25 23:28:00,725   INFO  Training Epoch:60/100 Iter:  30/97 Loss:0.421596(0.321001) LR:6.9342e-05 DataTime:0.22 InferTime:26.88ms Time cost: 2:26:37/1:36:27
+2025-10-25 23:28:17,789   INFO  Training Epoch:60/100 Iter:  80/97 Loss:0.222771(0.331589) LR:6.7789e-05 DataTime:0.23 InferTime:26.98ms Time cost: 2:26:54/1:34:34
+2025-10-25 23:28:23,663   INFO  Evaluating Epoch:60 Iter:   0/14 InferTime: 18.03ms
+2025-10-25 23:28:24,913   INFO  Epoch 60 metrics: {'d1_all': tensor(1.5660), 'epe': tensor(0.5512), 'thres_1': tensor(11.0631), 'thres_2': tensor(3.7598), 'thres_3': tensor(1.9175)}
+2025-10-25 23:28:36,321   INFO  Training Epoch:61/100 Iter:  33/97 Loss:0.154784(0.298811) LR:6.6245e-05 DataTime:0.22 InferTime:26.97ms Time cost: 2:27:13/1:32:44
+2025-10-25 23:28:53,443   INFO  Training Epoch:61/100 Iter:  83/97 Loss:0.187015(0.317428) LR:6.4710e-05 DataTime:0.23 InferTime:27.12ms Time cost: 2:27:30/1:30:55
+2025-10-25 23:29:10,794   INFO  Training Epoch:62/100 Iter:  36/97 Loss:0.272304(0.296998) LR:6.3184e-05 DataTime:0.21 InferTime:27.33ms Time cost: 2:27:47/1:29:07
+2025-10-25 23:29:27,978   INFO  Training Epoch:62/100 Iter:  86/97 Loss:0.237623(0.313308) LR:6.1668e-05 DataTime:0.19 InferTime:27.45ms Time cost: 2:28:05/1:27:21
+2025-10-25 23:29:45,220   INFO  Training Epoch:63/100 Iter:  39/97 Loss:0.455059(0.277258) LR:6.0162e-05 DataTime:0.22 InferTime:26.96ms Time cost: 2:28:22/1:25:36
+2025-10-25 23:30:02,285   INFO  Training Epoch:63/100 Iter:  89/97 Loss:0.283234(0.308086) LR:5.8667e-05 DataTime:0.22 InferTime:27.03ms Time cost: 2:28:39/1:23:52
+2025-10-25 23:30:19,401   INFO  Training Epoch:64/100 Iter:  42/97 Loss:0.316260(0.347731) LR:5.7184e-05 DataTime:0.22 InferTime:26.99ms Time cost: 2:28:56/1:22:10
+2025-10-25 23:30:36,547   INFO  Training Epoch:64/100 Iter:  92/97 Loss:0.194323(0.353324) LR:5.5711e-05 DataTime:0.21 InferTime:27.03ms Time cost: 2:29:13/1:20:29
+2025-10-25 23:30:53,684   INFO  Training Epoch:65/100 Iter:  45/97 Loss:0.285994(0.353987) LR:5.4251e-05 DataTime:0.22 InferTime:27.44ms Time cost: 2:29:30/1:18:50
+2025-10-25 23:31:10,771   INFO  Training Epoch:65/100 Iter:  95/97 Loss:0.198300(0.333363) LR:5.2802e-05 DataTime:0.22 InferTime:27.21ms Time cost: 2:29:47/1:17:12
+2025-10-25 23:31:28,011   INFO  Training Epoch:66/100 Iter:  48/97 Loss:0.278996(0.354060) LR:5.1367e-05 DataTime:0.22 InferTime:27.34ms Time cost: 2:30:05/1:15:35
+2025-10-25 23:31:45,390   INFO  Training Epoch:67/100 Iter:   1/97 Loss:0.257749(0.246181) LR:4.9944e-05 DataTime:0.22 InferTime:27.35ms Time cost: 2:30:22/1:13:59
+2025-10-25 23:32:02,623   INFO  Training Epoch:67/100 Iter:  51/97 Loss:0.275432(0.345808) LR:4.8535e-05 DataTime:0.21 InferTime:27.02ms Time cost: 2:30:39/1:12:25
+2025-10-25 23:32:19,705   INFO  Training Epoch:68/100 Iter:   4/97 Loss:0.201642(0.262134) LR:4.7139e-05 DataTime:0.22 InferTime:27.20ms Time cost: 2:30:56/1:10:51
+2025-10-25 23:32:36,911   INFO  Training Epoch:68/100 Iter:  54/97 Loss:0.167478(0.307236) LR:4.5758e-05 DataTime:0.19 InferTime:27.33ms Time cost: 2:31:13/1:09:19
+2025-10-25 23:32:54,115   INFO  Training Epoch:69/100 Iter:   7/97 Loss:0.375312(0.328746) LR:4.4391e-05 DataTime:0.21 InferTime:27.08ms Time cost: 2:31:31/1:07:48
+2025-10-25 23:33:11,328   INFO  Training Epoch:69/100 Iter:  57/97 Loss:0.260416(0.289466) LR:4.3039e-05 DataTime:0.22 InferTime:26.95ms Time cost: 2:31:48/1:06:18
+2025-10-25 23:33:28,393   INFO  Training Epoch:70/100 Iter:  10/97 Loss:0.258766(0.281681) LR:4.1702e-05 DataTime:0.20 InferTime:27.25ms Time cost: 2:32:05/1:04:49
+2025-10-25 23:33:45,384   INFO  Training Epoch:70/100 Iter:  60/97 Loss:0.187208(0.350520) LR:4.0381e-05 DataTime:0.20 InferTime:27.05ms Time cost: 2:32:22/1:03:21
+2025-10-25 23:33:57,822   INFO  Evaluating Epoch:70 Iter:   0/14 InferTime: 18.05ms
+2025-10-25 23:33:59,072   INFO  Epoch 70 metrics: {'d1_all': tensor(1.5471), 'epe': tensor(0.5371), 'thres_1': tensor(10.5894), 'thres_2': tensor(3.5977), 'thres_3': tensor(1.8643)}
+2025-10-25 23:34:03,776   INFO  Training Epoch:71/100 Iter:  13/97 Loss:0.337028(0.246536) LR:3.9076e-05 DataTime:0.19 InferTime:27.20ms Time cost: 2:32:40/1:01:55
+2025-10-25 23:34:20,936   INFO  Training Epoch:71/100 Iter:  63/97 Loss:0.388593(0.306363) LR:3.7787e-05 DataTime:0.22 InferTime:27.11ms Time cost: 2:32:57/1:00:29
+2025-10-25 23:34:38,274   INFO  Training Epoch:72/100 Iter:  16/97 Loss:0.175333(0.272692) LR:3.6515e-05 DataTime:0.22 InferTime:27.37ms Time cost: 2:33:15/59:04
+2025-10-25 23:34:55,367   INFO  Training Epoch:72/100 Iter:  66/97 Loss:0.509772(0.321391) LR:3.5259e-05 DataTime:0.21 InferTime:27.39ms Time cost: 2:33:32/57:41
+2025-10-25 23:35:12,603   INFO  Training Epoch:73/100 Iter:  19/97 Loss:0.450894(0.338327) LR:3.4022e-05 DataTime:0.22 InferTime:27.52ms Time cost: 2:33:49/56:18
+2025-10-25 23:35:29,787   INFO  Training Epoch:73/100 Iter:  69/97 Loss:0.216833(0.304802) LR:3.2801e-05 DataTime:0.20 InferTime:27.17ms Time cost: 2:34:06/54:56
+2025-10-25 23:35:46,808   INFO  Training Epoch:74/100 Iter:  22/97 Loss:0.814637(0.366740) LR:3.1599e-05 DataTime:0.23 InferTime:27.01ms Time cost: 2:34:23/53:34
+2025-10-25 23:36:04,091   INFO  Training Epoch:74/100 Iter:  72/97 Loss:0.292742(0.330175) LR:3.0415e-05 DataTime:0.21 InferTime:27.15ms Time cost: 2:34:41/52:14
+2025-10-25 23:36:21,174   INFO  Training Epoch:75/100 Iter:  25/97 Loss:0.498583(0.350333) LR:2.9250e-05 DataTime:0.24 InferTime:27.12ms Time cost: 2:34:58/50:55
+2025-10-25 23:36:38,249   INFO  Training Epoch:75/100 Iter:  75/97 Loss:0.165713(0.310797) LR:2.8103e-05 DataTime:0.20 InferTime:27.59ms Time cost: 2:35:15/49:36
+2025-10-25 23:36:55,389   INFO  Training Epoch:76/100 Iter:  28/97 Loss:0.331381(0.364827) LR:2.6976e-05 DataTime:0.21 InferTime:27.29ms Time cost: 2:35:32/48:18
+2025-10-25 23:37:12,553   INFO  Training Epoch:76/100 Iter:  78/97 Loss:0.223694(0.305575) LR:2.5868e-05 DataTime:0.19 InferTime:27.56ms Time cost: 2:35:49/47:02
+2025-10-25 23:37:29,659   INFO  Training Epoch:77/100 Iter:  31/97 Loss:0.672625(0.297846) LR:2.4780e-05 DataTime:0.23 InferTime:27.26ms Time cost: 2:36:06/45:45
+2025-10-25 23:37:46,708   INFO  Training Epoch:77/100 Iter:  81/97 Loss:0.337479(0.299613) LR:2.3713e-05 DataTime:0.18 InferTime:27.27ms Time cost: 2:36:23/44:30
+2025-10-25 23:38:03,803   INFO  Training Epoch:78/100 Iter:  34/97 Loss:0.337945(0.290287) LR:2.2665e-05 DataTime:0.22 InferTime:27.07ms Time cost: 2:36:40/43:16
+2025-10-25 23:38:21,001   INFO  Training Epoch:78/100 Iter:  84/97 Loss:0.230812(0.313552) LR:2.1639e-05 DataTime:0.22 InferTime:27.66ms Time cost: 2:36:58/42:02
+2025-10-25 23:38:38,258   INFO  Training Epoch:79/100 Iter:  37/97 Loss:0.239254(0.315909) LR:2.0633e-05 DataTime:0.22 InferTime:27.00ms Time cost: 2:37:15/40:49
+2025-10-25 23:38:55,432   INFO  Training Epoch:79/100 Iter:  87/97 Loss:0.208982(0.312964) LR:1.9649e-05 DataTime:0.22 InferTime:27.31ms Time cost: 2:37:32/39:36
+2025-10-25 23:39:12,474   INFO  Training Epoch:80/100 Iter:  40/97 Loss:0.277981(0.313651) LR:1.8686e-05 DataTime:0.20 InferTime:26.96ms Time cost: 2:37:49/38:25
+2025-10-25 23:39:29,756   INFO  Training Epoch:80/100 Iter:  90/97 Loss:0.349187(0.320948) LR:1.7745e-05 DataTime:0.23 InferTime:27.28ms Time cost: 2:38:06/37:14
+2025-10-25 23:39:32,197   INFO  Evaluating Epoch:80 Iter:   0/14 InferTime: 17.74ms
+2025-10-25 23:39:33,454   INFO  Epoch 80 metrics: {'d1_all': tensor(1.5735), 'epe': tensor(0.5338), 'thres_1': tensor(10.6504), 'thres_2': tensor(3.5756), 'thres_3': tensor(1.8857)}
+2025-10-25 23:39:48,522   INFO  Training Epoch:81/100 Iter:  43/97 Loss:0.237243(0.325732) LR:1.6825e-05 DataTime:0.22 InferTime:28.05ms Time cost: 2:38:25/36:04
+2025-10-25 23:40:05,602   INFO  Training Epoch:81/100 Iter:  93/97 Loss:0.169628(0.318370) LR:1.5928e-05 DataTime:0.20 InferTime:27.16ms Time cost: 2:38:42/34:54
+2025-10-25 23:40:22,818   INFO  Training Epoch:82/100 Iter:  46/97 Loss:0.349928(0.326922) LR:1.5054e-05 DataTime:0.22 InferTime:27.11ms Time cost: 2:38:59/33:45
+2025-10-25 23:40:39,719   INFO  Training Epoch:82/100 Iter:  96/97 Loss:0.211054(0.312887) LR:1.4202e-05 DataTime:0.20 InferTime:27.00ms Time cost: 2:39:16/32:37
+2025-10-25 23:40:56,749   INFO  Training Epoch:83/100 Iter:  49/97 Loss:0.202790(0.316697) LR:1.3374e-05 DataTime:0.23 InferTime:27.15ms Time cost: 2:39:33/31:29
+2025-10-25 23:41:13,862   INFO  Training Epoch:84/100 Iter:   2/97 Loss:0.313251(0.289356) LR:1.2568e-05 DataTime:0.22 InferTime:27.66ms Time cost: 2:39:50/30:22
+2025-10-25 23:41:30,958   INFO  Training Epoch:84/100 Iter:  52/97 Loss:0.259882(0.276560) LR:1.1786e-05 DataTime:0.18 InferTime:27.42ms Time cost: 2:40:08/29:16
+2025-10-25 23:41:48,091   INFO  Training Epoch:85/100 Iter:   5/97 Loss:0.154259(0.265163) LR:1.1027e-05 DataTime:0.21 InferTime:27.12ms Time cost: 2:40:25/28:10
+2025-10-25 23:42:05,169   INFO  Training Epoch:85/100 Iter:  55/97 Loss:0.219601(0.299370) LR:1.0293e-05 DataTime:0.22 InferTime:27.43ms Time cost: 2:40:42/27:05
+2025-10-25 23:42:22,194   INFO  Training Epoch:86/100 Iter:   8/97 Loss:0.206878(0.263944) LR:9.5820e-06 DataTime:0.19 InferTime:27.04ms Time cost: 2:40:59/26:00
+2025-10-25 23:42:39,180   INFO  Training Epoch:86/100 Iter:  58/97 Loss:0.277472(0.284069) LR:8.8954e-06 DataTime:0.22 InferTime:27.02ms Time cost: 2:41:16/24:56
+2025-10-25 23:42:56,272   INFO  Training Epoch:87/100 Iter:  11/97 Loss:0.227891(0.272729) LR:8.2332e-06 DataTime:0.21 InferTime:26.94ms Time cost: 2:41:33/23:52
+2025-10-25 23:43:13,417   INFO  Training Epoch:87/100 Iter:  61/97 Loss:0.378333(0.291712) LR:7.5956e-06 DataTime:0.22 InferTime:27.18ms Time cost: 2:41:50/22:49
+2025-10-25 23:43:30,525   INFO  Training Epoch:88/100 Iter:  14/97 Loss:0.296865(0.269517) LR:6.9827e-06 DataTime:0.22 InferTime:27.22ms Time cost: 2:42:07/21:47
+2025-10-25 23:43:47,635   INFO  Training Epoch:88/100 Iter:  64/97 Loss:0.268976(0.278543) LR:6.3947e-06 DataTime:0.21 InferTime:27.47ms Time cost: 2:42:24/20:45
+2025-10-25 23:44:04,696   INFO  Training Epoch:89/100 Iter:  17/97 Loss:0.176892(0.311280) LR:5.8317e-06 DataTime:0.21 InferTime:27.25ms Time cost: 2:42:41/19:43
+2025-10-25 23:44:21,874   INFO  Training Epoch:89/100 Iter:  67/97 Loss:0.202937(0.328658) LR:5.2940e-06 DataTime:0.20 InferTime:27.35ms Time cost: 2:42:58/18:42
+2025-10-25 23:44:38,880   INFO  Training Epoch:90/100 Iter:  20/97 Loss:0.218253(0.313415) LR:4.7815e-06 DataTime:0.19 InferTime:27.54ms Time cost: 2:43:15/17:42
+2025-10-25 23:44:55,919   INFO  Training Epoch:90/100 Iter:  70/97 Loss:0.214683(0.325719) LR:4.2946e-06 DataTime:0.21 InferTime:27.01ms Time cost: 2:43:32/16:42
+2025-10-25 23:45:04,828   INFO  Evaluating Epoch:90 Iter:   0/14 InferTime: 17.87ms
+2025-10-25 23:45:06,071   INFO  Epoch 90 metrics: {'d1_all': tensor(1.4914), 'epe': tensor(0.5236), 'thres_1': tensor(10.4353), 'thres_2': tensor(3.4013), 'thres_3': tensor(1.7764)}
+2025-10-25 23:45:14,264   INFO  Training Epoch:91/100 Iter:  23/97 Loss:0.271687(0.297853) LR:3.8332e-06 DataTime:0.23 InferTime:28.81ms Time cost: 2:43:51/15:43
+2025-10-25 23:45:31,478   INFO  Training Epoch:91/100 Iter:  73/97 Loss:0.213163(0.302511) LR:3.3976e-06 DataTime:0.21 InferTime:27.38ms Time cost: 2:44:08/14:44
+2025-10-25 23:45:48,451   INFO  Training Epoch:92/100 Iter:  26/97 Loss:0.151854(0.275613) LR:2.9879e-06 DataTime:0.19 InferTime:27.13ms Time cost: 2:44:25/13:45
+2025-10-25 23:46:05,526   INFO  Training Epoch:92/100 Iter:  76/97 Loss:0.171632(0.317865) LR:2.6040e-06 DataTime:0.23 InferTime:27.45ms Time cost: 2:44:42/12:47
+2025-10-25 23:46:22,759   INFO  Training Epoch:93/100 Iter:  29/97 Loss:0.537374(0.286442) LR:2.2463e-06 DataTime:0.23 InferTime:30.43ms Time cost: 2:44:59/11:49
+2025-10-25 23:46:40,007   INFO  Training Epoch:93/100 Iter:  79/97 Loss:0.374564(0.330564) LR:1.9147e-06 DataTime:0.22 InferTime:26.94ms Time cost: 2:45:17/10:52
+2025-10-25 23:46:57,087   INFO  Training Epoch:94/100 Iter:  32/97 Loss:0.448679(0.353016) LR:1.6093e-06 DataTime:0.21 InferTime:27.29ms Time cost: 2:45:34/09:55
+2025-10-25 23:47:14,032   INFO  Training Epoch:94/100 Iter:  82/97 Loss:0.233579(0.326891) LR:1.3303e-06 DataTime:0.20 InferTime:28.52ms Time cost: 2:45:51/08:59
+2025-10-25 23:47:31,281   INFO  Training Epoch:95/100 Iter:  35/97 Loss:0.340420(0.292031) LR:1.0777e-06 DataTime:0.21 InferTime:27.39ms Time cost: 2:46:08/08:03
+2025-10-25 23:47:48,267   INFO  Training Epoch:95/100 Iter:  85/97 Loss:0.147583(0.295673) LR:8.5151e-07 DataTime:0.22 InferTime:27.01ms Time cost: 2:46:25/07:08
+2025-10-25 23:48:05,180   INFO  Training Epoch:96/100 Iter:  38/97 Loss:0.352207(0.305951) LR:6.5188e-07 DataTime:0.21 InferTime:27.45ms Time cost: 2:46:42/06:13
+2025-10-25 23:48:22,110   INFO  Training Epoch:96/100 Iter:  88/97 Loss:0.252897(0.290495) LR:4.7882e-07 DataTime:0.20 InferTime:27.10ms Time cost: 2:46:59/05:18
+2025-10-25 23:48:39,158   INFO  Training Epoch:97/100 Iter:  41/97 Loss:0.623128(0.297102) LR:3.3240e-07 DataTime:0.22 InferTime:27.21ms Time cost: 2:47:16/04:24
+2025-10-25 23:48:56,115   INFO  Training Epoch:97/100 Iter:  91/97 Loss:0.0923413(0.307949) LR:2.1264e-07 DataTime:0.19 InferTime:27.55ms Time cost: 2:47:33/03:30
+2025-10-25 23:49:13,279   INFO  Training Epoch:98/100 Iter:  44/97 Loss:0.144120(0.289942) LR:1.1958e-07 DataTime:0.22 InferTime:27.56ms Time cost: 2:47:50/02:37
+2025-10-25 23:49:30,284   INFO  Training Epoch:98/100 Iter:  94/97 Loss:0.255710(0.287292) LR:5.3243e-08 DataTime:0.23 InferTime:27.21ms Time cost: 2:48:07/01:44
+2025-10-25 23:49:47,464   INFO  Training Epoch:99/100 Iter:  47/97 Loss:0.233788(0.268467) LR:1.3648e-08 DataTime:0.19 InferTime:27.03ms Time cost: 2:48:24/00:51
+2025-10-25 23:50:04,535   INFO  Evaluating Epoch:99 Iter:   0/14 InferTime: 17.79ms
+2025-10-25 23:50:05,779   INFO  Epoch 99 metrics: {'d1_all': tensor(1.5244), 'epe': tensor(0.5258), 'thres_1': tensor(10.4149), 'thres_2': tensor(3.4801), 'thres_3': tensor(1.8501)}
+2025-10-25 23:50:07,308   INFO  Training Epoch: 0/100 Iter:   0/97 Loss:0.199534(0.199534) LR:8.0000e-06 DataTime:0.23 InferTime:27.37ms Time cost: 2:48:44/27276:42:32
+2025-10-25 23:50:24,399   INFO  Training Epoch: 0/100 Iter:  50/97 Loss:0.210678(0.317920) LR:1.1028e-04 DataTime:0.19 InferTime:27.22ms Time cost: 2:49:01/532:58:42
+2025-10-25 23:50:40,469   INFO  Evaluating Epoch: 0 Iter:   0/14 InferTime: 18.09ms
+2025-10-25 23:50:41,749   INFO  Epoch 0 metrics: {'d1_all': tensor(1.5729), 'epe': tensor(0.5476), 'thres_1': tensor(10.9680), 'thres_2': tensor(3.7019), 'thres_3': tensor(1.9603)}
+2025-10-25 23:50:43,102   INFO  Training Epoch: 1/100 Iter:   3/97 Loss:0.308929(0.351902) LR:2.0000e-04 DataTime:0.22 InferTime:27.06ms Time cost: 2:49:20/268:13:36
+2025-10-25 23:51:00,183   INFO  Training Epoch: 1/100 Iter:  53/97 Loss:0.240430(0.391305) LR:1.9998e-04 DataTime:0.23 InferTime:27.07ms Time cost: 2:49:37/178:46:32
+2025-10-25 23:51:17,178   INFO  Training Epoch: 2/100 Iter:   6/97 Loss:0.414348(0.279015) LR:1.9994e-04 DataTime:0.22 InferTime:27.26ms Time cost: 2:49:54/133:49:26
+2025-10-25 23:51:34,098   INFO  Training Epoch: 2/100 Iter:  56/97 Loss:0.248888(0.374693) LR:1.9987e-04 DataTime:0.21 InferTime:27.21ms Time cost: 2:50:11/106:46:42
+2025-10-25 23:51:51,221   INFO  Training Epoch: 3/100 Iter:   9/97 Loss:0.275555(0.259358) LR:1.9978e-04 DataTime:0.22 InferTime:26.94ms Time cost: 2:50:28/88:43:07
+2025-10-25 23:52:08,451   INFO  Training Epoch: 3/100 Iter:  59/97 Loss:0.373007(0.341231) LR:1.9965e-04 DataTime:0.22 InferTime:27.15ms Time cost: 2:50:45/75:48:12
+2025-10-25 23:52:25,758   INFO  Training Epoch: 4/100 Iter:  12/97 Loss:0.400326(0.392431) LR:1.9951e-04 DataTime:0.20 InferTime:27.35ms Time cost: 2:51:02/66:06:29
+2025-10-25 23:52:42,973   INFO  Training Epoch: 4/100 Iter:  62/97 Loss:0.327825(0.367130) LR:1.9933e-04 DataTime:0.23 InferTime:27.53ms Time cost: 2:51:20/58:33:40
+2025-10-25 23:52:59,928   INFO  Training Epoch: 5/100 Iter:  15/97 Loss:0.172195(0.309374) LR:1.9913e-04 DataTime:0.21 InferTime:27.23ms Time cost: 2:51:36/52:31:05
+2025-10-25 23:53:16,990   INFO  Training Epoch: 5/100 Iter:  65/97 Loss:0.209629(0.354428) LR:1.9890e-04 DataTime:0.20 InferTime:27.54ms Time cost: 2:51:54/47:34:17
+2025-10-25 23:53:34,276   INFO  Training Epoch: 6/100 Iter:  18/97 Loss:0.373980(0.487788) LR:1.9864e-04 DataTime:0.22 InferTime:27.24ms Time cost: 2:52:11/43:26:53
+2025-10-25 23:53:51,359   INFO  Training Epoch: 6/100 Iter:  68/97 Loss:0.204963(0.377782) LR:1.9836e-04 DataTime:0.21 InferTime:27.56ms Time cost: 2:52:28/39:57:24
+2025-10-25 23:54:08,436   INFO  Training Epoch: 7/100 Iter:  21/97 Loss:0.216567(0.353406) LR:1.9805e-04 DataTime:0.20 InferTime:27.25ms Time cost: 2:52:45/36:57:45
+2025-10-25 23:54:25,444   INFO  Training Epoch: 7/100 Iter:  71/97 Loss:0.304153(0.357274) LR:1.9772e-04 DataTime:0.20 InferTime:27.15ms Time cost: 2:53:02/34:21:58
+2025-10-25 23:54:42,552   INFO  Training Epoch: 8/100 Iter:  24/97 Loss:0.361942(0.336168) LR:1.9736e-04 DataTime:0.21 InferTime:27.16ms Time cost: 2:53:19/32:05:38
+2025-10-25 23:54:59,666   INFO  Training Epoch: 8/100 Iter:  74/97 Loss:0.139446(0.372940) LR:1.9697e-04 DataTime:0.20 InferTime:28.13ms Time cost: 2:53:36/30:05:16
+2025-10-25 23:55:16,713   INFO  Training Epoch: 9/100 Iter:  27/97 Loss:0.288682(0.353641) LR:1.9656e-04 DataTime:0.20 InferTime:27.49ms Time cost: 2:53:53/28:18:14
+2025-10-25 23:55:33,789   INFO  Training Epoch: 9/100 Iter:  77/97 Loss:0.302098(0.349787) LR:1.9612e-04 DataTime:0.21 InferTime:27.37ms Time cost: 2:54:10/26:42:25
+2025-10-25 23:55:50,778   INFO  Training Epoch:10/100 Iter:  30/97 Loss:0.214751(0.323433) LR:1.9566e-04 DataTime:0.20 InferTime:27.73ms Time cost: 2:54:27/25:16:08
+2025-10-25 23:56:07,939   INFO  Training Epoch:10/100 Iter:  80/97 Loss:0.334153(0.336315) LR:1.9517e-04 DataTime:0.23 InferTime:27.08ms Time cost: 2:54:44/23:58:04
+2025-10-25 23:56:13,679   INFO  Evaluating Epoch:10 Iter:   0/14 InferTime: 17.74ms
+2025-10-25 23:56:14,920   INFO  Epoch 10 metrics: {'d1_all': tensor(1.6754), 'epe': tensor(0.5927), 'thres_1': tensor(11.5754), 'thres_2': tensor(3.9963), 'thres_3': tensor(2.1118)}
+2025-10-25 23:56:26,528   INFO  Training Epoch:11/100 Iter:  33/97 Loss:0.388949(0.345511) LR:1.9465e-04 DataTime:0.22 InferTime:27.46ms Time cost: 2:55:03/22:47:14
+2025-10-25 23:56:43,594   INFO  Training Epoch:11/100 Iter:  83/97 Loss:0.353973(0.341905) LR:1.9411e-04 DataTime:0.22 InferTime:28.83ms Time cost: 2:55:20/21:42:21
+2025-10-25 23:57:00,898   INFO  Training Epoch:12/100 Iter:  36/97 Loss:0.150764(0.313767) LR:1.9355e-04 DataTime:0.22 InferTime:27.15ms Time cost: 2:55:37/20:42:52
+2025-10-25 23:57:18,102   INFO  Training Epoch:12/100 Iter:  86/97 Loss:1.02186(0.372947) LR:1.9296e-04 DataTime:0.22 InferTime:27.46ms Time cost: 2:55:55/19:48:07
+2025-10-25 23:57:35,271   INFO  Training Epoch:13/100 Iter:  39/97 Loss:0.338408(0.326959) LR:1.9234e-04 DataTime:0.21 InferTime:27.28ms Time cost: 2:56:12/18:57:32
+2025-10-25 23:57:52,503   INFO  Training Epoch:13/100 Iter:  89/97 Loss:0.339924(0.345834) LR:1.9170e-04 DataTime:0.22 InferTime:28.59ms Time cost: 2:56:29/18:10:42
+2025-10-25 23:58:09,738   INFO  Training Epoch:14/100 Iter:  42/97 Loss:0.272755(0.404546) LR:1.9104e-04 DataTime:0.20 InferTime:28.16ms Time cost: 2:56:46/17:27:10
+2025-10-25 23:58:26,851   INFO  Training Epoch:14/100 Iter:  92/97 Loss:1.22307(0.391725) LR:1.9035e-04 DataTime:0.20 InferTime:27.25ms Time cost: 2:57:03/16:46:37
+2025-10-25 23:58:43,808   INFO  Training Epoch:15/100 Iter:  45/97 Loss:0.369996(0.343549) LR:1.8964e-04 DataTime:0.20 InferTime:27.16ms Time cost: 2:57:20/16:08:44
+2025-10-25 23:59:00,846   INFO  Training Epoch:15/100 Iter:  95/97 Loss:0.496561(0.331167) LR:1.8890e-04 DataTime:0.22 InferTime:27.33ms Time cost: 2:57:37/15:33:16
+2025-10-25 23:59:18,010   INFO  Training Epoch:16/100 Iter:  48/97 Loss:0.251703(0.343230) LR:1.8814e-04 DataTime:0.23 InferTime:29.27ms Time cost: 2:57:55/15:00:02
+2025-10-25 23:59:35,240   INFO  Training Epoch:17/100 Iter:   1/97 Loss:0.423113(0.284775) LR:1.8735e-04 DataTime:0.21 InferTime:27.16ms Time cost: 2:58:12/14:28:47
+2025-10-25 23:59:52,318   INFO  Training Epoch:17/100 Iter:  51/97 Loss:0.383322(0.401526) LR:1.8655e-04 DataTime:0.24 InferTime:27.29ms Time cost: 2:58:29/13:59:21
+2025-10-26 00:00:09,328   INFO  Training Epoch:18/100 Iter:   4/97 Loss:0.338485(0.384699) LR:1.8571e-04 DataTime:0.22 InferTime:27.48ms Time cost: 2:58:46/13:31:34
+2025-10-26 00:00:26,575   INFO  Training Epoch:18/100 Iter:  54/97 Loss:0.318185(0.339345) LR:1.8486e-04 DataTime:0.22 InferTime:27.53ms Time cost: 2:59:03/13:05:20
+2025-10-26 00:00:43,720   INFO  Training Epoch:19/100 Iter:   7/97 Loss:0.316622(0.373305) LR:1.8398e-04 DataTime:0.22 InferTime:27.21ms Time cost: 2:59:20/12:40:30
+2025-10-26 00:01:00,808   INFO  Training Epoch:19/100 Iter:  57/97 Loss:0.317971(0.329786) LR:1.8308e-04 DataTime:0.22 InferTime:27.75ms Time cost: 2:59:37/12:16:57
+2025-10-26 00:01:18,014   INFO  Training Epoch:20/100 Iter:  10/97 Loss:0.301967(0.350037) LR:1.8216e-04 DataTime:0.22 InferTime:27.30ms Time cost: 2:59:55/11:54:35
+2025-10-26 00:01:35,219   INFO  Training Epoch:20/100 Iter:  60/97 Loss:0.643467(0.399299) LR:1.8122e-04 DataTime:0.21 InferTime:27.17ms Time cost: 3:00:12/11:33:21
+2025-10-26 00:01:48,042   INFO  Evaluating Epoch:20 Iter:   0/14 InferTime: 19.58ms
+2025-10-26 00:01:49,291   INFO  Epoch 20 metrics: {'d1_all': tensor(1.6479), 'epe': tensor(0.5561), 'thres_1': tensor(11.6127), 'thres_2': tensor(3.9796), 'thres_3': tensor(1.9942)}
+2025-10-26 00:01:54,018   INFO  Training Epoch:21/100 Iter:  13/97 Loss:0.268907(0.392187) LR:1.8025e-04 DataTime:0.22 InferTime:27.64ms Time cost: 3:00:31/11:13:13
+2025-10-26 00:02:11,088   INFO  Training Epoch:21/100 Iter:  63/97 Loss:0.270445(0.359745) LR:1.7927e-04 DataTime:0.20 InferTime:27.47ms Time cost: 3:00:48/10:53:56
+2025-10-26 00:02:28,145   INFO  Training Epoch:22/100 Iter:  16/97 Loss:0.644283(0.361333) LR:1.7826e-04 DataTime:0.19 InferTime:27.84ms Time cost: 3:01:05/10:35:31
+2025-10-26 00:02:45,365   INFO  Training Epoch:22/100 Iter:  66/97 Loss:0.789302(0.360417) LR:1.7723e-04 DataTime:0.21 InferTime:27.26ms Time cost: 3:01:22/10:17:57
+2025-10-26 00:03:02,317   INFO  Training Epoch:23/100 Iter:  19/97 Loss:0.221158(0.382716) LR:1.7618e-04 DataTime:0.20 InferTime:27.46ms Time cost: 3:01:39/10:01:08
+2025-10-26 00:03:19,499   INFO  Training Epoch:23/100 Iter:  69/97 Loss:0.587047(0.410914) LR:1.7511e-04 DataTime:0.20 InferTime:29.34ms Time cost: 3:01:56/9:45:02
+2025-10-26 00:03:36,717   INFO  Training Epoch:24/100 Iter:  22/97 Loss:0.145304(0.363171) LR:1.7402e-04 DataTime:0.23 InferTime:27.31ms Time cost: 3:02:13/9:29:37
+2025-10-26 00:03:53,764   INFO  Training Epoch:24/100 Iter:  72/97 Loss:0.328279(0.368220) LR:1.7291e-04 DataTime:0.23 InferTime:27.37ms Time cost: 3:02:30/9:14:50
+2025-10-26 00:04:11,008   INFO  Training Epoch:25/100 Iter:  25/97 Loss:0.259083(0.289119) LR:1.7178e-04 DataTime:0.21 InferTime:27.52ms Time cost: 3:02:48/9:00:38
+2025-10-26 00:04:28,079   INFO  Training Epoch:25/100 Iter:  75/97 Loss:0.208949(0.317720) LR:1.7064e-04 DataTime:0.22 InferTime:27.41ms Time cost: 3:03:05/8:47:00
+2025-10-26 00:04:45,216   INFO  Training Epoch:26/100 Iter:  28/97 Loss:0.277180(0.337813) LR:1.6947e-04 DataTime:0.23 InferTime:27.15ms Time cost: 3:03:22/8:33:53
+2025-10-26 00:05:02,284   INFO  Training Epoch:26/100 Iter:  78/97 Loss:0.329330(0.328709) LR:1.6828e-04 DataTime:0.23 InferTime:27.55ms Time cost: 3:03:39/8:21:15
+2025-10-26 00:05:19,510   INFO  Training Epoch:27/100 Iter:  31/97 Loss:0.158588(0.325495) LR:1.6708e-04 DataTime:0.21 InferTime:27.21ms Time cost: 3:03:56/8:09:06
+2025-10-26 00:05:36,718   INFO  Training Epoch:27/100 Iter:  81/97 Loss:0.180860(0.346366) LR:1.6586e-04 DataTime:0.22 InferTime:27.34ms Time cost: 3:04:13/7:57:23
+2025-10-26 00:05:53,908   INFO  Training Epoch:28/100 Iter:  34/97 Loss:0.403152(0.344458) LR:1.6462e-04 DataTime:0.21 InferTime:27.13ms Time cost: 3:04:30/7:46:05
+2025-10-26 00:06:11,050   INFO  Training Epoch:28/100 Iter:  84/97 Loss:0.288616(0.341631) LR:1.6336e-04 DataTime:0.22 InferTime:27.23ms Time cost: 3:04:48/7:35:10
+2025-10-26 00:06:28,069   INFO  Training Epoch:29/100 Iter:  37/97 Loss:0.503334(0.332640) LR:1.6209e-04 DataTime:0.21 InferTime:27.50ms Time cost: 3:05:05/7:24:37
+2025-10-26 00:06:45,080   INFO  Training Epoch:29/100 Iter:  87/97 Loss:0.161774(0.342279) LR:1.6080e-04 DataTime:0.21 InferTime:27.08ms Time cost: 3:05:22/7:14:26
+2025-10-26 00:07:02,159   INFO  Training Epoch:30/100 Iter:  40/97 Loss:0.222360(0.325847) LR:1.5949e-04 DataTime:0.23 InferTime:27.41ms Time cost: 3:05:39/7:04:35
+2025-10-26 00:07:19,522   INFO  Training Epoch:30/100 Iter:  90/97 Loss:0.216086(0.315187) LR:1.5817e-04 DataTime:0.22 InferTime:27.54ms Time cost: 3:05:56/6:55:04
+2025-10-26 00:07:21,777   INFO  Evaluating Epoch:30 Iter:   0/14 InferTime: 17.43ms
+2025-10-26 00:07:23,018   INFO  Epoch 30 metrics: {'d1_all': tensor(1.5325), 'epe': tensor(0.5340), 'thres_1': tensor(10.5484), 'thres_2': tensor(3.5143), 'thres_3': tensor(1.8542)}
+2025-10-26 00:07:37,838   INFO  Training Epoch:31/100 Iter:  43/97 Loss:0.290783(0.311398) LR:1.5683e-04 DataTime:0.20 InferTime:27.98ms Time cost: 3:06:14/6:45:53
+2025-10-26 00:07:54,926   INFO  Training Epoch:31/100 Iter:  93/97 Loss:0.160524(0.330020) LR:1.5547e-04 DataTime:0.22 InferTime:27.33ms Time cost: 3:06:31/6:36:56
+2025-10-26 00:08:12,061   INFO  Training Epoch:32/100 Iter:  46/97 Loss:0.241205(0.389784) LR:1.5411e-04 DataTime:0.18 InferTime:27.23ms Time cost: 3:06:49/6:28:16
+2025-10-26 00:08:29,095   INFO  Training Epoch:32/100 Iter:  96/97 Loss:0.295359(0.344148) LR:1.5272e-04 DataTime:0.20 InferTime:27.07ms Time cost: 3:07:06/6:19:52
+2025-10-26 00:08:46,265   INFO  Training Epoch:33/100 Iter:  49/97 Loss:0.207680(0.319946) LR:1.5133e-04 DataTime:0.22 InferTime:27.21ms Time cost: 3:07:23/6:11:43
+2025-10-26 00:09:03,454   INFO  Training Epoch:34/100 Iter:   2/97 Loss:0.335968(0.243211) LR:1.4992e-04 DataTime:0.22 InferTime:27.68ms Time cost: 3:07:40/6:03:48
+2025-10-26 00:09:20,523   INFO  Training Epoch:34/100 Iter:  52/97 Loss:0.153044(0.341367) LR:1.4849e-04 DataTime:0.21 InferTime:27.09ms Time cost: 3:07:57/5:56:07
+2025-10-26 00:09:37,669   INFO  Training Epoch:35/100 Iter:   5/97 Loss:0.240371(0.354288) LR:1.4705e-04 DataTime:0.21 InferTime:27.42ms Time cost: 3:08:14/5:48:38
+2025-10-26 00:09:54,691   INFO  Training Epoch:35/100 Iter:  55/97 Loss:0.940105(0.344696) LR:1.4560e-04 DataTime:0.21 InferTime:27.66ms Time cost: 3:08:31/5:41:23
+2025-10-26 00:10:11,617   INFO  Training Epoch:36/100 Iter:   8/97 Loss:0.379208(0.300144) LR:1.4414e-04 DataTime:0.21 InferTime:27.30ms Time cost: 3:08:48/5:34:18
+2025-10-26 00:10:28,735   INFO  Training Epoch:36/100 Iter:  58/97 Loss:0.239794(0.326797) LR:1.4267e-04 DataTime:0.22 InferTime:27.16ms Time cost: 3:09:05/5:27:26
+2025-10-26 00:10:45,820   INFO  Training Epoch:37/100 Iter:  11/97 Loss:0.406945(0.332510) LR:1.4118e-04 DataTime:0.20 InferTime:27.20ms Time cost: 3:09:22/5:20:45
+2025-10-26 00:11:02,979   INFO  Training Epoch:37/100 Iter:  61/97 Loss:0.296426(0.346249) LR:1.3969e-04 DataTime:0.21 InferTime:27.97ms Time cost: 3:09:40/5:14:14
+2025-10-26 00:11:20,226   INFO  Training Epoch:38/100 Iter:  14/97 Loss:0.316106(0.329551) LR:1.3818e-04 DataTime:0.23 InferTime:28.91ms Time cost: 3:09:57/5:07:53
+2025-10-26 00:11:37,316   INFO  Training Epoch:38/100 Iter:  64/97 Loss:0.408954(0.335287) LR:1.3666e-04 DataTime:0.21 InferTime:27.68ms Time cost: 3:10:14/5:01:42
+2025-10-26 00:11:54,376   INFO  Training Epoch:39/100 Iter:  17/97 Loss:0.289929(0.304689) LR:1.3514e-04 DataTime:0.23 InferTime:27.27ms Time cost: 3:10:31/4:55:41
+2025-10-26 00:12:11,499   INFO  Training Epoch:39/100 Iter:  67/97 Loss:0.221331(0.309470) LR:1.3360e-04 DataTime:0.22 InferTime:27.31ms Time cost: 3:10:48/4:49:48
+2025-10-26 00:12:28,696   INFO  Training Epoch:40/100 Iter:  20/97 Loss:0.251546(0.416248) LR:1.3206e-04 DataTime:0.23 InferTime:27.31ms Time cost: 3:11:05/4:44:04
+2025-10-26 00:12:45,771   INFO  Training Epoch:40/100 Iter:  70/97 Loss:0.255928(0.378772) LR:1.3050e-04 DataTime:0.21 InferTime:27.63ms Time cost: 3:11:22/4:38:28
+2025-10-26 00:12:55,109   INFO  Evaluating Epoch:40 Iter:   0/14 InferTime: 17.84ms
+2025-10-26 00:12:56,350   INFO  Epoch 40 metrics: {'d1_all': tensor(1.5760), 'epe': tensor(0.5458), 'thres_1': tensor(11.1357), 'thres_2': tensor(3.7653), 'thres_3': tensor(1.9359)}
+2025-10-26 00:13:04,504   INFO  Training Epoch:41/100 Iter:  23/97 Loss:0.165944(0.279438) LR:1.2894e-04 DataTime:0.22 InferTime:27.42ms Time cost: 3:11:41/4:33:02
+2025-10-26 00:13:21,768   INFO  Training Epoch:41/100 Iter:  73/97 Loss:0.226602(0.312511) LR:1.2737e-04 DataTime:0.21 InferTime:27.33ms Time cost: 3:11:58/4:27:42
+2025-10-26 00:13:38,892   INFO  Training Epoch:42/100 Iter:  26/97 Loss:0.267161(0.522573) LR:1.2580e-04 DataTime:0.21 InferTime:27.40ms Time cost: 3:12:15/4:22:29
+2025-10-26 00:13:56,012   INFO  Training Epoch:42/100 Iter:  76/97 Loss:0.239024(0.388226) LR:1.2421e-04 DataTime:0.20 InferTime:27.53ms Time cost: 3:12:33/4:17:23
+2025-10-26 00:14:13,005   INFO  Training Epoch:43/100 Iter:  29/97 Loss:0.860592(0.332230) LR:1.2262e-04 DataTime:0.21 InferTime:27.49ms Time cost: 3:12:50/4:12:24
+2025-10-26 00:14:30,029   INFO  Training Epoch:43/100 Iter:  79/97 Loss:0.318755(0.333194) LR:1.2103e-04 DataTime:0.22 InferTime:27.11ms Time cost: 3:13:07/4:07:32
+2025-10-26 00:14:47,213   INFO  Training Epoch:44/100 Iter:  32/97 Loss:0.353385(0.508628) LR:1.1942e-04 DataTime:0.22 InferTime:27.10ms Time cost: 3:13:24/4:02:46
+2025-10-26 00:15:04,432   INFO  Training Epoch:44/100 Iter:  82/97 Loss:0.425785(0.416884) LR:1.1782e-04 DataTime:0.22 InferTime:27.71ms Time cost: 3:13:41/3:58:07
+2025-10-26 00:15:21,618   INFO  Training Epoch:45/100 Iter:  35/97 Loss:0.439496(0.288317) LR:1.1620e-04 DataTime:0.23 InferTime:27.09ms Time cost: 3:13:58/3:53:33
+2025-10-26 00:15:38,739   INFO  Training Epoch:45/100 Iter:  85/97 Loss:0.293594(0.321294) LR:1.1459e-04 DataTime:0.23 InferTime:27.20ms Time cost: 3:14:15/3:49:05
+2025-10-26 00:15:55,864   INFO  Training Epoch:46/100 Iter:  38/97 Loss:0.339860(0.345251) LR:1.1297e-04 DataTime:0.22 InferTime:27.00ms Time cost: 3:14:32/3:44:43
+2025-10-26 00:16:12,893   INFO  Training Epoch:46/100 Iter:  88/97 Loss:0.203307(0.312519) LR:1.1134e-04 DataTime:0.22 InferTime:27.38ms Time cost: 3:14:49/3:40:25
+2025-10-26 00:16:30,097   INFO  Training Epoch:47/100 Iter:  41/97 Loss:0.331951(0.328430) LR:1.0972e-04 DataTime:0.22 InferTime:27.37ms Time cost: 3:15:07/3:36:14
+2025-10-26 00:16:47,203   INFO  Training Epoch:47/100 Iter:  91/97 Loss:0.186844(0.340972) LR:1.0809e-04 DataTime:0.21 InferTime:27.37ms Time cost: 3:15:24/3:32:07
+2025-10-26 00:17:04,407   INFO  Training Epoch:48/100 Iter:  44/97 Loss:0.265940(0.375265) LR:1.0646e-04 DataTime:0.20 InferTime:27.36ms Time cost: 3:15:41/3:28:05
+2025-10-26 00:17:21,605   INFO  Training Epoch:48/100 Iter:  94/97 Loss:0.124493(0.347662) LR:1.0482e-04 DataTime:0.20 InferTime:27.36ms Time cost: 3:15:58/3:24:08
+2025-10-26 00:17:38,753   INFO  Training Epoch:49/100 Iter:  47/97 Loss:0.255090(0.326486) LR:1.0319e-04 DataTime:0.21 InferTime:27.23ms Time cost: 3:16:15/3:20:16
+2025-10-26 00:17:55,731   INFO  Training Epoch:50/100 Iter:   0/97 Loss:0.290677(0.290677) LR:1.0155e-04 DataTime:0.21 InferTime:27.79ms Time cost: 3:16:32/3:16:27
+2025-10-26 00:18:12,915   INFO  Training Epoch:50/100 Iter:  50/97 Loss:0.222696(0.294334) LR:9.9919e-05 DataTime:0.23 InferTime:27.25ms Time cost: 3:16:49/3:12:44
+2025-10-26 00:18:28,735   INFO  Evaluating Epoch:50 Iter:   0/14 InferTime: 19.56ms
+2025-10-26 00:18:29,974   INFO  Epoch 50 metrics: {'d1_all': tensor(1.5578), 'epe': tensor(0.5408), 'thres_1': tensor(10.9570), 'thres_2': tensor(3.7271), 'thres_3': tensor(1.8910)}
+2025-10-26 00:18:31,323   INFO  Training Epoch:51/100 Iter:   3/97 Loss:0.294924(0.365273) LR:9.8283e-05 DataTime:0.21 InferTime:27.69ms Time cost: 3:17:08/3:09:05
+2025-10-26 00:18:48,419   INFO  Training Epoch:51/100 Iter:  53/97 Loss:0.406987(0.318690) LR:9.6648e-05 DataTime:0.21 InferTime:27.08ms Time cost: 3:17:25/3:05:30
+2025-10-26 00:19:05,460   INFO  Training Epoch:52/100 Iter:   6/97 Loss:0.356274(0.287424) LR:9.5013e-05 DataTime:0.20 InferTime:27.77ms Time cost: 3:17:42/3:01:58
+2025-10-26 00:19:22,652   INFO  Training Epoch:52/100 Iter:  56/97 Loss:0.214535(0.359447) LR:9.3381e-05 DataTime:0.22 InferTime:27.32ms Time cost: 3:17:59/2:58:30
+2025-10-26 00:19:39,817   INFO  Training Epoch:53/100 Iter:   9/97 Loss:0.254539(0.309700) LR:9.1749e-05 DataTime:0.21 InferTime:27.42ms Time cost: 3:18:16/2:55:06
+2025-10-26 00:19:56,853   INFO  Training Epoch:53/100 Iter:  59/97 Loss:0.178845(0.306988) LR:9.0120e-05 DataTime:0.22 InferTime:27.24ms Time cost: 3:18:33/2:51:45
+2025-10-26 00:20:13,879   INFO  Training Epoch:54/100 Iter:  12/97 Loss:0.303885(0.445546) LR:8.8494e-05 DataTime:0.22 InferTime:27.33ms Time cost: 3:18:50/2:48:28
+2025-10-26 00:20:31,045   INFO  Training Epoch:54/100 Iter:  62/97 Loss:0.450145(0.345650) LR:8.6871e-05 DataTime:0.22 InferTime:27.31ms Time cost: 3:19:08/2:45:15
+2025-10-26 00:20:48,173   INFO  Training Epoch:55/100 Iter:  15/97 Loss:0.223522(0.312027) LR:8.5251e-05 DataTime:0.21 InferTime:27.18ms Time cost: 3:19:25/2:42:04
+2025-10-26 00:21:05,353   INFO  Training Epoch:55/100 Iter:  65/97 Loss:0.179498(0.303719) LR:8.3635e-05 DataTime:0.23 InferTime:34.04ms Time cost: 3:19:42/2:38:57
+2025-10-26 00:21:22,445   INFO  Training Epoch:56/100 Iter:  18/97 Loss:0.313239(0.312210) LR:8.2024e-05 DataTime:0.21 InferTime:27.51ms Time cost: 3:19:59/2:35:53
+2025-10-26 00:21:39,640   INFO  Training Epoch:56/100 Iter:  68/97 Loss:0.128409(0.300421) LR:8.0417e-05 DataTime:0.21 InferTime:27.53ms Time cost: 3:20:16/2:32:52
+2025-10-26 00:21:56,629   INFO  Training Epoch:57/100 Iter:  21/97 Loss:0.521616(0.333447) LR:7.8816e-05 DataTime:0.21 InferTime:27.07ms Time cost: 3:20:33/2:29:54
+2025-10-26 00:22:13,665   INFO  Training Epoch:57/100 Iter:  71/97 Loss:0.241907(0.304525) LR:7.7220e-05 DataTime:0.20 InferTime:27.17ms Time cost: 3:20:50/2:26:59
+2025-10-26 00:22:30,861   INFO  Training Epoch:58/100 Iter:  24/97 Loss:0.331568(0.314264) LR:7.5631e-05 DataTime:0.22 InferTime:27.23ms Time cost: 3:21:07/2:24:06
+2025-10-26 00:22:48,077   INFO  Training Epoch:58/100 Iter:  74/97 Loss:0.255898(0.325035) LR:7.4048e-05 DataTime:0.20 InferTime:27.28ms Time cost: 3:21:25/2:21:17
+2025-10-26 00:23:05,146   INFO  Training Epoch:59/100 Iter:  27/97 Loss:0.512592(0.277370) LR:7.2471e-05 DataTime:0.21 InferTime:27.44ms Time cost: 3:21:42/2:18:30
+2025-10-26 00:23:22,315   INFO  Training Epoch:59/100 Iter:  77/97 Loss:0.497251(0.298679) LR:7.0903e-05 DataTime:0.23 InferTime:27.66ms Time cost: 3:21:59/2:15:45
+2025-10-26 00:23:39,582   INFO  Training Epoch:60/100 Iter:  30/97 Loss:0.199285(0.324507) LR:6.9342e-05 DataTime:0.23 InferTime:27.15ms Time cost: 3:22:16/2:13:03
+2025-10-26 00:23:56,777   INFO  Training Epoch:60/100 Iter:  80/97 Loss:0.438943(0.323009) LR:6.7789e-05 DataTime:0.20 InferTime:28.27ms Time cost: 3:22:33/2:10:24
+2025-10-26 00:24:02,781   INFO  Evaluating Epoch:60 Iter:   0/14 InferTime: 18.98ms
+2025-10-26 00:24:04,027   INFO  Epoch 60 metrics: {'d1_all': tensor(1.5509), 'epe': tensor(0.5303), 'thres_1': tensor(10.7215), 'thres_2': tensor(3.5833), 'thres_3': tensor(1.9196)}
+2025-10-26 00:24:15,577   INFO  Training Epoch:61/100 Iter:  33/97 Loss:0.366111(0.305214) LR:6.6245e-05 DataTime:0.21 InferTime:27.22ms Time cost: 3:22:52/2:07:48
+2025-10-26 00:24:32,643   INFO  Training Epoch:61/100 Iter:  83/97 Loss:0.351526(0.298339) LR:6.4710e-05 DataTime:0.21 InferTime:27.35ms Time cost: 3:23:09/2:05:13
+2025-10-26 00:24:49,644   INFO  Training Epoch:62/100 Iter:  36/97 Loss:0.419456(0.294108) LR:6.3184e-05 DataTime:0.22 InferTime:28.09ms Time cost: 3:23:26/2:02:41
+2025-10-26 00:25:06,923   INFO  Training Epoch:62/100 Iter:  86/97 Loss:0.276340(0.307880) LR:6.1668e-05 DataTime:0.24 InferTime:27.25ms Time cost: 3:23:43/2:00:10
+2025-10-26 00:25:24,119   INFO  Training Epoch:63/100 Iter:  39/97 Loss:0.326719(0.281347) LR:6.0162e-05 DataTime:0.21 InferTime:27.49ms Time cost: 3:24:01/1:57:42
+2025-10-26 00:25:41,399   INFO  Training Epoch:63/100 Iter:  89/97 Loss:0.192577(0.305142) LR:5.8667e-05 DataTime:0.20 InferTime:27.63ms Time cost: 3:24:18/1:55:16
+2025-10-26 00:25:58,245   INFO  Training Epoch:64/100 Iter:  42/97 Loss:0.154969(0.239295) LR:5.7184e-05 DataTime:0.21 InferTime:27.42ms Time cost: 3:24:35/1:52:52
+2025-10-26 00:26:15,404   INFO  Training Epoch:64/100 Iter:  92/97 Loss:0.284990(0.277011) LR:5.5711e-05 DataTime:0.21 InferTime:27.14ms Time cost: 3:24:52/1:50:31
+2025-10-26 00:26:32,453   INFO  Training Epoch:65/100 Iter:  45/97 Loss:0.193837(0.289285) LR:5.4251e-05 DataTime:0.21 InferTime:27.39ms Time cost: 3:25:09/1:48:11
+2025-10-26 00:26:49,463   INFO  Training Epoch:65/100 Iter:  95/97 Loss:0.281991(0.313602) LR:5.2802e-05 DataTime:0.21 InferTime:27.37ms Time cost: 3:25:26/1:45:52
+2025-10-26 00:27:06,750   INFO  Training Epoch:66/100 Iter:  48/97 Loss:0.182340(0.308157) LR:5.1367e-05 DataTime:0.22 InferTime:27.88ms Time cost: 3:25:43/1:43:36
+2025-10-26 00:27:23,948   INFO  Training Epoch:67/100 Iter:   1/97 Loss:0.368542(0.278872) LR:4.9944e-05 DataTime:0.23 InferTime:27.11ms Time cost: 3:26:00/1:41:22
+2025-10-26 00:27:41,141   INFO  Training Epoch:67/100 Iter:  51/97 Loss:0.149884(0.378154) LR:4.8535e-05 DataTime:0.21 InferTime:27.28ms Time cost: 3:26:18/1:39:10
+2025-10-26 00:27:58,355   INFO  Training Epoch:68/100 Iter:   4/97 Loss:0.185834(0.283805) LR:4.7139e-05 DataTime:0.22 InferTime:27.38ms Time cost: 3:26:35/1:36:59
+2025-10-26 00:28:15,636   INFO  Training Epoch:68/100 Iter:  54/97 Loss:0.284646(0.316206) LR:4.5758e-05 DataTime:0.23 InferTime:27.54ms Time cost: 3:26:52/1:34:50
+2025-10-26 00:28:32,810   INFO  Training Epoch:69/100 Iter:   7/97 Loss:0.157113(0.265279) LR:4.4391e-05 DataTime:0.23 InferTime:27.32ms Time cost: 3:27:09/1:32:42
+2025-10-26 00:28:49,983   INFO  Training Epoch:69/100 Iter:  57/97 Loss:0.169433(0.322279) LR:4.3039e-05 DataTime:0.21 InferTime:27.34ms Time cost: 3:27:27/1:30:37
+2025-10-26 00:29:06,994   INFO  Training Epoch:70/100 Iter:  10/97 Loss:0.579776(0.327127) LR:4.1702e-05 DataTime:0.23 InferTime:27.03ms Time cost: 3:27:44/1:28:32
+2025-10-26 00:29:24,193   INFO  Training Epoch:70/100 Iter:  60/97 Loss:0.392742(0.335993) LR:4.0381e-05 DataTime:0.21 InferTime:27.58ms Time cost: 3:28:01/1:26:30
+2025-10-26 00:29:36,608   INFO  Evaluating Epoch:70 Iter:   0/14 InferTime: 17.79ms
+2025-10-26 00:29:37,853   INFO  Epoch 70 metrics: {'d1_all': tensor(1.5095), 'epe': tensor(0.5225), 'thres_1': tensor(10.3954), 'thres_2': tensor(3.4726), 'thres_3': tensor(1.8165)}
+2025-10-26 00:29:42,665   INFO  Training Epoch:71/100 Iter:  13/97 Loss:0.449090(0.303918) LR:3.9076e-05 DataTime:0.22 InferTime:27.25ms Time cost: 3:28:19/1:24:29
+2025-10-26 00:29:59,696   INFO  Training Epoch:71/100 Iter:  63/97 Loss:0.396851(0.305153) LR:3.7787e-05 DataTime:0.21 InferTime:27.14ms Time cost: 3:28:36/1:22:30
+2025-10-26 00:30:16,749   INFO  Training Epoch:72/100 Iter:  16/97 Loss:0.317897(0.275990) LR:3.6515e-05 DataTime:0.23 InferTime:27.33ms Time cost: 3:28:53/1:20:31
+2025-10-26 00:30:33,891   INFO  Training Epoch:72/100 Iter:  66/97 Loss:0.112913(0.307477) LR:3.5259e-05 DataTime:0.21 InferTime:27.80ms Time cost: 3:29:10/1:18:35
+2025-10-26 00:30:50,974   INFO  Training Epoch:73/100 Iter:  19/97 Loss:0.329101(0.293635) LR:3.4022e-05 DataTime:0.18 InferTime:27.33ms Time cost: 3:29:28/1:16:39
+2025-10-26 00:31:08,149   INFO  Training Epoch:73/100 Iter:  69/97 Loss:0.225591(0.304940) LR:3.2801e-05 DataTime:0.22 InferTime:27.56ms Time cost: 3:29:45/1:14:46
+2025-10-26 00:31:25,249   INFO  Training Epoch:74/100 Iter:  22/97 Loss:0.365021(0.270670) LR:3.1599e-05 DataTime:0.22 InferTime:27.47ms Time cost: 3:30:02/1:12:53
+2025-10-26 00:31:42,282   INFO  Training Epoch:74/100 Iter:  72/97 Loss:0.315496(0.291302) LR:3.0415e-05 DataTime:0.20 InferTime:27.80ms Time cost: 3:30:19/1:11:02
+2025-10-26 00:31:59,455   INFO  Training Epoch:75/100 Iter:  25/97 Loss:0.515933(0.286917) LR:2.9250e-05 DataTime:0.22 InferTime:27.19ms Time cost: 3:30:36/1:09:12
+2025-10-26 00:32:16,442   INFO  Training Epoch:75/100 Iter:  75/97 Loss:0.321576(0.288523) LR:2.8103e-05 DataTime:0.21 InferTime:27.53ms Time cost: 3:30:53/1:07:23
+2025-10-26 00:32:33,581   INFO  Training Epoch:76/100 Iter:  28/97 Loss:0.165315(0.297293) LR:2.6976e-05 DataTime:0.22 InferTime:27.23ms Time cost: 3:31:10/1:05:35
+2025-10-26 00:32:50,667   INFO  Training Epoch:76/100 Iter:  78/97 Loss:0.273677(0.282931) LR:2.5868e-05 DataTime:0.21 InferTime:27.58ms Time cost: 3:31:27/1:03:49
+2025-10-26 00:33:07,946   INFO  Training Epoch:77/100 Iter:  31/97 Loss:0.271722(0.274452) LR:2.4780e-05 DataTime:0.22 InferTime:27.80ms Time cost: 3:31:44/1:02:04
+2025-10-26 00:33:24,997   INFO  Training Epoch:77/100 Iter:  81/97 Loss:0.289934(0.273010) LR:2.3713e-05 DataTime:0.20 InferTime:27.24ms Time cost: 3:32:02/1:00:20
+2025-10-26 00:33:41,942   INFO  Training Epoch:78/100 Iter:  34/97 Loss:0.260174(0.251006) LR:2.2665e-05 DataTime:0.24 InferTime:27.21ms Time cost: 3:32:18/58:37
+2025-10-26 00:33:58,991   INFO  Training Epoch:78/100 Iter:  84/97 Loss:0.178117(0.288669) LR:2.1639e-05 DataTime:0.22 InferTime:27.60ms Time cost: 3:32:36/56:56
+2025-10-26 00:34:16,230   INFO  Training Epoch:79/100 Iter:  37/97 Loss:0.251665(0.285356) LR:2.0633e-05 DataTime:0.23 InferTime:27.29ms Time cost: 3:32:53/55:15
+2025-10-26 00:34:33,326   INFO  Training Epoch:79/100 Iter:  87/97 Loss:0.229654(0.304887) LR:1.9649e-05 DataTime:0.23 InferTime:27.33ms Time cost: 3:33:10/53:36
+2025-10-26 00:34:50,529   INFO  Training Epoch:80/100 Iter:  40/97 Loss:0.226180(0.277543) LR:1.8686e-05 DataTime:0.23 InferTime:27.66ms Time cost: 3:33:27/51:57
+2025-10-26 00:35:07,617   INFO  Training Epoch:80/100 Iter:  90/97 Loss:0.271732(0.283592) LR:1.7745e-05 DataTime:0.21 InferTime:27.58ms Time cost: 3:33:44/50:20
+2025-10-26 00:35:10,246   INFO  Evaluating Epoch:80 Iter:   0/14 InferTime: 17.68ms
+2025-10-26 00:35:11,490   INFO  Epoch 80 metrics: {'d1_all': tensor(1.4821), 'epe': tensor(0.5180), 'thres_1': tensor(10.3416), 'thres_2': tensor(3.4372), 'thres_3': tensor(1.7840)}
+2025-10-26 00:35:26,405   INFO  Training Epoch:81/100 Iter:  43/97 Loss:0.186510(0.296540) LR:1.6825e-05 DataTime:0.21 InferTime:27.68ms Time cost: 3:34:03/48:44
+2025-10-26 00:35:43,632   INFO  Training Epoch:81/100 Iter:  93/97 Loss:0.155797(0.283284) LR:1.5928e-05 DataTime:0.22 InferTime:27.26ms Time cost: 3:34:20/47:08
+2025-10-26 00:36:00,774   INFO  Training Epoch:82/100 Iter:  46/97 Loss:0.317778(0.293986) LR:1.5054e-05 DataTime:0.18 InferTime:27.63ms Time cost: 3:34:37/45:34
+2025-10-26 00:36:17,972   INFO  Training Epoch:82/100 Iter:  96/97 Loss:0.179667(0.297200) LR:1.4202e-05 DataTime:0.21 InferTime:27.10ms Time cost: 3:34:55/44:01
+2025-10-26 00:36:34,941   INFO  Training Epoch:83/100 Iter:  49/97 Loss:0.501422(0.289571) LR:1.3374e-05 DataTime:0.20 InferTime:27.49ms Time cost: 3:35:11/42:28
+2025-10-26 00:36:52,137   INFO  Training Epoch:84/100 Iter:   2/97 Loss:0.425615(0.292282) LR:1.2568e-05 DataTime:0.22 InferTime:27.44ms Time cost: 3:35:29/40:57
+2025-10-26 00:37:09,346   INFO  Training Epoch:84/100 Iter:  52/97 Loss:0.369081(0.337610) LR:1.1786e-05 DataTime:0.22 InferTime:27.21ms Time cost: 3:35:46/39:26
+2025-10-26 00:37:26,478   INFO  Training Epoch:85/100 Iter:   5/97 Loss:0.357674(0.335097) LR:1.1027e-05 DataTime:0.23 InferTime:27.17ms Time cost: 3:36:03/37:56
+2025-10-26 00:37:43,584   INFO  Training Epoch:85/100 Iter:  55/97 Loss:0.185124(0.297920) LR:1.0293e-05 DataTime:0.22 InferTime:27.47ms Time cost: 3:36:20/36:27
+2025-10-26 00:38:00,865   INFO  Training Epoch:86/100 Iter:   8/97 Loss:0.281817(0.255019) LR:9.5820e-06 DataTime:0.23 InferTime:27.79ms Time cost: 3:36:37/34:59
+2025-10-26 00:38:17,938   INFO  Training Epoch:86/100 Iter:  58/97 Loss:0.489066(0.301902) LR:8.8954e-06 DataTime:0.21 InferTime:27.36ms Time cost: 3:36:54/33:32
+2025-10-26 00:38:35,192   INFO  Training Epoch:87/100 Iter:  11/97 Loss:0.175434(0.280830) LR:8.2332e-06 DataTime:0.21 InferTime:27.54ms Time cost: 3:37:12/32:06
+2025-10-26 00:38:52,240   INFO  Training Epoch:87/100 Iter:  61/97 Loss:0.496642(0.310655) LR:7.5956e-06 DataTime:0.21 InferTime:27.10ms Time cost: 3:37:29/30:40
+2025-10-26 00:39:09,342   INFO  Training Epoch:88/100 Iter:  14/97 Loss:0.220907(0.262621) LR:6.9827e-06 DataTime:0.22 InferTime:27.19ms Time cost: 3:37:46/29:15
+2025-10-26 00:39:26,449   INFO  Training Epoch:88/100 Iter:  64/97 Loss:0.204189(0.274569) LR:6.3947e-06 DataTime:0.20 InferTime:27.44ms Time cost: 3:38:03/27:51
+2025-10-26 00:39:43,523   INFO  Training Epoch:89/100 Iter:  17/97 Loss:0.236597(0.271872) LR:5.8317e-06 DataTime:0.20 InferTime:27.64ms Time cost: 3:38:20/26:28
+2025-10-26 00:40:00,658   INFO  Training Epoch:89/100 Iter:  67/97 Loss:0.223002(0.282943) LR:5.2940e-06 DataTime:0.20 InferTime:27.21ms Time cost: 3:38:37/25:06
+2025-10-26 00:40:17,987   INFO  Training Epoch:90/100 Iter:  20/97 Loss:0.300076(0.307615) LR:4.7815e-06 DataTime:0.23 InferTime:27.82ms Time cost: 3:38:55/23:44
+2025-10-26 00:40:35,348   INFO  Training Epoch:90/100 Iter:  70/97 Loss:0.235204(0.317075) LR:4.2946e-06 DataTime:0.21 InferTime:27.29ms Time cost: 3:39:12/22:23
+2025-10-26 00:40:44,359   INFO  Evaluating Epoch:90 Iter:   0/14 InferTime: 17.68ms
+2025-10-26 00:40:45,603   INFO  Epoch 90 metrics: {'d1_all': tensor(1.4857), 'epe': tensor(0.5154), 'thres_1': tensor(10.2367), 'thres_2': tensor(3.3873), 'thres_3': tensor(1.7702)}
+2025-10-26 00:40:53,821   INFO  Training Epoch:91/100 Iter:  23/97 Loss:0.350255(0.308840) LR:3.8332e-06 DataTime:0.18 InferTime:28.10ms Time cost: 3:39:30/21:03
+2025-10-26 00:41:11,080   INFO  Training Epoch:91/100 Iter:  73/97 Loss:0.372835(0.308395) LR:3.3976e-06 DataTime:0.21 InferTime:27.31ms Time cost: 3:39:48/19:43
+2025-10-26 00:41:28,050   INFO  Training Epoch:92/100 Iter:  26/97 Loss:0.259477(0.285776) LR:2.9879e-06 DataTime:0.21 InferTime:27.34ms Time cost: 3:40:05/18:24
+2025-10-26 00:41:45,145   INFO  Training Epoch:92/100 Iter:  76/97 Loss:0.148940(0.285499) LR:2.6040e-06 DataTime:0.22 InferTime:27.16ms Time cost: 3:40:22/17:06
+2025-10-26 00:42:02,277   INFO  Training Epoch:93/100 Iter:  29/97 Loss:0.191822(0.327442) LR:2.2463e-06 DataTime:0.20 InferTime:27.30ms Time cost: 3:40:39/15:49
+2025-10-26 00:42:19,497   INFO  Training Epoch:93/100 Iter:  79/97 Loss:0.283188(0.300430) LR:1.9147e-06 DataTime:0.23 InferTime:27.22ms Time cost: 3:40:56/14:32
+2025-10-26 00:42:36,529   INFO  Training Epoch:94/100 Iter:  32/97 Loss:0.302678(0.286149) LR:1.6093e-06 DataTime:0.22 InferTime:27.11ms Time cost: 3:41:13/13:16
+2025-10-26 00:42:53,807   INFO  Training Epoch:94/100 Iter:  82/97 Loss:0.377839(0.290658) LR:1.3303e-06 DataTime:0.24 InferTime:27.20ms Time cost: 3:41:30/12:00
+2025-10-26 00:43:10,961   INFO  Training Epoch:95/100 Iter:  35/97 Loss:0.282400(0.306761) LR:1.0777e-06 DataTime:0.21 InferTime:27.28ms Time cost: 3:41:48/10:45
+2025-10-26 00:43:28,031   INFO  Training Epoch:95/100 Iter:  85/97 Loss:0.234737(0.289040) LR:8.5151e-07 DataTime:0.22 InferTime:27.08ms Time cost: 3:42:05/09:31
+2025-10-26 00:43:45,330   INFO  Training Epoch:96/100 Iter:  38/97 Loss:0.523469(0.285183) LR:6.5188e-07 DataTime:0.20 InferTime:27.73ms Time cost: 3:42:22/08:17
+2025-10-26 00:44:02,388   INFO  Training Epoch:96/100 Iter:  88/97 Loss:0.252344(0.291333) LR:4.7882e-07 DataTime:0.21 InferTime:27.41ms Time cost: 3:42:39/07:04
+2025-10-26 00:44:19,426   INFO  Training Epoch:97/100 Iter:  41/97 Loss:0.178397(0.344080) LR:3.3240e-07 DataTime:0.21 InferTime:27.38ms Time cost: 3:42:56/05:52
+2025-10-26 00:44:36,488   INFO  Training Epoch:97/100 Iter:  91/97 Loss:0.160766(0.298120) LR:2.1264e-07 DataTime:0.20 InferTime:27.21ms Time cost: 3:43:13/04:40
+2025-10-26 00:44:53,426   INFO  Training Epoch:98/100 Iter:  44/97 Loss:0.160135(0.262230) LR:1.1958e-07 DataTime:0.18 InferTime:27.52ms Time cost: 3:43:30/03:29
+2025-10-26 00:45:10,654   INFO  Training Epoch:98/100 Iter:  94/97 Loss:0.211041(0.285999) LR:5.3243e-08 DataTime:0.23 InferTime:30.02ms Time cost: 3:43:47/02:18
+2025-10-26 00:45:27,745   INFO  Training Epoch:99/100 Iter:  47/97 Loss:0.363039(0.288669) LR:1.3648e-08 DataTime:0.21 InferTime:27.24ms Time cost: 3:44:04/01:08
+2025-10-26 00:45:44,870   INFO  Evaluating Epoch:99 Iter:   0/14 InferTime: 17.68ms
+2025-10-26 00:45:46,104   INFO  Epoch 99 metrics: {'d1_all': tensor(1.4805), 'epe': tensor(0.5212), 'thres_1': tensor(10.2301), 'thres_2': tensor(3.3810), 'thres_3': tensor(1.7567)}
+2025-10-26 00:45:47,729   INFO  Training Epoch: 0/100 Iter:   0/97 Loss:0.234430(0.234430) LR:8.0000e-06 DataTime:0.22 InferTime:27.51ms Time cost: 3:44:24/36276:21:29
+2025-10-26 00:46:04,911   INFO  Training Epoch: 0/100 Iter:  50/97 Loss:0.184070(0.299443) LR:1.1028e-04 DataTime:0.22 InferTime:27.27ms Time cost: 3:44:41/708:32:14
+2025-10-26 00:46:21,054   INFO  Evaluating Epoch: 0 Iter:   0/14 InferTime: 17.72ms
+2025-10-26 00:46:22,301   INFO  Epoch 0 metrics: {'d1_all': tensor(1.5262), 'epe': tensor(0.5503), 'thres_1': tensor(11.1515), 'thres_2': tensor(3.8228), 'thres_3': tensor(2.0053)}
+2025-10-26 00:46:23,677   INFO  Training Epoch: 1/100 Iter:   3/97 Loss:0.322632(0.340265) LR:2.0000e-04 DataTime:0.22 InferTime:27.00ms Time cost: 3:45:00/356:25:03
+2025-10-26 00:46:40,811   INFO  Training Epoch: 1/100 Iter:  53/97 Loss:0.121824(0.343710) LR:1.9998e-04 DataTime:0.21 InferTime:27.03ms Time cost: 3:45:17/237:27:28
+2025-10-26 00:46:57,824   INFO  Training Epoch: 2/100 Iter:   6/97 Loss:0.227640(0.226522) LR:1.9994e-04 DataTime:0.22 InferTime:27.22ms Time cost: 3:45:34/177:40:40
+2025-10-26 00:47:14,989   INFO  Training Epoch: 2/100 Iter:  56/97 Loss:0.278802(0.330635) LR:1.9987e-04 DataTime:0.18 InferTime:27.21ms Time cost: 3:45:52/141:42:52
+2025-10-26 00:47:32,119   INFO  Training Epoch: 3/100 Iter:   9/97 Loss:0.181767(0.296640) LR:1.9978e-04 DataTime:0.22 InferTime:34.02ms Time cost: 3:46:09/117:41:49
+2025-10-26 00:47:48,972   INFO  Training Epoch: 3/100 Iter:  59/97 Loss:0.204795(0.307190) LR:1.9965e-04 DataTime:0.23 InferTime:27.10ms Time cost: 3:46:26/100:31:08
+2025-10-26 00:48:06,037   INFO  Training Epoch: 4/100 Iter:  12/97 Loss:0.396257(0.406850) LR:1.9951e-04 DataTime:0.22 InferTime:27.37ms Time cost: 3:46:43/87:37:29
+2025-10-26 00:48:23,379   INFO  Training Epoch: 4/100 Iter:  62/97 Loss:0.722463(0.373997) LR:1.9933e-04 DataTime:0.23 InferTime:27.41ms Time cost: 3:47:00/77:35:24
+2025-10-26 00:48:40,671   INFO  Training Epoch: 5/100 Iter:  15/97 Loss:0.224187(0.327713) LR:1.9913e-04 DataTime:0.22 InferTime:27.71ms Time cost: 3:47:17/69:33:25
+2025-10-26 00:48:57,831   INFO  Training Epoch: 5/100 Iter:  65/97 Loss:0.220259(0.322836) LR:1.9890e-04 DataTime:0.18 InferTime:27.48ms Time cost: 3:47:34/62:58:50
+2025-10-26 00:49:14,940   INFO  Training Epoch: 6/100 Iter:  18/97 Loss:0.407012(0.302710) LR:1.9864e-04 DataTime:0.22 InferTime:27.26ms Time cost: 3:47:51/57:29:50
+2025-10-26 00:49:32,186   INFO  Training Epoch: 6/100 Iter:  68/97 Loss:0.465165(0.321612) LR:1.9836e-04 DataTime:0.23 InferTime:27.48ms Time cost: 3:48:09/52:51:22
+2025-10-26 00:49:49,157   INFO  Training Epoch: 7/100 Iter:  21/97 Loss:0.242215(0.438908) LR:1.9805e-04 DataTime:0.20 InferTime:29.50ms Time cost: 3:48:26/48:52:31
+2025-10-26 00:50:06,288   INFO  Training Epoch: 7/100 Iter:  71/97 Loss:0.224020(0.358390) LR:1.9772e-04 DataTime:0.22 InferTime:27.01ms Time cost: 3:48:43/45:25:28
+2025-10-26 00:50:23,400   INFO  Training Epoch: 8/100 Iter:  24/97 Loss:0.469112(0.338173) LR:1.9736e-04 DataTime:0.21 InferTime:27.57ms Time cost: 3:49:00/42:24:14
+2025-10-26 00:50:40,630   INFO  Training Epoch: 8/100 Iter:  74/97 Loss:0.278991(0.337371) LR:1.9697e-04 DataTime:0.22 InferTime:27.09ms Time cost: 3:49:17/39:44:17
+2025-10-26 00:50:57,745   INFO  Training Epoch: 9/100 Iter:  27/97 Loss:0.337788(0.343126) LR:1.9656e-04 DataTime:0.23 InferTime:27.39ms Time cost: 3:49:34/37:22:02
+2025-10-26 00:51:14,900   INFO  Training Epoch: 9/100 Iter:  77/97 Loss:0.227156(0.320751) LR:1.9612e-04 DataTime:0.20 InferTime:27.14ms Time cost: 3:49:51/35:14:43
+2025-10-26 00:51:32,027   INFO  Training Epoch:10/100 Iter:  30/97 Loss:0.214627(0.342973) LR:1.9566e-04 DataTime:0.20 InferTime:27.18ms Time cost: 3:50:09/33:20:05
+2025-10-26 00:51:49,189   INFO  Training Epoch:10/100 Iter:  80/97 Loss:0.304521(0.325307) LR:1.9517e-04 DataTime:0.22 InferTime:27.11ms Time cost: 3:50:26/31:36:20
+2025-10-26 00:51:54,814   INFO  Evaluating Epoch:10 Iter:   0/14 InferTime: 19.34ms
+2025-10-26 00:51:56,047   INFO  Epoch 10 metrics: {'d1_all': tensor(1.6094), 'epe': tensor(0.5584), 'thres_1': tensor(11.1426), 'thres_2': tensor(3.7424), 'thres_3': tensor(1.9826)}
+2025-10-26 00:52:07,655   INFO  Training Epoch:11/100 Iter:  33/97 Loss:0.386525(0.321186) LR:1.9465e-04 DataTime:0.23 InferTime:27.11ms Time cost: 3:50:44/30:02:09
+2025-10-26 00:52:24,668   INFO  Training Epoch:11/100 Iter:  83/97 Loss:0.235471(0.332543) LR:1.9411e-04 DataTime:0.22 InferTime:27.14ms Time cost: 3:51:01/28:35:57
+2025-10-26 00:52:41,812   INFO  Training Epoch:12/100 Iter:  36/97 Loss:0.509742(0.365567) LR:1.9355e-04 DataTime:0.19 InferTime:26.98ms Time cost: 3:51:18/27:16:55
+2025-10-26 00:52:58,835   INFO  Training Epoch:12/100 Iter:  86/97 Loss:0.199066(0.336059) LR:1.9296e-04 DataTime:0.23 InferTime:27.05ms Time cost: 3:51:35/26:04:09
+2025-10-26 00:53:15,974   INFO  Training Epoch:13/100 Iter:  39/97 Loss:0.497483(0.341926) LR:1.9234e-04 DataTime:0.22 InferTime:27.01ms Time cost: 3:51:53/24:56:59
+2025-10-26 00:53:33,341   INFO  Training Epoch:13/100 Iter:  89/97 Loss:0.359341(0.328483) LR:1.9170e-04 DataTime:0.23 InferTime:27.59ms Time cost: 3:52:10/23:54:47
+2025-10-26 00:53:50,455   INFO  Training Epoch:14/100 Iter:  42/97 Loss:0.174054(0.319926) LR:1.9104e-04 DataTime:0.21 InferTime:27.29ms Time cost: 3:52:27/22:56:59
+2025-10-26 00:54:07,534   INFO  Training Epoch:14/100 Iter:  92/97 Loss:0.504994(0.324006) LR:1.9035e-04 DataTime:0.22 InferTime:27.61ms Time cost: 3:52:44/22:03:09
+2025-10-26 00:54:24,541   INFO  Training Epoch:15/100 Iter:  45/97 Loss:0.234425(0.333711) LR:1.8964e-04 DataTime:0.22 InferTime:27.60ms Time cost: 3:53:01/21:12:52
+2025-10-26 00:54:41,398   INFO  Training Epoch:15/100 Iter:  95/97 Loss:0.252313(0.340734) LR:1.8890e-04 DataTime:0.19 InferTime:27.58ms Time cost: 3:53:18/20:25:48
+2025-10-26 00:54:58,531   INFO  Training Epoch:16/100 Iter:  48/97 Loss:0.265147(0.279686) LR:1.8814e-04 DataTime:0.22 InferTime:27.51ms Time cost: 3:53:35/19:41:40
+2025-10-26 00:55:15,626   INFO  Training Epoch:17/100 Iter:   1/97 Loss:0.361988(0.393560) LR:1.8735e-04 DataTime:0.19 InferTime:27.79ms Time cost: 3:53:52/19:00:12
+2025-10-26 00:55:32,807   INFO  Training Epoch:17/100 Iter:  51/97 Loss:0.780738(0.372433) LR:1.8655e-04 DataTime:0.21 InferTime:27.40ms Time cost: 3:54:09/18:21:09
+2025-10-26 00:55:49,834   INFO  Training Epoch:18/100 Iter:   4/97 Loss:0.329204(0.382078) LR:1.8571e-04 DataTime:0.20 InferTime:27.30ms Time cost: 3:54:26/17:44:19
+2025-10-26 00:56:06,965   INFO  Training Epoch:18/100 Iter:  54/97 Loss:0.734375(0.367768) LR:1.8486e-04 DataTime:0.22 InferTime:28.35ms Time cost: 3:54:44/17:09:31
+2025-10-26 00:56:24,119   INFO  Training Epoch:19/100 Iter:   7/97 Loss:0.486593(0.440101) LR:1.8398e-04 DataTime:0.20 InferTime:27.30ms Time cost: 3:55:01/16:36:34
+2025-10-26 00:56:41,241   INFO  Training Epoch:19/100 Iter:  57/97 Loss:0.160092(0.335474) LR:1.8308e-04 DataTime:0.22 InferTime:27.60ms Time cost: 3:55:18/16:05:21
+2025-10-26 00:56:58,446   INFO  Training Epoch:20/100 Iter:  10/97 Loss:0.197266(0.349335) LR:1.8216e-04 DataTime:0.22 InferTime:27.31ms Time cost: 3:55:35/15:35:43
+2025-10-26 00:57:15,509   INFO  Training Epoch:20/100 Iter:  60/97 Loss:0.535974(0.332293) LR:1.8122e-04 DataTime:0.19 InferTime:27.98ms Time cost: 3:55:52/15:07:33
+2025-10-26 00:57:28,203   INFO  Evaluating Epoch:20 Iter:   0/14 InferTime: 17.95ms
+2025-10-26 00:57:29,456   INFO  Epoch 20 metrics: {'d1_all': tensor(1.5471), 'epe': tensor(0.5679), 'thres_1': tensor(11.3619), 'thres_2': tensor(4.0516), 'thres_3': tensor(2.0657)}
+2025-10-26 00:57:34,165   INFO  Training Epoch:21/100 Iter:  13/97 Loss:0.223449(0.368311) LR:1.8025e-04 DataTime:0.23 InferTime:27.76ms Time cost: 3:56:11/14:40:50
+2025-10-26 00:57:51,284   INFO  Training Epoch:21/100 Iter:  63/97 Loss:0.252876(0.306698) LR:1.7927e-04 DataTime:0.22 InferTime:27.43ms Time cost: 3:56:28/14:15:17
+2025-10-26 00:58:08,452   INFO  Training Epoch:22/100 Iter:  16/97 Loss:0.552819(0.313492) LR:1.7826e-04 DataTime:0.22 InferTime:27.52ms Time cost: 3:56:45/13:50:54
+2025-10-26 00:58:25,566   INFO  Training Epoch:22/100 Iter:  66/97 Loss:0.161149(0.322787) LR:1.7723e-04 DataTime:0.20 InferTime:27.53ms Time cost: 3:57:02/13:27:37
+2025-10-26 00:58:42,654   INFO  Training Epoch:23/100 Iter:  19/97 Loss:0.162214(0.293478) LR:1.7618e-04 DataTime:0.22 InferTime:27.49ms Time cost: 3:57:19/13:05:21
+2025-10-26 00:58:59,766   INFO  Training Epoch:23/100 Iter:  69/97 Loss:0.534832(0.315153) LR:1.7511e-04 DataTime:0.21 InferTime:27.60ms Time cost: 3:57:36/12:44:03
+2025-10-26 00:59:16,885   INFO  Training Epoch:24/100 Iter:  22/97 Loss:0.446680(0.354199) LR:1.7402e-04 DataTime:0.22 InferTime:27.35ms Time cost: 3:57:53/12:23:38
+2025-10-26 00:59:34,070   INFO  Training Epoch:24/100 Iter:  72/97 Loss:0.204739(0.360997) LR:1.7291e-04 DataTime:0.20 InferTime:27.66ms Time cost: 3:58:11/12:04:04
+2025-10-26 00:59:51,310   INFO  Training Epoch:25/100 Iter:  25/97 Loss:0.206322(0.362186) LR:1.7178e-04 DataTime:0.21 InferTime:30.78ms Time cost: 3:58:28/11:45:17
+2025-10-26 01:00:08,402   INFO  Training Epoch:25/100 Iter:  75/97 Loss:0.261616(0.358854) LR:1.7064e-04 DataTime:0.24 InferTime:27.27ms Time cost: 3:58:45/11:27:15
+2025-10-26 01:00:25,691   INFO  Training Epoch:26/100 Iter:  28/97 Loss:0.126139(0.307897) LR:1.6947e-04 DataTime:0.20 InferTime:27.72ms Time cost: 3:59:02/11:09:54
+2025-10-26 01:00:42,914   INFO  Training Epoch:26/100 Iter:  78/97 Loss:0.255273(0.344632) LR:1.6828e-04 DataTime:0.21 InferTime:27.55ms Time cost: 3:59:19/10:53:13
+2025-10-26 01:01:00,048   INFO  Training Epoch:27/100 Iter:  31/97 Loss:0.419406(0.340641) LR:1.6708e-04 DataTime:0.24 InferTime:31.12ms Time cost: 3:59:37/10:37:08
+2025-10-26 01:01:17,163   INFO  Training Epoch:27/100 Iter:  81/97 Loss:0.272433(0.325159) LR:1.6586e-04 DataTime:0.20 InferTime:27.34ms Time cost: 3:59:54/10:21:39
+2025-10-26 01:01:34,301   INFO  Training Epoch:28/100 Iter:  34/97 Loss:0.960985(0.338103) LR:1.6462e-04 DataTime:0.23 InferTime:27.66ms Time cost: 4:00:11/10:06:42
+2025-10-26 01:01:51,415   INFO  Training Epoch:28/100 Iter:  84/97 Loss:0.139267(0.317519) LR:1.6336e-04 DataTime:0.22 InferTime:27.78ms Time cost: 4:00:28/9:52:18
+2025-10-26 01:02:08,548   INFO  Training Epoch:29/100 Iter:  37/97 Loss:0.961871(0.292242) LR:1.6209e-04 DataTime:0.22 InferTime:27.47ms Time cost: 4:00:45/9:38:22
+2025-10-26 01:02:25,730   INFO  Training Epoch:29/100 Iter:  87/97 Loss:0.360542(0.296076) LR:1.6080e-04 DataTime:0.22 InferTime:27.80ms Time cost: 4:01:02/9:24:56
+2025-10-26 01:02:42,691   INFO  Training Epoch:30/100 Iter:  40/97 Loss:0.227071(0.285342) LR:1.5949e-04 DataTime:0.21 InferTime:27.77ms Time cost: 4:01:19/9:11:55
+2025-10-26 01:02:59,936   INFO  Training Epoch:30/100 Iter:  90/97 Loss:0.223347(0.306975) LR:1.5817e-04 DataTime:0.21 InferTime:27.34ms Time cost: 4:01:36/8:59:20
+2025-10-26 01:03:02,239   INFO  Evaluating Epoch:30 Iter:   0/14 InferTime: 22.71ms
+2025-10-26 01:03:03,479   INFO  Epoch 30 metrics: {'d1_all': tensor(1.5709), 'epe': tensor(0.5466), 'thres_1': tensor(10.8160), 'thres_2': tensor(3.6828), 'thres_3': tensor(1.9107)}
+2025-10-26 01:03:18,273   INFO  Training Epoch:31/100 Iter:  43/97 Loss:0.345015(0.316172) LR:1.5683e-04 DataTime:0.20 InferTime:27.40ms Time cost: 4:01:55/8:47:13
+2025-10-26 01:03:35,311   INFO  Training Epoch:31/100 Iter:  93/97 Loss:0.149711(0.302435) LR:1.5547e-04 DataTime:0.21 InferTime:27.48ms Time cost: 4:02:12/8:35:25
+2025-10-26 01:03:52,469   INFO  Training Epoch:32/100 Iter:  46/97 Loss:0.922187(0.348809) LR:1.5411e-04 DataTime:0.23 InferTime:27.44ms Time cost: 4:02:29/8:23:59
+2025-10-26 01:04:09,651   INFO  Training Epoch:32/100 Iter:  96/97 Loss:0.206299(0.315694) LR:1.5272e-04 DataTime:0.19 InferTime:27.66ms Time cost: 4:02:46/8:12:54
+2025-10-26 01:04:26,666   INFO  Training Epoch:33/100 Iter:  49/97 Loss:0.248065(0.328167) LR:1.5133e-04 DataTime:0.22 InferTime:27.32ms Time cost: 4:03:03/8:02:09
+2025-10-26 01:04:43,820   INFO  Training Epoch:34/100 Iter:   2/97 Loss:0.144629(0.244109) LR:1.4992e-04 DataTime:0.21 InferTime:27.57ms Time cost: 4:03:20/7:51:43
+2025-10-26 01:05:00,945   INFO  Training Epoch:34/100 Iter:  52/97 Loss:0.365641(0.302576) LR:1.4849e-04 DataTime:0.23 InferTime:27.38ms Time cost: 4:03:37/7:41:36
+2025-10-26 01:05:18,027   INFO  Training Epoch:35/100 Iter:   5/97 Loss:0.156091(0.243542) LR:1.4705e-04 DataTime:0.23 InferTime:27.61ms Time cost: 4:03:55/7:31:45
+2025-10-26 01:05:35,246   INFO  Training Epoch:35/100 Iter:  55/97 Loss:0.345278(0.354706) LR:1.4560e-04 DataTime:0.18 InferTime:27.49ms Time cost: 4:04:12/7:22:12
+2025-10-26 01:05:52,328   INFO  Training Epoch:36/100 Iter:   8/97 Loss:0.217942(0.339157) LR:1.4414e-04 DataTime:0.22 InferTime:27.39ms Time cost: 4:04:29/7:12:54
+2025-10-26 01:06:09,579   INFO  Training Epoch:36/100 Iter:  58/97 Loss:0.227943(0.319699) LR:1.4267e-04 DataTime:0.22 InferTime:27.60ms Time cost: 4:04:46/7:03:51
+2025-10-26 01:06:26,719   INFO  Training Epoch:37/100 Iter:  11/97 Loss:0.227160(0.259163) LR:1.4118e-04 DataTime:0.21 InferTime:27.51ms Time cost: 4:05:03/6:55:03
+2025-10-26 01:06:43,885   INFO  Training Epoch:37/100 Iter:  61/97 Loss:0.212099(0.299063) LR:1.3969e-04 DataTime:0.21 InferTime:27.71ms Time cost: 4:05:20/6:46:29
+2025-10-26 01:07:01,049   INFO  Training Epoch:38/100 Iter:  14/97 Loss:0.343636(0.326868) LR:1.3818e-04 DataTime:0.22 InferTime:27.52ms Time cost: 4:05:38/6:38:09
+2025-10-26 01:07:18,176   INFO  Training Epoch:38/100 Iter:  64/97 Loss:0.123681(0.324676) LR:1.3666e-04 DataTime:0.20 InferTime:27.26ms Time cost: 4:05:55/6:30:01
+2025-10-26 01:07:35,423   INFO  Training Epoch:39/100 Iter:  17/97 Loss:0.270252(0.356561) LR:1.3514e-04 DataTime:0.23 InferTime:27.49ms Time cost: 4:06:12/6:22:06
+2025-10-26 01:07:52,680   INFO  Training Epoch:39/100 Iter:  67/97 Loss:0.225153(0.301552) LR:1.3360e-04 DataTime:0.21 InferTime:27.32ms Time cost: 4:06:29/6:14:23
+2025-10-26 01:08:09,893   INFO  Training Epoch:40/100 Iter:  20/97 Loss:0.149015(0.342121) LR:1.3206e-04 DataTime:0.19 InferTime:27.69ms Time cost: 4:06:46/6:06:51
+2025-10-26 01:08:26,958   INFO  Training Epoch:40/100 Iter:  70/97 Loss:0.154262(0.302115) LR:1.3050e-04 DataTime:0.19 InferTime:27.40ms Time cost: 4:07:04/5:59:30
+2025-10-26 01:08:36,278   INFO  Evaluating Epoch:40 Iter:   0/14 InferTime: 17.66ms
+2025-10-26 01:08:37,520   INFO  Epoch 40 metrics: {'d1_all': tensor(1.5436), 'epe': tensor(0.5551), 'thres_1': tensor(10.7808), 'thres_2': tensor(3.6104), 'thres_3': tensor(1.8785)}
+2025-10-26 01:08:45,707   INFO  Training Epoch:41/100 Iter:  23/97 Loss:0.362509(0.303893) LR:1.2894e-04 DataTime:0.20 InferTime:28.13ms Time cost: 4:07:22/5:52:21
+2025-10-26 01:09:02,899   INFO  Training Epoch:41/100 Iter:  73/97 Loss:0.162658(0.319982) LR:1.2737e-04 DataTime:0.22 InferTime:27.86ms Time cost: 4:07:39/5:45:21
+2025-10-26 01:09:20,080   INFO  Training Epoch:42/100 Iter:  26/97 Loss:0.276953(0.273422) LR:1.2580e-04 DataTime:0.22 InferTime:27.60ms Time cost: 4:07:57/5:38:31
+2025-10-26 01:09:37,371   INFO  Training Epoch:42/100 Iter:  76/97 Loss:0.188528(0.326073) LR:1.2421e-04 DataTime:0.20 InferTime:27.25ms Time cost: 4:08:14/5:31:50
+2025-10-26 01:09:54,514   INFO  Training Epoch:43/100 Iter:  29/97 Loss:0.637853(0.369110) LR:1.2262e-04 DataTime:0.22 InferTime:27.25ms Time cost: 4:08:31/5:25:18
+2025-10-26 01:10:11,548   INFO  Training Epoch:43/100 Iter:  79/97 Loss:0.371571(0.317685) LR:1.2103e-04 DataTime:0.20 InferTime:27.87ms Time cost: 4:08:48/5:18:55
+2025-10-26 01:10:28,734   INFO  Training Epoch:44/100 Iter:  32/97 Loss:0.808257(0.346527) LR:1.1942e-04 DataTime:0.22 InferTime:28.26ms Time cost: 4:09:05/5:12:41
+2025-10-26 01:10:45,935   INFO  Training Epoch:44/100 Iter:  82/97 Loss:0.155288(0.304867) LR:1.1782e-04 DataTime:0.21 InferTime:27.24ms Time cost: 4:09:22/5:06:35
+2025-10-26 01:11:02,907   INFO  Training Epoch:45/100 Iter:  35/97 Loss:0.153464(0.309779) LR:1.1620e-04 DataTime:0.20 InferTime:27.84ms Time cost: 4:09:39/5:00:36
+2025-10-26 01:11:20,022   INFO  Training Epoch:45/100 Iter:  85/97 Loss:0.196920(0.315318) LR:1.1459e-04 DataTime:0.22 InferTime:27.36ms Time cost: 4:09:57/4:54:45
+2025-10-26 01:11:37,121   INFO  Training Epoch:46/100 Iter:  38/97 Loss:0.169800(0.330140) LR:1.1297e-04 DataTime:0.22 InferTime:27.75ms Time cost: 4:10:14/4:49:02
+2025-10-26 01:11:54,163   INFO  Training Epoch:46/100 Iter:  88/97 Loss:0.130280(0.299758) LR:1.1134e-04 DataTime:0.18 InferTime:27.65ms Time cost: 4:10:31/4:43:26
+2025-10-26 01:12:11,328   INFO  Training Epoch:47/100 Iter:  41/97 Loss:0.245043(0.288116) LR:1.0972e-04 DataTime:0.21 InferTime:27.27ms Time cost: 4:10:48/4:37:57
+2025-10-26 01:12:28,453   INFO  Training Epoch:47/100 Iter:  91/97 Loss:0.592611(0.295359) LR:1.0809e-04 DataTime:0.21 InferTime:27.55ms Time cost: 4:11:05/4:32:34
+2025-10-26 01:12:45,473   INFO  Training Epoch:48/100 Iter:  44/97 Loss:0.295646(0.298373) LR:1.0646e-04 DataTime:0.22 InferTime:27.44ms Time cost: 4:11:22/4:27:18
+2025-10-26 01:13:02,734   INFO  Training Epoch:48/100 Iter:  94/97 Loss:0.198112(0.316369) LR:1.0482e-04 DataTime:0.22 InferTime:27.72ms Time cost: 4:11:39/4:22:09
+2025-10-26 01:13:19,810   INFO  Training Epoch:49/100 Iter:  47/97 Loss:0.116923(0.335993) LR:1.0319e-04 DataTime:0.21 InferTime:27.44ms Time cost: 4:11:56/4:17:05
+2025-10-26 01:13:36,845   INFO  Training Epoch:50/100 Iter:   0/97 Loss:0.219664(0.219664) LR:1.0155e-04 DataTime:0.23 InferTime:27.73ms Time cost: 4:12:13/4:12:07
+2025-10-26 01:13:54,109   INFO  Training Epoch:50/100 Iter:  50/97 Loss:0.222149(0.335801) LR:9.9919e-05 DataTime:0.21 InferTime:27.52ms Time cost: 4:12:31/4:07:15
+2025-10-26 01:14:09,873   INFO  Evaluating Epoch:50 Iter:   0/14 InferTime: 17.54ms
+2025-10-26 01:14:11,107   INFO  Epoch 50 metrics: {'d1_all': tensor(1.4508), 'epe': tensor(0.5382), 'thres_1': tensor(10.3572), 'thres_2': tensor(3.5179), 'thres_3': tensor(1.7985)}
+2025-10-26 01:14:12,487   INFO  Training Epoch:51/100 Iter:   3/97 Loss:0.130461(0.202784) LR:9.8283e-05 DataTime:0.21 InferTime:27.37ms Time cost: 4:12:49/4:02:30
+2025-10-26 01:14:29,596   INFO  Training Epoch:51/100 Iter:  53/97 Loss:0.276141(0.287595) LR:9.6648e-05 DataTime:0.23 InferTime:27.26ms Time cost: 4:13:06/3:57:49
+2025-10-26 01:14:46,848   INFO  Training Epoch:52/100 Iter:   6/97 Loss:0.228448(0.263883) LR:9.5013e-05 DataTime:0.23 InferTime:27.48ms Time cost: 4:13:23/3:53:13
+2025-10-26 01:15:03,967   INFO  Training Epoch:52/100 Iter:  56/97 Loss:0.184862(0.312013) LR:9.3381e-05 DataTime:0.18 InferTime:27.46ms Time cost: 4:13:41/3:48:43
+2025-10-26 01:15:20,988   INFO  Training Epoch:53/100 Iter:   9/97 Loss:0.234131(0.279292) LR:9.1749e-05 DataTime:0.21 InferTime:27.48ms Time cost: 4:13:58/3:44:17
+2025-10-26 01:15:38,131   INFO  Training Epoch:53/100 Iter:  59/97 Loss:0.332430(0.315701) LR:9.0120e-05 DataTime:0.22 InferTime:27.42ms Time cost: 4:14:15/3:39:56
+2025-10-26 01:15:55,325   INFO  Training Epoch:54/100 Iter:  12/97 Loss:0.167782(0.231618) LR:8.8494e-05 DataTime:0.21 InferTime:27.80ms Time cost: 4:14:32/3:35:39
+2025-10-26 01:16:12,549   INFO  Training Epoch:54/100 Iter:  62/97 Loss:0.903298(0.302272) LR:8.6871e-05 DataTime:0.21 InferTime:27.46ms Time cost: 4:14:49/3:31:27
+2025-10-26 01:16:29,787   INFO  Training Epoch:55/100 Iter:  15/97 Loss:0.326799(0.269952) LR:8.5251e-05 DataTime:0.22 InferTime:27.49ms Time cost: 4:15:06/3:27:20
+2025-10-26 01:16:47,060   INFO  Training Epoch:55/100 Iter:  65/97 Loss:0.194870(0.295416) LR:8.3635e-05 DataTime:0.19 InferTime:27.54ms Time cost: 4:15:24/3:23:17
+2025-10-26 01:17:04,296   INFO  Training Epoch:56/100 Iter:  18/97 Loss:0.639507(0.285612) LR:8.2024e-05 DataTime:0.21 InferTime:27.67ms Time cost: 4:15:41/3:19:18
+2025-10-26 01:17:21,492   INFO  Training Epoch:56/100 Iter:  68/97 Loss:0.127435(0.279351) LR:8.0417e-05 DataTime:0.22 InferTime:27.26ms Time cost: 4:15:58/3:15:23
+2025-10-26 01:17:38,479   INFO  Training Epoch:57/100 Iter:  21/97 Loss:0.236398(0.314343) LR:7.8816e-05 DataTime:0.22 InferTime:27.40ms Time cost: 4:16:15/3:11:32
+2025-10-26 01:17:55,636   INFO  Training Epoch:57/100 Iter:  71/97 Loss:0.223978(0.288690) LR:7.7220e-05 DataTime:0.24 InferTime:27.45ms Time cost: 4:16:32/3:07:44
+2025-10-26 01:18:12,862   INFO  Training Epoch:58/100 Iter:  24/97 Loss:1.06219(0.329535) LR:7.5631e-05 DataTime:0.23 InferTime:34.27ms Time cost: 4:16:49/3:04:01
+2025-10-26 01:18:30,054   INFO  Training Epoch:58/100 Iter:  74/97 Loss:0.256374(0.300981) LR:7.4048e-05 DataTime:0.22 InferTime:27.74ms Time cost: 4:17:07/3:00:21
+2025-10-26 01:18:47,240   INFO  Training Epoch:59/100 Iter:  27/97 Loss:0.266041(0.269275) LR:7.2471e-05 DataTime:0.20 InferTime:27.71ms Time cost: 4:17:24/2:56:45
+2025-10-26 01:19:04,290   INFO  Training Epoch:59/100 Iter:  77/97 Loss:0.158656(0.259725) LR:7.0903e-05 DataTime:0.21 InferTime:27.78ms Time cost: 4:17:41/2:53:11
+2025-10-26 01:19:21,531   INFO  Training Epoch:60/100 Iter:  30/97 Loss:0.133360(0.290157) LR:6.9342e-05 DataTime:0.21 InferTime:27.46ms Time cost: 4:17:58/2:49:42
+2025-10-26 01:19:38,692   INFO  Training Epoch:60/100 Iter:  80/97 Loss:0.264742(0.280153) LR:6.7789e-05 DataTime:0.24 InferTime:31.78ms Time cost: 4:18:15/2:46:15
+2025-10-26 01:19:44,658   INFO  Evaluating Epoch:60 Iter:   0/14 InferTime: 19.64ms
+2025-10-26 01:19:45,894   INFO  Epoch 60 metrics: {'d1_all': tensor(1.3742), 'epe': tensor(0.5199), 'thres_1': tensor(10.0625), 'thres_2': tensor(3.4603), 'thres_3': tensor(1.7455)}
+2025-10-26 01:19:57,539   INFO  Training Epoch:61/100 Iter:  33/97 Loss:0.217378(0.294786) LR:6.6245e-05 DataTime:0.23 InferTime:27.56ms Time cost: 4:18:34/2:42:53
+2025-10-26 01:20:14,660   INFO  Training Epoch:61/100 Iter:  83/97 Loss:0.265949(0.306794) LR:6.4710e-05 DataTime:0.23 InferTime:27.33ms Time cost: 4:18:51/2:39:33
+2025-10-26 01:20:31,675   INFO  Training Epoch:62/100 Iter:  36/97 Loss:0.218470(0.289278) LR:6.3184e-05 DataTime:0.23 InferTime:27.73ms Time cost: 4:19:08/2:36:16
+2025-10-26 01:20:48,829   INFO  Training Epoch:62/100 Iter:  86/97 Loss:0.793198(0.311556) LR:6.1668e-05 DataTime:0.21 InferTime:27.36ms Time cost: 4:19:25/2:33:02
+2025-10-26 01:21:05,928   INFO  Training Epoch:63/100 Iter:  39/97 Loss:0.179892(0.268133) LR:6.0162e-05 DataTime:0.21 InferTime:27.25ms Time cost: 4:19:42/2:29:51
+2025-10-26 01:21:22,971   INFO  Training Epoch:63/100 Iter:  89/97 Loss:0.583336(0.261449) LR:5.8667e-05 DataTime:0.21 InferTime:27.63ms Time cost: 4:20:00/2:26:42
+2025-10-26 01:21:40,124   INFO  Training Epoch:64/100 Iter:  42/97 Loss:0.467019(0.274710) LR:5.7184e-05 DataTime:0.22 InferTime:27.85ms Time cost: 4:20:17/2:23:36
+2025-10-26 01:21:57,214   INFO  Training Epoch:64/100 Iter:  92/97 Loss:0.890833(0.270314) LR:5.5711e-05 DataTime:0.21 InferTime:28.56ms Time cost: 4:20:34/2:20:33
+2025-10-26 01:22:14,442   INFO  Training Epoch:65/100 Iter:  45/97 Loss:0.220947(0.315501) LR:5.4251e-05 DataTime:0.21 InferTime:27.51ms Time cost: 4:20:51/2:17:33
+2025-10-26 01:22:31,497   INFO  Training Epoch:65/100 Iter:  95/97 Loss:0.131477(0.296180) LR:5.2802e-05 DataTime:0.20 InferTime:27.63ms Time cost: 4:21:08/2:14:35
+2025-10-26 01:22:48,664   INFO  Training Epoch:66/100 Iter:  48/97 Loss:0.217833(0.249870) LR:5.1367e-05 DataTime:0.21 InferTime:27.49ms Time cost: 4:21:25/2:11:39
+2025-10-26 01:23:05,915   INFO  Training Epoch:67/100 Iter:   1/97 Loss:0.239584(0.199476) LR:4.9944e-05 DataTime:0.22 InferTime:27.25ms Time cost: 4:21:42/2:08:47
+2025-10-26 01:23:22,819   INFO  Training Epoch:67/100 Iter:  51/97 Loss:0.223332(0.294704) LR:4.8535e-05 DataTime:0.21 InferTime:27.19ms Time cost: 4:21:59/2:05:56
+2025-10-26 01:23:39,966   INFO  Training Epoch:68/100 Iter:   4/97 Loss:0.461112(0.363871) LR:4.7139e-05 DataTime:0.23 InferTime:27.37ms Time cost: 4:22:17/2:03:08
+2025-10-26 01:23:57,056   INFO  Training Epoch:68/100 Iter:  54/97 Loss:0.208966(0.337915) LR:4.5758e-05 DataTime:0.22 InferTime:30.37ms Time cost: 4:22:34/2:00:22
+2025-10-26 01:24:14,238   INFO  Training Epoch:69/100 Iter:   7/97 Loss:0.284625(0.230600) LR:4.4391e-05 DataTime:0.19 InferTime:27.50ms Time cost: 4:22:51/1:57:38
+2025-10-26 01:24:31,246   INFO  Training Epoch:69/100 Iter:  57/97 Loss:0.259493(0.283664) LR:4.3039e-05 DataTime:0.22 InferTime:27.18ms Time cost: 4:23:08/1:54:56
+2025-10-26 01:24:48,337   INFO  Training Epoch:70/100 Iter:  10/97 Loss:0.124983(0.258713) LR:4.1702e-05 DataTime:0.21 InferTime:27.24ms Time cost: 4:23:25/1:52:17
+2025-10-26 01:25:05,436   INFO  Training Epoch:70/100 Iter:  60/97 Loss:0.162148(0.275580) LR:4.0381e-05 DataTime:0.21 InferTime:27.19ms Time cost: 4:23:42/1:49:39
+2025-10-26 01:25:18,008   INFO  Evaluating Epoch:70 Iter:   0/14 InferTime: 17.63ms
+2025-10-26 01:25:19,247   INFO  Epoch 70 metrics: {'d1_all': tensor(1.4364), 'epe': tensor(0.5146), 'thres_1': tensor(9.9831), 'thres_2': tensor(3.3504), 'thres_3': tensor(1.7493)}
+2025-10-26 01:25:24,008   INFO  Training Epoch:71/100 Iter:  13/97 Loss:0.229516(0.251024) LR:3.9076e-05 DataTime:0.21 InferTime:27.53ms Time cost: 4:24:01/1:47:05
+2025-10-26 01:25:41,058   INFO  Training Epoch:71/100 Iter:  63/97 Loss:0.149537(0.271303) LR:3.7787e-05 DataTime:0.23 InferTime:27.35ms Time cost: 4:24:18/1:44:31
+2025-10-26 01:25:58,207   INFO  Training Epoch:72/100 Iter:  16/97 Loss:0.228022(0.233532) LR:3.6515e-05 DataTime:0.22 InferTime:27.45ms Time cost: 4:24:35/1:42:00
+2025-10-26 01:26:15,097   INFO  Training Epoch:72/100 Iter:  66/97 Loss:0.192566(0.270045) LR:3.5259e-05 DataTime:0.21 InferTime:27.28ms Time cost: 4:24:52/1:39:30
+2025-10-26 01:26:32,195   INFO  Training Epoch:73/100 Iter:  19/97 Loss:0.129477(0.307896) LR:3.4022e-05 DataTime:0.20 InferTime:27.39ms Time cost: 4:25:09/1:37:02
+2025-10-26 01:26:49,306   INFO  Training Epoch:73/100 Iter:  69/97 Loss:0.257805(0.282759) LR:3.2801e-05 DataTime:0.20 InferTime:27.20ms Time cost: 4:25:26/1:34:37
+2025-10-26 01:27:06,547   INFO  Training Epoch:74/100 Iter:  22/97 Loss:0.197576(0.271263) LR:3.1599e-05 DataTime:0.22 InferTime:27.23ms Time cost: 4:25:43/1:32:12
+2025-10-26 01:27:23,530   INFO  Training Epoch:74/100 Iter:  72/97 Loss:0.346904(0.286831) LR:3.0415e-05 DataTime:0.22 InferTime:27.34ms Time cost: 4:26:00/1:29:50
+2025-10-26 01:27:40,766   INFO  Training Epoch:75/100 Iter:  25/97 Loss:0.299079(0.276488) LR:2.9250e-05 DataTime:0.22 InferTime:27.49ms Time cost: 4:26:17/1:27:30
+2025-10-26 01:27:57,929   INFO  Training Epoch:75/100 Iter:  75/97 Loss:0.217723(0.271547) LR:2.8103e-05 DataTime:0.23 InferTime:27.68ms Time cost: 4:26:34/1:25:11
+2025-10-26 01:28:15,085   INFO  Training Epoch:76/100 Iter:  28/97 Loss:0.368934(0.241010) LR:2.6976e-05 DataTime:0.22 InferTime:29.21ms Time cost: 4:26:52/1:22:53
+2025-10-26 01:28:32,318   INFO  Training Epoch:76/100 Iter:  78/97 Loss:0.107123(0.262642) LR:2.5868e-05 DataTime:0.21 InferTime:27.32ms Time cost: 4:27:09/1:20:38
+2025-10-26 01:28:49,477   INFO  Training Epoch:77/100 Iter:  31/97 Loss:0.283612(0.274564) LR:2.4780e-05 DataTime:0.21 InferTime:27.22ms Time cost: 4:27:26/1:18:24
+2025-10-26 01:29:06,663   INFO  Training Epoch:77/100 Iter:  81/97 Loss:0.191721(0.271353) LR:2.3713e-05 DataTime:0.20 InferTime:27.57ms Time cost: 4:27:43/1:16:11
+2025-10-26 01:29:23,415   INFO  Training Epoch:78/100 Iter:  34/97 Loss:0.414805(0.300929) LR:2.2665e-05 DataTime:0.21 InferTime:27.55ms Time cost: 4:28:00/1:14:00
+2025-10-26 01:29:40,548   INFO  Training Epoch:78/100 Iter:  84/97 Loss:0.169244(0.276718) LR:2.1639e-05 DataTime:0.22 InferTime:27.29ms Time cost: 4:28:17/1:11:51
+2025-10-26 01:29:57,900   INFO  Training Epoch:79/100 Iter:  37/97 Loss:0.221398(0.262390) LR:2.0633e-05 DataTime:0.23 InferTime:27.55ms Time cost: 4:28:34/1:09:43
+2025-10-26 01:30:15,108   INFO  Training Epoch:79/100 Iter:  87/97 Loss:0.283792(0.280612) LR:1.9649e-05 DataTime:0.23 InferTime:27.73ms Time cost: 4:28:52/1:07:36
+2025-10-26 01:30:32,324   INFO  Training Epoch:80/100 Iter:  40/97 Loss:0.127636(0.257661) LR:1.8686e-05 DataTime:0.22 InferTime:27.17ms Time cost: 4:29:09/1:05:31
+2025-10-26 01:30:49,426   INFO  Training Epoch:80/100 Iter:  90/97 Loss:0.525518(0.262050) LR:1.7745e-05 DataTime:0.23 InferTime:27.59ms Time cost: 4:29:26/1:03:27
+2025-10-26 01:30:51,961   INFO  Evaluating Epoch:80 Iter:   0/14 InferTime: 17.63ms
+2025-10-26 01:30:53,206   INFO  Epoch 80 metrics: {'d1_all': tensor(1.4568), 'epe': tensor(0.5096), 'thres_1': tensor(9.9118), 'thres_2': tensor(3.3118), 'thres_3': tensor(1.7299)}
+2025-10-26 01:31:08,365   INFO  Training Epoch:81/100 Iter:  43/97 Loss:0.245881(0.254659) LR:1.6825e-05 DataTime:0.22 InferTime:27.59ms Time cost: 4:29:45/1:01:25
+2025-10-26 01:31:25,490   INFO  Training Epoch:81/100 Iter:  93/97 Loss:0.338893(0.257867) LR:1.5928e-05 DataTime:0.20 InferTime:28.07ms Time cost: 4:30:02/59:24
+2025-10-26 01:31:42,764   INFO  Training Epoch:82/100 Iter:  46/97 Loss:0.175221(0.259981) LR:1.5054e-05 DataTime:0.21 InferTime:27.60ms Time cost: 4:30:19/57:24
+2025-10-26 01:31:59,857   INFO  Training Epoch:82/100 Iter:  96/97 Loss:0.210467(0.278007) LR:1.4202e-05 DataTime:0.22 InferTime:27.35ms Time cost: 4:30:36/55:25
+2025-10-26 01:32:17,023   INFO  Training Epoch:83/100 Iter:  49/97 Loss:0.281844(0.254142) LR:1.3374e-05 DataTime:0.20 InferTime:27.47ms Time cost: 4:30:54/53:28
+2025-10-26 01:32:34,134   INFO  Training Epoch:84/100 Iter:   2/97 Loss:0.823767(0.555231) LR:1.2568e-05 DataTime:0.21 InferTime:27.47ms Time cost: 4:31:11/51:32
+2025-10-26 01:32:51,330   INFO  Training Epoch:84/100 Iter:  52/97 Loss:0.323182(0.255648) LR:1.1786e-05 DataTime:0.22 InferTime:27.61ms Time cost: 4:31:28/49:37
+2025-10-26 01:33:08,458   INFO  Training Epoch:85/100 Iter:   5/97 Loss:0.225546(0.235814) LR:1.1027e-05 DataTime:0.20 InferTime:27.52ms Time cost: 4:31:45/47:43
+2025-10-26 01:33:25,531   INFO  Training Epoch:85/100 Iter:  55/97 Loss:0.123819(0.285797) LR:1.0293e-05 DataTime:0.20 InferTime:27.51ms Time cost: 4:32:02/45:50
+2025-10-26 01:33:42,592   INFO  Training Epoch:86/100 Iter:   8/97 Loss:0.269727(0.252868) LR:9.5820e-06 DataTime:0.21 InferTime:27.74ms Time cost: 4:32:19/43:59
+2025-10-26 01:33:59,818   INFO  Training Epoch:86/100 Iter:  58/97 Loss:0.152426(0.254454) LR:8.8954e-06 DataTime:0.22 InferTime:27.49ms Time cost: 4:32:36/42:09
+2025-10-26 01:34:17,003   INFO  Training Epoch:87/100 Iter:  11/97 Loss:0.633246(0.308105) LR:8.2332e-06 DataTime:0.21 InferTime:27.42ms Time cost: 4:32:54/40:19
+2025-10-26 01:34:34,035   INFO  Training Epoch:87/100 Iter:  61/97 Loss:0.271768(0.292165) LR:7.5956e-06 DataTime:0.19 InferTime:27.18ms Time cost: 4:33:11/38:31
+2025-10-26 01:34:51,210   INFO  Training Epoch:88/100 Iter:  14/97 Loss:0.371786(0.308278) LR:6.9827e-06 DataTime:0.21 InferTime:27.40ms Time cost: 4:33:28/36:44
+2025-10-26 01:35:08,434   INFO  Training Epoch:88/100 Iter:  64/97 Loss:0.159708(0.274972) LR:6.3947e-06 DataTime:0.19 InferTime:27.71ms Time cost: 4:33:45/34:58
+2025-10-26 01:35:25,601   INFO  Training Epoch:89/100 Iter:  17/97 Loss:0.264096(0.251981) LR:5.8317e-06 DataTime:0.20 InferTime:27.46ms Time cost: 4:34:02/33:13
+2025-10-26 01:35:42,858   INFO  Training Epoch:89/100 Iter:  67/97 Loss:0.242877(0.281124) LR:5.2940e-06 DataTime:0.23 InferTime:38.76ms Time cost: 4:34:19/31:29
+2025-10-26 01:35:59,995   INFO  Training Epoch:90/100 Iter:  20/97 Loss:0.203228(0.270957) LR:4.7815e-06 DataTime:0.22 InferTime:28.26ms Time cost: 4:34:37/29:46
+2025-10-26 01:36:17,085   INFO  Training Epoch:90/100 Iter:  70/97 Loss:0.431952(0.266918) LR:4.2946e-06 DataTime:0.20 InferTime:27.28ms Time cost: 4:34:54/28:04
+2025-10-26 01:36:26,157   INFO  Evaluating Epoch:90 Iter:   0/14 InferTime: 17.54ms
+2025-10-26 01:36:27,382   INFO  Epoch 90 metrics: {'d1_all': tensor(1.4237), 'epe': tensor(0.5096), 'thres_1': tensor(9.9324), 'thres_2': tensor(3.3212), 'thres_3': tensor(1.7486)}
+2025-10-26 01:36:35,547   INFO  Training Epoch:91/100 Iter:  23/97 Loss:0.221382(0.288737) LR:3.8332e-06 DataTime:0.23 InferTime:27.56ms Time cost: 4:35:12/26:23
+2025-10-26 01:36:52,719   INFO  Training Epoch:91/100 Iter:  73/97 Loss:0.230856(0.288644) LR:3.3976e-06 DataTime:0.22 InferTime:27.38ms Time cost: 4:35:29/24:43
+2025-10-26 01:37:09,798   INFO  Training Epoch:92/100 Iter:  26/97 Loss:0.511113(0.295787) LR:2.9879e-06 DataTime:0.22 InferTime:27.30ms Time cost: 4:35:46/23:04
+2025-10-26 01:37:26,939   INFO  Training Epoch:92/100 Iter:  76/97 Loss:0.325489(0.253692) LR:2.6040e-06 DataTime:0.23 InferTime:27.51ms Time cost: 4:36:03/21:26
+2025-10-26 01:37:44,291   INFO  Training Epoch:93/100 Iter:  29/97 Loss:0.152693(0.285182) LR:2.2463e-06 DataTime:0.23 InferTime:27.65ms Time cost: 4:36:21/19:48
+2025-10-26 01:38:01,473   INFO  Training Epoch:93/100 Iter:  79/97 Loss:0.379420(0.260026) LR:1.9147e-06 DataTime:0.23 InferTime:27.87ms Time cost: 4:36:38/18:12
+2025-10-26 01:38:18,671   INFO  Training Epoch:94/100 Iter:  32/97 Loss:0.299222(0.262732) LR:1.6093e-06 DataTime:0.22 InferTime:27.34ms Time cost: 4:36:55/16:36
+2025-10-26 01:38:35,827   INFO  Training Epoch:94/100 Iter:  82/97 Loss:0.479382(0.278215) LR:1.3303e-06 DataTime:0.20 InferTime:27.92ms Time cost: 4:37:12/15:02
+2025-10-26 01:38:53,082   INFO  Training Epoch:95/100 Iter:  35/97 Loss:0.111373(0.258400) LR:1.0777e-06 DataTime:0.18 InferTime:27.60ms Time cost: 4:37:30/13:28
+2025-10-26 01:39:10,456   INFO  Training Epoch:95/100 Iter:  85/97 Loss:0.460679(0.296858) LR:8.5151e-07 DataTime:0.20 InferTime:27.90ms Time cost: 4:37:47/11:55
+2025-10-26 01:39:27,526   INFO  Training Epoch:96/100 Iter:  38/97 Loss:0.198616(0.288322) LR:6.5188e-07 DataTime:0.22 InferTime:28.73ms Time cost: 4:38:04/10:22
+2025-10-26 01:39:44,613   INFO  Training Epoch:96/100 Iter:  88/97 Loss:0.183117(0.275747) LR:4.7882e-07 DataTime:0.22 InferTime:27.30ms Time cost: 4:38:21/08:51
+2025-10-26 01:40:01,850   INFO  Training Epoch:97/100 Iter:  41/97 Loss:0.253839(0.247505) LR:3.3240e-07 DataTime:0.22 InferTime:27.68ms Time cost: 4:38:38/07:20
+2025-10-26 01:40:19,004   INFO  Training Epoch:97/100 Iter:  91/97 Loss:0.170796(0.268189) LR:2.1264e-07 DataTime:0.22 InferTime:27.51ms Time cost: 4:38:56/05:50
+2025-10-26 01:40:36,102   INFO  Training Epoch:98/100 Iter:  44/97 Loss:0.231238(0.282411) LR:1.1958e-07 DataTime:0.23 InferTime:27.43ms Time cost: 4:39:13/04:21
+2025-10-26 01:40:53,263   INFO  Training Epoch:98/100 Iter:  94/97 Loss:0.232280(0.280422) LR:5.3243e-08 DataTime:0.22 InferTime:27.61ms Time cost: 4:39:30/02:52
+2025-10-26 01:41:10,413   INFO  Training Epoch:99/100 Iter:  47/97 Loss:0.201092(0.273461) LR:1.3648e-08 DataTime:0.23 InferTime:27.36ms Time cost: 4:39:47/01:25
+2025-10-26 01:41:27,654   INFO  Evaluating Epoch:99 Iter:   0/14 InferTime: 19.77ms
+2025-10-26 01:41:28,907   INFO  Epoch 99 metrics: {'d1_all': tensor(1.3982), 'epe': tensor(0.5054), 'thres_1': tensor(9.7972), 'thres_2': tensor(3.2703), 'thres_3': tensor(1.7086)}
+2025-10-26 01:42:46,723   INFO  Evaluating Epoch:-1 Iter:   0/14 InferTime: 17.69ms
+2025-10-26 01:42:47,959   INFO  Epoch -1 metrics: {'d1_all': tensor(1.3987), 'epe': tensor(0.5054), 'thres_1': tensor(9.7965), 'thres_2': tensor(3.2704), 'thres_3': tensor(1.7089)}
+2025-10-26 01:42:52,694   INFO  Loading parameters from checkpoint LightStereo-M-KITTI.ckpt
+2025-10-26 01:42:52,796   INFO  Unused weight: 
+2025-10-26 01:42:52,797   INFO  Not updated weight: 
+2025-10-26 01:42:52,799   INFO  Total samples for eval dataset: 14
+2025-10-26 01:42:52,800   INFO  Total samples for train dataset: 194
+2025-10-26 01:42:52,875   INFO  Evaluating Epoch:-1 Iter:   0/14 InferTime: 21.07ms
+2025-10-26 01:42:54,109   INFO  Epoch -1 metrics: {'d1_all': tensor(1.5587), 'epe': tensor(0.5167), 'thres_1': tensor(9.9214), 'thres_2': tensor(3.3797), 'thres_3': tensor(1.8467)}
+
+
+
+Pruned Model
+2025-10-26 01:42:46,723   INFO  Evaluating Epoch:-1 Iter:   0/14 InferTime: 17.69ms
+2025-10-26 01:42:47,959   INFO  Epoch -1 metrics: {'d1_all': tensor(1.3987), 'epe': tensor(0.5054), 'thres_1': tensor(9.7965), 'thres_2': tensor(3.2704), 'thres_3': tensor(1.7089)}
+
+Original Model
+2025-10-26 01:42:52,875   INFO  Evaluating Epoch:-1 Iter:   0/14 InferTime: 21.07ms
+2025-10-26 01:42:54,109   INFO  Epoch -1 metrics: {'d1_all': tensor(1.5587), 'epe': tensor(0.5167), 'thres_1': tensor(9.9214), 'thres_2': tensor(3.3797), 'thres_3': tensor(1.8467)}
+
+FINAL SUMMARY TABLE
+────────────────────────────────────────────────────────────────────────────────
+Metric                                   Original             Pruned              
+────────────────────────────────────────────────────────────────────────────────
+Total Parameters                                  7,641,264          6,417,848
+Model Size (MB, float32)                              29.15              24.48
+Parameters Per MB                                   262,144            262,144
+Compression Ratio                                      1.0x              1.19x
+Reduction Rate                                        0.00%             16.01%
