@@ -11,6 +11,9 @@ import torch.distributed as dist
 
 from easydict import EasyDict
 from torch.utils.tensorboard import SummaryWriter
+import os
+import shutil
+from datetime import datetime
 
 sys.path.insert(0, './')
 from stereo.utils import common_utils
@@ -80,14 +83,23 @@ def main():
         seed = 0 if not args.dist_mode else dist.get_rank()
         common_utils.set_random_seed(seed=seed)
 
+
     # savedir
     args.output_dir = str(os.path.join(args.save_root_dir, args.exp_group_path, args.tag, args.extra_tag))
+
     if os.path.exists(args.output_dir) and args.cover_old_exp and global_rank == 0:
         shutil.rmtree(args.output_dir)
+
     if args.dist_mode:
         dist.barrier()
+
+    # Handle existing experiment folder dynamically
     if os.path.exists(args.output_dir) and args.extra_tag != 'debug' and cfgs.MODEL.CKPT == -1:
-        raise Exception('There is already an exp with this name')
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        new_name = f"{args.output_dir}_old_{timestamp}"
+        os.rename(args.output_dir, new_name)
+        print(f"[INFO] Existing experiment renamed to: {new_name}")
+
 
     args.ckpt_dir = os.path.join(args.output_dir, 'ckpt')
     if not os.path.exists(args.ckpt_dir) and local_rank == 0:
