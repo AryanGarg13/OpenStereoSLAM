@@ -7,9 +7,10 @@ DATA_CONFIG:
                 TESTING: ./data/KITTI12/kitti12_test.txt
             }
             RETURN_RIGHT_DISP: true
+
         # -   DATASET: KittiDataset
         #     DATA_SPLIT: {
-        #         TRAINING: ./data/KITTI5/kitti15_train200.txt,
+        #         TRAINING: ./data/KITTI15/kitti15_train200.txt,
         #         EVALUATING: ./data/KITTI15/kitti15_val20.txt,
         #         TESTING: ./data/KITTI15/kitti15_test.txt
         #     }
@@ -34,11 +35,11 @@ MODEL:
     NAME: LightStereo
     MAX_DISP: 192
     EXPANSE_RATIO: 4
-    AGGREGATION_BLOCKS: [ 4, 8, 16 ]
+    AGGREGATION_BLOCKS: [ 1, 2, 4 ]
     LEFT_ATT: true
     FIND_UNUSED_PARAMETERS: false
     CKPT: -1
-    PRETRAINED_MODEL: '' # The path of checkpoint trained with the Sceneflow dataset.
+    PRETRAINED_MODEL: '../../pretrained-ckpt/kitti-12/LightStereo-M-KITTI.ckpt' # The path of checkpoint trained with the Sceneflow dataset.
 
 OPTIMIZATION:
     FREEZE_BN: false
