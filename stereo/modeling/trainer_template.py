@@ -173,10 +173,12 @@ class TrainerTemplate:
 
     def evaluate(self, current_epoch):
         self.model.eval()
-        self.eval_one_epoch(current_epoch=current_epoch)
+        metrics = self.eval_one_epoch(current_epoch=current_epoch)  # now return metrics
         if self.args.dist_mode:
             dist.barrier()
+        return metrics
 
+    
     # def save_ckpt(self, current_epoch):
     #     if (current_epoch % self.cfgs.TRAINER.CKPT_SAVE_INTERVAL == 0 or current_epoch == self.total_epochs - 1) and self.global_rank == 0:
     #         ckpt_list = glob.glob(os.path.join(self.args.ckpt_dir, 'checkpoint_epoch_*.pth'))
@@ -389,3 +391,4 @@ class TrainerTemplate:
             write_tensorboard(self.tb_writer, tb_info, current_epoch)
 
         self.logger.info(f"Epoch {current_epoch} metrics: {results}")
+        return results 

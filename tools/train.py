@@ -125,12 +125,17 @@ def main():
     tbar = tqdm.trange(model_trainer.last_epoch + 1, model_trainer.total_epochs,
                        desc='epochs', dynamic_ncols=True, disable=(local_rank != 0),
                        bar_format='{l_bar}{bar}{r_bar}\n')
-    # train loop
+    
     for current_epoch in tbar:
         model_trainer.train(current_epoch, tbar)
-        model_trainer.save_ckpt(current_epoch)
+
+        # Evaluate only at intervals
+        metrics = None
         if current_epoch % cfgs.TRAINER.EVAL_INTERVAL == 0 or current_epoch == model_trainer.total_epochs - 1:
-            model_trainer.evaluate(current_epoch)
+            metrics = model_trainer.evaluate(current_epoch)  # should return metrics dict
+
+        # Save checkpoint with metrics
+        model_trainer.save_ckpt(current_epoch, metrics=metrics)
 
 
 if __name__ == '__main__':
