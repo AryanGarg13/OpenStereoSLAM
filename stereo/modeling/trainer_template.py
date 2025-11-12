@@ -211,6 +211,7 @@ class TrainerTemplate:
 
         # Determine if this epoch is the best
         is_best = False
+        current_metric = None
         if metrics is not None and best_metric_name in metrics:
             current_metric = metrics[best_metric_name].item()
             if current_metric < self.best_metric:  # change < to > if higher is better
@@ -219,6 +220,9 @@ class TrainerTemplate:
 
         ckpt_name = os.path.join(self.args.ckpt_dir, f'checkpoint_epoch_{current_epoch}.pth')
         save_model = (current_epoch % save_every_n == 0) or is_best or (current_epoch == self.total_epochs - 1)
+
+        # Print metrics and save info
+        print(f"[Epoch {current_epoch}] Current {best_metric_name}: {current_metric}, Best {best_metric_name}: {self.best_metric}, Save checkpoint: {save_model}")
 
         if save_model:
             common_utils.save_checkpoint(
