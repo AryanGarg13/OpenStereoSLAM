@@ -11,3 +11,4 @@ cfgs/foundationstereo/fstereo_combine.yaml
 pretrained-ckpt/
 data_stereo_flow/
 
+output/

@@ -110,7 +110,7 @@ def main():
         dist.barrier()
 
     # logger
-    log_file = os.path.join(args.output_dir, 'train_{}_{}.log'.format(datetime.datetime.now().strftime('%Y%m%d-%H%M%S'), group_rank))
+    log_file = os.path.join(args.output_dir, f"train_{datetime.now().strftime('%Y%m%d-%H%M%S')}_{group_rank}.log")
     logger = common_utils.create_logger(log_file, rank=local_rank)
     tb_writer = SummaryWriter(log_dir=os.path.join(args.output_dir, 'tensorboard')) if global_rank == 0 else None
     for key, val in vars(args).items():
