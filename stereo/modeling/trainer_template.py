@@ -192,50 +192,50 @@ class TrainerTemplate:
     #     if self.args.dist_mode:
     #         dist.barrier()
 
-
     def save_ckpt(self, current_epoch, metrics=None):
         """
         Save checkpoints:
-        - Best model based on validation metric
-        - Optional: every N epochs
+        - Save the best model based on 'epe' as checkpoint_best.pth (no epoch number)
+        - Save every `save_every_n` epochs as checkpoint_epoch_{n}.pth
         """
-        # Only global_rank 0 saves
         if self.global_rank != 0:
             return
 
         save_every_n = 50  # save every 50 epochs
-        best_metric_name = 'epe'  # metric to track best model, change as needed
+        best_metric_name = 'epe'
 
         # Track best model
         if not hasattr(self, 'best_metric'):
-            self.best_metric = float('inf')  # or -inf if higher is better
-            self.best_ckpt_path = None
+            self.best_metric = float('inf')
 
-        # Determine if this epoch is the best
         is_best = False
         current_metric = None
         if metrics is not None and best_metric_name in metrics:
             current_metric = metrics[best_metric_name].item()
-            if current_metric < self.best_metric:  # change < to > if higher is better
+            if current_metric < self.best_metric:  # lower epe is better
                 self.best_metric = current_metric
                 is_best = True
 
-        ckpt_name = os.path.join(self.args.ckpt_dir, f'checkpoint_epoch_{current_epoch}.pth')
-        save_model = (current_epoch % save_every_n == 0) or is_best or (current_epoch == self.total_epochs - 1)
+        if is_best:
+            # Save only best model
+            best_path = os.path.join(self.args.ckpt_dir, 'checkpoint_best.pth')
+            common_utils.save_checkpoint(
+                self.model, self.optimizer, self.scheduler, self.scaler,
+                self.args.dist_mode, current_epoch, filename=best_path
+            )
+            self.logger.info(f"[INFO] Saved best model at epoch {current_epoch} -> {best_path}")
 
-        # Print metrics and save info
-        print(f"[Epoch {current_epoch}] Current {best_metric_name}: {current_metric}, Best {best_metric_name}: {self.best_metric}, Save checkpoint: {save_model}")
-
-        if save_model:
+        elif current_epoch % save_every_n == 0:
+            # Save regular epoch checkpoint
+            ckpt_name = os.path.join(self.args.ckpt_dir, f'checkpoint_epoch_{current_epoch}.pth')
             common_utils.save_checkpoint(
                 self.model, self.optimizer, self.scheduler, self.scaler,
                 self.args.dist_mode, current_epoch, filename=ckpt_name
             )
+            self.logger.info(f"[INFO] Saved checkpoint at epoch {current_epoch} -> {ckpt_name}")
 
-            if is_best:
-                best_path = os.path.join(self.args.ckpt_dir, 'checkpoint_best.pth')
-                shutil.copyfile(ckpt_name, best_path)
-                self.logger.info(f"[INFO] Saved best model at epoch {current_epoch} -> {best_path}")
+        print(f"[Epoch {current_epoch}] Current {best_metric_name}: {current_metric}, "
+            f"Best {best_metric_name}: {self.best_metric}, Save checkpoint: {is_best or (current_epoch % save_every_n == 0)}")
 
 
     def train_one_epoch(self, current_epoch, tbar):

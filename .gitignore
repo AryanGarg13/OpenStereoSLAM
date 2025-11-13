@@ -12,3 +12,8 @@ pretrained-ckpt/
 data_stereo_flow/
 
 output/
+
+.vscode/
+
+train.log
+
