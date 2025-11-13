@@ -249,9 +249,14 @@ class TrainerTemplate:
             
             # Save the quantized model (only on rank 0)
             if self.global_rank == 0:
-                quantized_path = os.path.join(self.args.ckpt_dir, "model_quantized_final.pth")
-                torch.save(quantized_cpu_model.state_dict(), quantized_path)
-                self.logger.info(f"Saved final quantized CPU model -> {quantized_path}")
+                quant_ckpt_path = os.path.join(self.args.ckpt_dir, "checkpoint_quantized_final.pth")
+                ckpt_dict = {
+                    'epoch': self.last_epoch,
+                    'model_state': quantized_cpu_model.state_dict(),
+                    'quantized': True
+                }
+                torch.save(ckpt_dict, quant_ckpt_path)
+                self.logger.info(f"Saved full quantized checkpoint -> {quant_ckpt_path}")
 
             # Move the original (FakeQuant) model back to the GPU
             # so that the final 'evaluate()' call works correctly.

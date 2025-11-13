@@ -141,18 +141,22 @@ def freeze_bn(module):
 
 def load_params_from_file(model, filename, device, dist_mode, logger, strict=True):
     checkpoint = torch.load(filename, map_location=device)
-    pretrained_state_dict = checkpoint['model_state']
+    # Use 'model_state' if it exists, else fallback to top-level checkpoint
+    pretrained_state_dict = checkpoint.get('model_state', checkpoint)
+    
     tmp_model = model.module if dist_mode else model
     state_dict = tmp_model.state_dict()
 
     unused_state_dict = {}
     update_state_dict = {}
     unupdate_state_dict = {}
+    
     for key, val in pretrained_state_dict.items():
         if key in state_dict and state_dict[key].shape == val.shape:
             update_state_dict[key] = val
         else:
             unused_state_dict[key] = val
+    
     for key in state_dict:
         if key not in update_state_dict:
             unupdate_state_dict[key] = state_dict[key]
