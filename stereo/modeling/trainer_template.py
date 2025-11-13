@@ -18,6 +18,27 @@ from stereo.utils.lamb import Lamb
 from stereo.evaluation.metric_per_image import epe_metric, d1_metric, threshold_metric
 import shutil 
 
+
+import torch.quantization as quant
+from torch.quantization import QuantStub, DeQuantStub, prepare_qat, convert
+
+
+class QuantAwareModel(nn.Module):
+    def __init__(self, model):
+        super().__init__()
+        self.quant = QuantStub()
+        self.model = model
+        self.dequant = DeQuantStub()
+    
+    def forward(self, x):
+        x = self.quant(x)
+        x = self.model(x)
+        x = self.dequant(x)
+        return x
+
+
+
+
 class TrainerTemplate:
     def __init__(self, args, cfgs, local_rank, global_rank, logger, tb_writer, model):
         self.args = args
@@ -85,6 +106,14 @@ class TrainerTemplate:
             self.logger.info('Convert batch norm to sync batch norm')
 
         model = model.to(self.local_rank)
+
+        # Wrap with QAT
+        if self.cfgs.OPTIMIZATION.get('QAT', False):
+            self.logger.info("Enabling Quantization Aware Training (QAT)")
+            model = QuantAwareModel(model)
+            model.qconfig = quant.get_default_qat_qconfig('fbgemm')  # Choose backend
+            prepare_qat(model, inplace=True)
+
 
         if self.args.dist_mode:
             model = nn.parallel.DistributedDataParallel(

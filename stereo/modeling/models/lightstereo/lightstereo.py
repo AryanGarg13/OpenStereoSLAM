@@ -8,6 +8,11 @@ from stereo.modeling.disp_refinement.disp_refinement import context_upsample
 from .backbone import Backbone, FPNLayer
 from .aggregation import Aggregation
 
+# importing quantization modules !
+import torch.quantization as quant
+from torch.quantization import QuantStub, DeQuantStub, prepare_qat, convert
+
+
 
 class LightStereo(nn.Module):
     def __init__(self, cfgs):
