@@ -15,12 +15,12 @@ from torch.quantization import QuantStub, DeQuantStub, prepare_qat, convert
 
 
 class LightStereo(nn.Module):
-    def __init__(self, cfgs , quantize = False):
+    def __init__(self, cfgs):
         super().__init__()
         self.max_disp = cfgs.MAX_DISP
         self.left_att = cfgs.LEFT_ATT
 
-        self.quantize = quantize  # flag for enabling QAT
+        self.quantize = cfgs.get('QAT', False)
 
         # backbobe
         self.backbone = Backbone(cfgs.get('BACKCONE', 'MobileNetv2'))
@@ -48,11 +48,13 @@ class LightStereo(nn.Module):
 
         self.refine_3 = BasicDeconv2d(16, 9, kernel_size=4, stride=2, padding=1)
 
-        # Add quantization stubs
-        if quantize:
-            self.quant = QuantStub()
-            self.dequant = DeQuantStub()
-        
+        # --- CHANGE 2: Add specific quantization stubs ---
+        if self.quantize:
+            self.quant = QuantStub()            # For model inputs
+            self.dequant_out = DeQuantStub()      # For final model outputs
+            # Specific stubs for handling F.interpolate
+            self.dequant_interp = DeQuantStub() 
+            self.quant_interp = QuantStub()
 
     def forward(self, data):
         image1 = data['left']
@@ -81,15 +83,28 @@ class LightStereo(nn.Module):
 
         result = {'disp_pred': disp_pred}
 
+        # --- CHANGE 3: Wrap sensitive operations (F.interpolate) ---
         if self.training:
-            disp_4 = F.interpolate(init_disp, image1.shape[2:], mode='bilinear', align_corners=False)
+            # This logic is inside context_upsample, but for 'disp_4' it's explicit here
+            init_disp_for_interp = init_disp
+            
+            if self.quantize:
+                # Dequantize before interpolation
+                init_disp_for_interp = self.dequant_interp(init_disp_for_interp)
+
+            disp_4 = F.interpolate(init_disp_for_interp, image1.shape[2:], mode='bilinear', align_corners=False)
             disp_4 *= 4
+            
+            if self.quantize:
+                # Re-quantize after interpolation
+                disp_4 = self.quant_interp(disp_4)
+
             result['disp_4'] = disp_4
 
-        # Dequantize output
+        # Dequantize ALL outputs
         if self.quantize:
             for k in result.keys():
-                result[k] = self.dequant(result[k])
+                result[k] = self.dequant_out(result[k])
                 
         return result
 

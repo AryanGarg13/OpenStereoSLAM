@@ -23,6 +23,10 @@ import torch.quantization as quant
 from torch.quantization import QuantStub, DeQuantStub, prepare_qat, convert
 
 
+"""
+Ref : https://github.com/pytorch/pytorch/issues/157222 & 
+https://github.com/pytorch/pytorch/issues/54816 (Per Channel Quantization is currently disabled for transposed conv)
+"""
 
 
 class TrainerTemplate:
@@ -81,61 +85,77 @@ class TrainerTemplate:
             mode='evaluating')
         self.logger.info('Total samples for eval dataset: %d' % (len(eval_set)))
         return eval_set, eval_loader, eval_sampler
-
+        
     def build_model(self, model):
-        if self.cfgs.OPTIMIZATION.get('FREEZE_BN', False):
-            model = common_utils.freeze_bn(model)
-            self.logger.info('Freeze the batch normalization layers')
+            if self.cfgs.OPTIMIZATION.get('FREEZE_BN', False):
+                model = common_utils.freeze_bn(model)
+                self.logger.info('Freeze the batch normalization layers')
 
-        if self.cfgs.OPTIMIZATION.SYNC_BN and self.args.dist_mode:
-            model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
-            self.logger.info('Convert batch norm to sync batch norm')
+            if self.cfgs.OPTIMIZATION.SYNC_BN and self.args.dist_mode:
+                model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
+                self.logger.info('Convert batch norm to sync batch norm')
 
-        model = model.to(self.local_rank)
+            model = model.to(self.local_rank)
 
-        # Wrap with QAT - FIXED VERSION
-        if self.cfgs.OPTIMIZATION.get('QAT', False):
-            self.logger.info("Enabling Quantization Aware Training (QAT)")
-            
-            # Use per-tensor quantization instead of per-channel
-            model.qconfig = torch.quantization.QConfig(
-                activation=torch.quantization.FakeQuantize.with_args(
-                    observer=torch.quantization.MovingAverageMinMaxObserver,
-                    quant_min=0,
-                    quant_max=255,
-                    dtype=torch.quint8,
-                    qscheme=torch.per_tensor_affine,
-                    reduce_range=False
-                ),
-                weight=torch.quantization.FakeQuantize.with_args(
-                    observer=torch.quantization.MovingAverageMinMaxObserver,
-                    quant_min=-128,
-                    quant_max=127,
-                    dtype=torch.qint8,
-                    qscheme=torch.per_tensor_symmetric,
-                    reduce_range=False
+            # --- THIS IS THE CORRECTED QAT BLOCK ---
+            if self.cfgs.OPTIMIZATION.get('QAT', False):
+                self.logger.info("Enabling Quantization Aware Training (QAT)")
+
+                # FIX 3: Fix 'replicate' padding before doing anything else
+                self.logger.info("Checking for and fixing 'replicate' padding_mode for QAT...")
+                for module in model.modules():
+                    if isinstance(module, (nn.Conv2d, nn.ConvTranspose2d)):
+                        if module.padding_mode == 'replicate':
+                            module.padding_mode = 'zeros'
+                            self.logger.info(f"Changed padding_mode from 'replicate' to 'zeros' in: {module}")
+                self.logger.info("Padding_mode check complete.")
+
+                # FIX 1: Set the backend to 'fbgemm' (CPU) for grouped convs
+                self.logger.info("Setting quantized engine to 'fbgemm' (CPU backend)")
+                torch.backends.quantized.engine = 'fbgemm'
+
+                # FIX 2: Use PER-TENSOR qconfig for transposed conv
+                self.logger.info("Using custom PER-TENSOR qconfig")
+                model.qconfig = torch.quantization.QConfig(
+                    activation=torch.quantization.FakeQuantize.with_args(
+                        observer=torch.quantization.MovingAverageMinMaxObserver,
+                        quant_min=0,
+                        quant_max=255,
+                        dtype=torch.quint8,
+                        qscheme=torch.per_tensor_affine,
+                        reduce_range=False
+                    ),
+                    weight=torch.quantization.FakeQuantize.with_args(
+                        observer=torch.quantization.MovingAverageMinMaxObserver,
+                        quant_min=-128,
+                        quant_max=127,
+                        dtype=torch.qint8,
+                        qscheme=torch.per_tensor_symmetric,
+                        reduce_range=False
+                    )
                 )
-            )
-            
-            # Prepare model for QAT
-            torch.quantization.prepare_qat(model, inplace=True)
-            self.logger.info("Model prepared for QAT with per-tensor quantization")
+                
+                # --- CRITICAL MISSING STEP ---
+                # Apply all the QAT settings to the model
+                self.logger.info("Preparing model for QAT...")
+                torch.quantization.prepare_qat(model, inplace=True)
+                self.logger.info("Model prepared for QAT.")
+            # --- END OF QAT BLOCK ---
 
+            if self.args.dist_mode:
+                model = nn.parallel.DistributedDataParallel(
+                    model, device_ids=[self.local_rank], output_device=self.local_rank,
+                    find_unused_parameters=self.cfgs.MODEL.FIND_UNUSED_PARAMETERS)
 
-        if self.args.dist_mode:
-            model = nn.parallel.DistributedDataParallel(
-                model, device_ids=[self.local_rank], output_device=self.local_rank,
-                find_unused_parameters=self.cfgs.MODEL.FIND_UNUSED_PARAMETERS)
-
-        # load pretrained model
-        if self.cfgs.MODEL.PRETRAINED_MODEL:
-            self.logger.info('Loading parameters from checkpoint %s' % self.cfgs.MODEL.PRETRAINED_MODEL)
-            if not os.path.isfile(self.cfgs.MODEL.PRETRAINED_MODEL):
-                raise FileNotFoundError
-            common_utils.load_params_from_file(
-                model, self.cfgs.MODEL.PRETRAINED_MODEL, device='cuda:%d' % self.local_rank,
-                dist_mode=self.args.dist_mode, logger=self.logger, strict=False)
-        return model
+            # load pretrained model
+            if self.cfgs.MODEL.PRETRAINED_MODEL:
+                self.logger.info('Loading parameters from checkpoint %s' % self.cfgs.MODEL.PRETRAINED_MODEL)
+                if not os.path.isfile(self.cfgs.MODEL.PRETRAINED_MODEL):
+                    raise FileNotFoundError
+                common_utils.load_params_from_file(
+                    model, self.cfgs.MODEL.PRETRAINED_MODEL, device='cuda:%d' % self.local_rank,
+                    dist_mode=self.args.dist_mode, logger=self.logger, strict=False)
+            return model
 
     def build_optimizer_and_scheduler(self):
         if self.cfgs.OPTIMIZATION.OPTIMIZER.NAME == 'Lamb':
@@ -208,6 +228,7 @@ class TrainerTemplate:
             self.warmup_scheduler.lrs = [group['lr'] for group in self.optimizer.param_groups]
 
         # --- QAT: convert model to quantized after final epoch ---
+        # --- START OF MODIFICATION ---
         if self.cfgs.OPTIMIZATION.get('QAT', False) and current_epoch == self.total_epochs - 1:
             self.logger.info("Converting model to quantized version for evaluation")
             
@@ -217,13 +238,26 @@ class TrainerTemplate:
             # Handle DDP wrapper
             model_to_convert = self.model.module if self.args.dist_mode else self.model
             
-            # Convert to quantized model
-            torch.quantization.convert(model_to_convert, inplace=True)
+            # Move model to CPU. The qconfig was for 'fbgemm', so conversion MUST be on CPU.
+            self.logger.info("Moving model to CPU for conversion...")
+            model_to_convert = model_to_convert.cpu()
             
-            # Save the quantized model
-            quantized_path = os.path.join(self.args.ckpt_dir, "model_quantized_final.pth")
-            torch.save(model_to_convert.state_dict(), quantized_path)
-            self.logger.info(f"Saved final quantized model -> {quantized_path}")
+            # Convert to quantized model (non-inplace)
+            self.logger.info("Starting model conversion (non-inplace) for 'fbgemm'...")
+            quantized_cpu_model = torch.quantization.convert(model_to_convert, inplace=False)
+            self.logger.info("Model conversion complete.")
+            
+            # Save the quantized model (only on rank 0)
+            if self.global_rank == 0:
+                quantized_path = os.path.join(self.args.ckpt_dir, "model_quantized_final.pth")
+                torch.save(quantized_cpu_model.state_dict(), quantized_path)
+                self.logger.info(f"Saved final quantized CPU model -> {quantized_path}")
+
+            # Move the original (FakeQuant) model back to the GPU
+            # so that the final 'evaluate()' call works correctly.
+            self.logger.info(f"Moving original FakeQuant model back to device {self.local_rank} for evaluation.")
+            self.model.to(self.local_rank)
+        # --- END OF MODIFICATION ---
 
     def evaluate(self, current_epoch):
         self.model.eval()

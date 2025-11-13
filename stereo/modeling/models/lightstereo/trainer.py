@@ -10,5 +10,8 @@ __all__ = {
 
 class Trainer(TrainerTemplate):
     def __init__(self, args, cfgs, local_rank, global_rank, logger, tb_writer):
+        
+        cfgs.MODEL.QAT = cfgs.OPTIMIZATION.get('QAT', False)
+
         model = __all__[cfgs.MODEL.NAME](cfgs.MODEL)
         super().__init__(args, cfgs, local_rank, global_rank, logger, tb_writer, model)
