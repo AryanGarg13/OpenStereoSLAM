@@ -38,14 +38,14 @@ MODEL:
     LEFT_ATT: true
     FIND_UNUSED_PARAMETERS: false
     CKPT: -1
-    PRETRAINED_MODEL: '' # The path of checkpoint trained with the Sceneflow dataset.
+    PRETRAINED_MODEL: '/home/aniruth/Desktop/Courses/Independent - Study/OpenStereoSLAM/pretrained-ckpt/kitti-12/LightStereo-M-KITTI.ckpt' # The path of checkpoint trained with the Sceneflow dataset.
 
 OPTIMIZATION:
     FREEZE_BN: false
     SYNC_BN: true
     AMP: false
     BATCH_SIZE_PER_GPU: 2
-    NUM_EPOCHS: 2
+    NUM_EPOCHS: 500
 
     OPTIMIZER:
         NAME: AdamW
@@ -74,8 +74,8 @@ EVALUATOR:
         - thres_3
 
 TRAINER:
-    EVAL_INTERVAL: 2
-    CKPT_SAVE_INTERVAL: 1
+    EVAL_INTERVAL: 20
+    CKPT_SAVE_INTERVAL: 50
     MAX_CKPT_SAVE_NUM: 100
     LOGGER_ITER_INTERVAL: 10
     TRAIN_VISUALIZATION: True

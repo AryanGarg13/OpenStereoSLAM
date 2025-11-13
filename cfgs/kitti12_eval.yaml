@@ -1,3 +1,6 @@
+# Dont use this for kitti - lightstereo !!!
+
+
 DATA_CONFIG:
     DATA_INFOS:
         -   DATASET: KittiDataset
