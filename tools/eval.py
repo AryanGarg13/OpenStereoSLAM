@@ -88,8 +88,8 @@ def main():
 
     # model
     trainer = build_trainer(args, cfgs, local_rank, global_rank, logger, tb_writer)
-    trainer.evaluate(current_epoch=0)
-
+    metrics = trainer.evaluate(current_epoch=0)
+    print('Evaluation metrics: %s' % metrics)
 
 if __name__ == '__main__':
     main()

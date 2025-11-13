@@ -23,20 +23,6 @@ import torch.quantization as quant
 from torch.quantization import QuantStub, DeQuantStub, prepare_qat, convert
 
 
-class QuantAwareModel(nn.Module):
-    def __init__(self, model):
-        super().__init__()
-        self.quant = QuantStub()
-        self.model = model
-        self.dequant = DeQuantStub()
-    
-    def forward(self, x):
-        x = self.quant(x)
-        x = self.model(x)
-        x = self.dequant(x)
-        return x
-
-
 
 
 class TrainerTemplate:
@@ -107,12 +93,33 @@ class TrainerTemplate:
 
         model = model.to(self.local_rank)
 
-        # Wrap with QAT
+        # Wrap with QAT - FIXED VERSION
         if self.cfgs.OPTIMIZATION.get('QAT', False):
             self.logger.info("Enabling Quantization Aware Training (QAT)")
-            model = QuantAwareModel(model)
-            model.qconfig = quant.get_default_qat_qconfig('fbgemm')  # Choose backend
-            prepare_qat(model, inplace=True)
+            
+            # Use per-tensor quantization instead of per-channel
+            model.qconfig = torch.quantization.QConfig(
+                activation=torch.quantization.FakeQuantize.with_args(
+                    observer=torch.quantization.MovingAverageMinMaxObserver,
+                    quant_min=0,
+                    quant_max=255,
+                    dtype=torch.quint8,
+                    qscheme=torch.per_tensor_affine,
+                    reduce_range=False
+                ),
+                weight=torch.quantization.FakeQuantize.with_args(
+                    observer=torch.quantization.MovingAverageMinMaxObserver,
+                    quant_min=-128,
+                    quant_max=127,
+                    dtype=torch.qint8,
+                    qscheme=torch.per_tensor_symmetric,
+                    reduce_range=False
+                )
+            )
+            
+            # Prepare model for QAT
+            torch.quantization.prepare_qat(model, inplace=True)
+            self.logger.info("Model prepared for QAT with per-tensor quantization")
 
 
         if self.args.dist_mode:
@@ -200,6 +207,24 @@ class TrainerTemplate:
             self.scheduler.step()
             self.warmup_scheduler.lrs = [group['lr'] for group in self.optimizer.param_groups]
 
+        # --- QAT: convert model to quantized after final epoch ---
+        if self.cfgs.OPTIMIZATION.get('QAT', False) and current_epoch == self.total_epochs - 1:
+            self.logger.info("Converting model to quantized version for evaluation")
+            
+            # Set model to eval mode before conversion
+            self.model.eval()
+            
+            # Handle DDP wrapper
+            model_to_convert = self.model.module if self.args.dist_mode else self.model
+            
+            # Convert to quantized model
+            torch.quantization.convert(model_to_convert, inplace=True)
+            
+            # Save the quantized model
+            quantized_path = os.path.join(self.args.ckpt_dir, "model_quantized_final.pth")
+            torch.save(model_to_convert.state_dict(), quantized_path)
+            self.logger.info(f"Saved final quantized model -> {quantized_path}")
+
     def evaluate(self, current_epoch):
         self.model.eval()
         metrics = self.eval_one_epoch(current_epoch=current_epoch)  # now return metrics
@@ -208,64 +233,18 @@ class TrainerTemplate:
         return metrics
 
     
-    # def save_ckpt(self, current_epoch):
-    #     if (current_epoch % self.cfgs.TRAINER.CKPT_SAVE_INTERVAL == 0 or current_epoch == self.total_epochs - 1) and self.global_rank == 0:
-    #         ckpt_list = glob.glob(os.path.join(self.args.ckpt_dir, 'checkpoint_epoch_*.pth'))
-    #         ckpt_list.sort(key=os.path.getmtime)
-    #         if len(ckpt_list) >= self.cfgs.TRAINER.MAX_CKPT_SAVE_NUM:
-    #             for cur_file_idx in range(0, len(ckpt_list) - self.cfgs.TRAINER.MAX_CKPT_SAVE_NUM + 1):
-    #                 os.remove(ckpt_list[cur_file_idx])
-    #         ckpt_name = os.path.join(self.args.ckpt_dir, 'checkpoint_epoch_%d.pth' % current_epoch)
-    #         common_utils.save_checkpoint(self.model, self.optimizer, self.scheduler, self.scaler,
-    #                                      self.args.dist_mode, current_epoch, filename=ckpt_name)
-    #     if self.args.dist_mode:
-    #         dist.barrier()
-
-    def save_ckpt(self, current_epoch, metrics=None):
-        """
-        Save checkpoints:
-        - Save the best model based on 'epe' as checkpoint_best.pth (no epoch number)
-        - Save every `save_every_n` epochs as checkpoint_epoch_{n}.pth
-        """
-        if self.global_rank != 0:
-            return
-
-        save_every_n = 50  # save every 50 epochs
-        best_metric_name = 'epe'
-
-        # Track best model
-        if not hasattr(self, 'best_metric'):
-            self.best_metric = float('inf')
-
-        is_best = False
-        current_metric = None
-        if metrics is not None and best_metric_name in metrics:
-            current_metric = metrics[best_metric_name].item()
-            if current_metric < self.best_metric:  # lower epe is better
-                self.best_metric = current_metric
-                is_best = True
-
-        if is_best:
-            # Save only best model
-            best_path = os.path.join(self.args.ckpt_dir, 'checkpoint_best.pth')
-            common_utils.save_checkpoint(
-                self.model, self.optimizer, self.scheduler, self.scaler,
-                self.args.dist_mode, current_epoch, filename=best_path
-            )
-            self.logger.info(f"[INFO] Saved best model at epoch {current_epoch} -> {best_path}")
-
-        elif current_epoch % save_every_n == 0:
-            # Save regular epoch checkpoint
-            ckpt_name = os.path.join(self.args.ckpt_dir, f'checkpoint_epoch_{current_epoch}.pth')
-            common_utils.save_checkpoint(
-                self.model, self.optimizer, self.scheduler, self.scaler,
-                self.args.dist_mode, current_epoch, filename=ckpt_name
-            )
-            self.logger.info(f"[INFO] Saved checkpoint at epoch {current_epoch} -> {ckpt_name}")
-
-        print(f"[Epoch {current_epoch}] Current {best_metric_name}: {current_metric}, "
-            f"Best {best_metric_name}: {self.best_metric}, Save checkpoint: {is_best or (current_epoch % save_every_n == 0)}")
-
+    def save_ckpt(self, current_epoch):
+        if (current_epoch % self.cfgs.TRAINER.CKPT_SAVE_INTERVAL == 0 or current_epoch == self.total_epochs - 1) and self.global_rank == 0:
+            ckpt_list = glob.glob(os.path.join(self.args.ckpt_dir, 'checkpoint_epoch_*.pth'))
+            ckpt_list.sort(key=os.path.getmtime)
+            if len(ckpt_list) >= self.cfgs.TRAINER.MAX_CKPT_SAVE_NUM:
+                for cur_file_idx in range(0, len(ckpt_list) - self.cfgs.TRAINER.MAX_CKPT_SAVE_NUM + 1):
+                    os.remove(ckpt_list[cur_file_idx])
+            ckpt_name = os.path.join(self.args.ckpt_dir, 'checkpoint_epoch_%d.pth' % current_epoch)
+            common_utils.save_checkpoint(self.model, self.optimizer, self.scheduler, self.scaler,
+                                         self.args.dist_mode, current_epoch, filename=ckpt_name)
+        if self.args.dist_mode:
+            dist.barrier()
 
     def train_one_epoch(self, current_epoch, tbar):
         start_epoch = self.last_epoch + 1

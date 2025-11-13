@@ -45,7 +45,7 @@ OPTIMIZATION:
     SYNC_BN: true
     AMP: false
     BATCH_SIZE_PER_GPU: 2
-    NUM_EPOCHS: 500
+    NUM_EPOCHS: 2
 
     OPTIMIZER:
         NAME: AdamW

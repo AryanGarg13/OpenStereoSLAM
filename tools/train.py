@@ -122,20 +122,25 @@ def main():
     # trainer
     model_trainer = build_trainer(args, cfgs, local_rank, global_rank, logger, tb_writer)
 
+    # --- Add this block here ---
+    if hasattr(cfgs, "OPTIMIZATION") and "QAT" in cfgs.OPTIMIZATION:
+        print(f"[INFO] Quantization Aware Training (QAT) is {'ENABLED' if cfgs.OPTIMIZATION.QAT else 'DISABLED'}")
+        logger.info(f"Quantization Aware Training (QAT): {'ENABLED' if cfgs.OPTIMIZATION.QAT else 'DISABLED'}")
+    else:
+        print("[INFO] No QAT flag found in configuration.")
+        logger.info("No QAT flag found in configuration.")
+    # ----------------------------
+
+
     tbar = tqdm.trange(model_trainer.last_epoch + 1, model_trainer.total_epochs,
                        desc='epochs', dynamic_ncols=True, disable=(local_rank != 0),
                        bar_format='{l_bar}{bar}{r_bar}\n')
     
     for current_epoch in tbar:
         model_trainer.train(current_epoch, tbar)
-
-        # Evaluate only at intervals
-        metrics = None
+        model_trainer.save_ckpt(current_epoch)
         if current_epoch % cfgs.TRAINER.EVAL_INTERVAL == 0 or current_epoch == model_trainer.total_epochs - 1:
-            metrics = model_trainer.evaluate(current_epoch)  # should return metrics dict
-
-        # Save checkpoint with metrics
-        model_trainer.save_ckpt(current_epoch, metrics=metrics)
+            model_trainer.evaluate(current_epoch)
 
 
 if __name__ == '__main__':

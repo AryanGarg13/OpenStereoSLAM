@@ -15,10 +15,12 @@ from torch.quantization import QuantStub, DeQuantStub, prepare_qat, convert
 
 
 class LightStereo(nn.Module):
-    def __init__(self, cfgs):
+    def __init__(self, cfgs , quantize = False):
         super().__init__()
         self.max_disp = cfgs.MAX_DISP
         self.left_att = cfgs.LEFT_ATT
+
+        self.quantize = quantize  # flag for enabling QAT
 
         # backbobe
         self.backbone = Backbone(cfgs.get('BACKCONE', 'MobileNetv2'))
@@ -46,9 +48,20 @@ class LightStereo(nn.Module):
 
         self.refine_3 = BasicDeconv2d(16, 9, kernel_size=4, stride=2, padding=1)
 
+        # Add quantization stubs
+        if quantize:
+            self.quant = QuantStub()
+            self.dequant = DeQuantStub()
+        
+
     def forward(self, data):
         image1 = data['left']
         image2 = data['right']
+
+        # Quantize inputs
+        if self.quantize:
+            image1 = self.quant(image1)
+            image2 = self.quant(image2)
 
         features_left = self.backbone(image1)
         features_right = self.backbone(image2)
@@ -73,6 +86,11 @@ class LightStereo(nn.Module):
             disp_4 *= 4
             result['disp_4'] = disp_4
 
+        # Dequantize output
+        if self.quantize:
+            for k in result.keys():
+                result[k] = self.dequant(result[k])
+                
         return result
 
     def get_loss(self, model_pred, input_data):
