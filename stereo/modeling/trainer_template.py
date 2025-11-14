@@ -86,77 +86,108 @@ class TrainerTemplate:
         self.logger.info('Total samples for eval dataset: %d' % (len(eval_set)))
         return eval_set, eval_loader, eval_sampler
         
+
     def build_model(self, model):
-            if self.cfgs.OPTIMIZATION.get('FREEZE_BN', False):
-                model = common_utils.freeze_bn(model)
-                self.logger.info('Freeze the batch normalization layers')
+        if self.cfgs.OPTIMIZATION.get('FREEZE_BN', False):
+            model = common_utils.freeze_bn(model)
+            self.logger.info('Freeze the batch normalization layers')
 
-            if self.cfgs.OPTIMIZATION.SYNC_BN and self.args.dist_mode:
-                model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
-                self.logger.info('Convert batch norm to sync batch norm')
+        if self.cfgs.OPTIMIZATION.SYNC_BN and self.args.dist_mode:
+            model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
+            self.logger.info('Convert batch norm to sync batch norm')
 
+        # --- MODIFICATION START ---
+        # Check if we are doing a final QAT evaluation
+        is_qat_eval = self.args.run_mode == 'eval' and self.cfgs.OPTIMIZATION.get('QAT', False)
+
+        # If NOT QAT eval, move to GPU as normal.
+        # If QAT eval, keep model on CPU for conversion.
+        if not is_qat_eval:
+            model = model.to(self.local_rank)
+        # --- MODIFICATION END ---
+
+        if self.cfgs.OPTIMIZATION.get('QAT', False):
+            self.logger.info("Enabling Quantization...")
+
+            # FIX 3: Fix 'replicate' padding before doing anything else
+            self.logger.info("Checking for and fixing 'replicate' padding_mode for QAT...")
+            for module in model.modules():
+                if isinstance(module, (nn.Conv2d, nn.ConvTranspose2d)):
+                    if module.padding_mode == 'replicate':
+                        module.padding_mode = 'zeros'
+                        self.logger.info(f"Changed padding_mode from 'replicate' to 'zeros' in: {module}")
+            self.logger.info("Padding_mode check complete.")
+
+            # FIX 1: Set the backend to 'fbgemm' (CPU) for grouped convs
+            self.logger.info("Setting quantized engine to 'fbgemm' (CPU backend)")
+            torch.backends.quantized.engine = 'fbgemm'
+
+            # FIX 2: Use PER-TENSOR qconfig for transposed conv
+            self.logger.info("Using custom PER-TENSOR qconfig")
+            model.qconfig = torch.quantization.QConfig(
+                activation=torch.quantization.FakeQuantize.with_args(
+                    observer=torch.quantization.MovingAverageMinMaxObserver,
+                    quant_min=0,
+                    quant_max=255,
+                    dtype=torch.quint8,
+                    qscheme=torch.per_tensor_affine,
+                    reduce_range=False
+                ),
+                weight=torch.quantization.FakeQuantize.with_args(
+                    observer=torch.quantization.MovingAverageMinMaxObserver,
+                    quant_min=-128,
+                    quant_max=127,
+                    dtype=torch.qint8,
+                    qscheme=torch.per_tensor_symmetric,
+                    reduce_range=False
+                )
+            )
+            
+            # --- MODIFICATION: SPLIT LOGIC BASED ON MODE ---
+            if self.args.run_mode == 'train':
+                # We are training, so PREPARE the model
+                self.logger.info("Preparing model for QAT (training)...")
+                torch.quantization.prepare_qat(model, inplace=True) # Model is on GPU
+                self.logger.info("Model prepared for QAT.")
+            elif self.args.run_mode == 'eval':
+                # We are evaluating, so CONVERT the model to true int8
+                self.logger.info("Converting model to quantized (int8) structure for evaluation...")
+                # Model is on CPU, which is required for fbgemm conversion
+                torch.quantization.convert(model, inplace=True)
+                self.logger.info("Model converted to int8 structure (on CPU).")
+        # --- END OF QAT BLOCK ---
+
+        # load pretrained model
+        if self.cfgs.MODEL.PRETRAINED_MODEL:
+            self.logger.info('Loading parameters from checkpoint %s' % self.cfgs.MODEL.PRETRAINED_MODEL)
+            if not os.path.isfile(self.cfgs.MODEL.PRETRAINED_MODEL):
+                raise FileNotFoundError
+            
+            # --- MODIFICATION: Determine load device ---
+            # If QAT eval, model is on CPU, so load checkpoint to CPU
+            load_device = 'cpu' if is_qat_eval else 'cuda:%d' % self.local_rank
+            self.logger.info(f"Loading parameters to device: {load_device}")
+
+            common_utils.load_params_from_file(
+                model, self.cfgs.MODEL.PRETRAINED_MODEL, device=load_device,
+                # Pass dist_mode=False because model is not DDP-wrapped yet.
+                # This is correct since save_checkpoint saves the unwrapped state_dict.
+                dist_mode=False, 
+                logger=self.logger, strict=False)
+
+        # --- MODIFICATION: Move model to GPU *after* loading if QAT eval ---
+        if is_qat_eval:
+            self.logger.info(f"Moving converted int8 model to device: {self.local_rank}")
             model = model.to(self.local_rank)
 
-            # --- THIS IS THE CORRECTED QAT BLOCK ---
-            if self.cfgs.OPTIMIZATION.get('QAT', False):
-                self.logger.info("Enabling Quantization Aware Training (QAT)")
+        # --- MODIFICATION: DDP wrapper is now at the end ---
+        if self.args.dist_mode:
+            model = nn.parallel.DistributedDataParallel(
+                model, device_ids=[self.local_rank], output_device=self.local_rank,
+                find_unused_parameters=self.cfgs.MODEL.FIND_UNUSED_PARAMETERS)
 
-                # FIX 3: Fix 'replicate' padding before doing anything else
-                self.logger.info("Checking for and fixing 'replicate' padding_mode for QAT...")
-                for module in model.modules():
-                    if isinstance(module, (nn.Conv2d, nn.ConvTranspose2d)):
-                        if module.padding_mode == 'replicate':
-                            module.padding_mode = 'zeros'
-                            self.logger.info(f"Changed padding_mode from 'replicate' to 'zeros' in: {module}")
-                self.logger.info("Padding_mode check complete.")
-
-                # FIX 1: Set the backend to 'fbgemm' (CPU) for grouped convs
-                self.logger.info("Setting quantized engine to 'fbgemm' (CPU backend)")
-                torch.backends.quantized.engine = 'fbgemm'
-
-                # FIX 2: Use PER-TENSOR qconfig for transposed conv
-                self.logger.info("Using custom PER-TENSOR qconfig")
-                model.qconfig = torch.quantization.QConfig(
-                    activation=torch.quantization.FakeQuantize.with_args(
-                        observer=torch.quantization.MovingAverageMinMaxObserver,
-                        quant_min=0,
-                        quant_max=255,
-                        dtype=torch.quint8,
-                        qscheme=torch.per_tensor_affine,
-                        reduce_range=False
-                    ),
-                    weight=torch.quantization.FakeQuantize.with_args(
-                        observer=torch.quantization.MovingAverageMinMaxObserver,
-                        quant_min=-128,
-                        quant_max=127,
-                        dtype=torch.qint8,
-                        qscheme=torch.per_tensor_symmetric,
-                        reduce_range=False
-                    )
-                )
-                
-                # --- CRITICAL MISSING STEP ---
-                # Apply all the QAT settings to the model
-                self.logger.info("Preparing model for QAT...")
-                torch.quantization.prepare_qat(model, inplace=True)
-                self.logger.info("Model prepared for QAT.")
-            # --- END OF QAT BLOCK ---
-
-            if self.args.dist_mode:
-                model = nn.parallel.DistributedDataParallel(
-                    model, device_ids=[self.local_rank], output_device=self.local_rank,
-                    find_unused_parameters=self.cfgs.MODEL.FIND_UNUSED_PARAMETERS)
-
-            # load pretrained model
-            if self.cfgs.MODEL.PRETRAINED_MODEL:
-                self.logger.info('Loading parameters from checkpoint %s' % self.cfgs.MODEL.PRETRAINED_MODEL)
-                if not os.path.isfile(self.cfgs.MODEL.PRETRAINED_MODEL):
-                    raise FileNotFoundError
-                common_utils.load_params_from_file(
-                    model, self.cfgs.MODEL.PRETRAINED_MODEL, device='cuda:%d' % self.local_rank,
-                    dist_mode=self.args.dist_mode, logger=self.logger, strict=False)
-            return model
-
+        return model
+    
     def build_optimizer_and_scheduler(self):
         if self.cfgs.OPTIMIZATION.OPTIMIZER.NAME == 'Lamb':
             optimizer_cls = Lamb

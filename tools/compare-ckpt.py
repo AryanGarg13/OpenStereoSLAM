@@ -7,6 +7,9 @@ quant_path = "/home/aniruth/Desktop/Courses/Independent - Study/OpenStereoSLAM/o
 fp32_ckpt = torch.load(fp32_path, map_location="cpu")
 quant_ckpt = torch.load(quant_path, map_location="cpu")
 
+print("FP32 Checkpoint keys:", fp32_ckpt.keys())
+print("Quantized Checkpoint keys:", quant_ckpt.keys())
+
 fp32_state = fp32_ckpt['model_state']
 quant_state = quant_ckpt['model_state']
 
@@ -38,3 +41,4 @@ print("\nQuantized model size (in RAM, model_state only): {:.2f} MB".format(quan
 print("Quantized parameter counts:")
 print(f"int8 (weights): {quant_int8}")
 print(f"float32 (bias/metadata): {quant_float32}")
+

@@ -143,7 +143,11 @@ def load_params_from_file(model, filename, device, dist_mode, logger, strict=Tru
     checkpoint = torch.load(filename, map_location=device)
     # Use 'model_state' if it exists, else fallback to top-level checkpoint
     pretrained_state_dict = checkpoint.get('model_state', checkpoint)
-    
+    print(checkpoint.keys())
+
+    for i in checkpoint.keys():
+        print(i , checkpoint[i] if not isinstance(checkpoint[i], dict) else 'dict')
+
     tmp_model = model.module if dist_mode else model
     state_dict = tmp_model.state_dict()
 
@@ -152,7 +156,14 @@ def load_params_from_file(model, filename, device, dist_mode, logger, strict=Tru
     unupdate_state_dict = {}
     
     for key, val in pretrained_state_dict.items():
-        if key in state_dict and state_dict[key].shape == val.shape:
+        
+        # Check if val is not None before checking if it's quantized
+        if val is not None and val.is_quantized:
+            print(f"Dequantizing tensor for key: {key}")
+            # Dequantize it to a float32 tensor before loading
+            val = val.dequantize()
+
+        if key in state_dict and val is not None and state_dict[key].shape == val.shape:
             update_state_dict[key] = val
         else:
             unused_state_dict[key] = val
@@ -162,14 +173,21 @@ def load_params_from_file(model, filename, device, dist_mode, logger, strict=Tru
             unupdate_state_dict[key] = state_dict[key]
 
     if strict:
-        tmp_model.load_state_dict(update_state_dict)
+        # This line will now load float tensors into a float model
+        tmp_model.load_state_dict(update_state_dict, strict=True)
     else:
-        state_dict.update(update_state_dict)
-        tmp_model.load_state_dict(state_dict)
+        # This block will also work now
+        state_dict.update(update_state_dict) 
+        tmp_model.load_state_dict(state_dict, strict=False)
 
     message = 'Unused weight: '
     for key, val in unused_state_dict.items():
-        message += str(key) + ':' + str(val.shape) + ', '
+        if val is not None:
+            message += str(key) + ':' + str(val.shape) + ', '
+        else:
+            # Handle the case where the value itself was None
+            message += str(key) + ':None, ' 
+
     if logger:
         logger.info(message)
     else:
@@ -177,7 +195,11 @@ def load_params_from_file(model, filename, device, dist_mode, logger, strict=Tru
 
     message = 'Not updated weight: '
     for key, val in unupdate_state_dict.items():
-        message += str(key) + ':' + str(val.shape) + ', '
+        # This loop should be fine, but we can add a check for safety
+        if val is not None:
+            message += str(key) + ':' + str(val.shape) + ', '
+        else:
+            message += str(key) + ':None, '
     if logger:
         logger.info(message)
     else:

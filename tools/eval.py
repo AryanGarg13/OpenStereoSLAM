@@ -86,7 +86,7 @@ def main():
         logger.info('{:16} {}'.format(key, val))
     common_utils.log_configs(cfgs, logger=logger)
 
-    # model
+    # # model
     trainer = build_trainer(args, cfgs, local_rank, global_rank, logger, tb_writer)
     metrics = trainer.evaluate(current_epoch=0)
     print('Evaluation metrics: %s' % metrics)
